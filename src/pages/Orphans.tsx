@@ -1,0 +1,79 @@
+import { Link } from 'react-router-dom'
+import './Orphans.css'
+
+const orphans = [
+  { name: 'Ahmad', age: 8, country: 'Syria', emoji: '🧒', status: 'Sponsored' },
+  { name: 'Fatima', age: 6, country: 'Palestine', emoji: '👧', status: 'Needs Sponsor' },
+  { name: 'Yusuf', age: 10, country: 'Yemen', emoji: '🧒', status: 'Sponsored' },
+  { name: 'Amina', age: 7, country: 'Somalia', emoji: '👧', status: 'Needs Sponsor' },
+  { name: 'Omar', age: 9, country: 'Syria', emoji: '🧒', status: 'Sponsored' },
+  { name: 'Mariam', age: 5, country: 'Palestine', emoji: '👧', status: 'Needs Sponsor' },
+  { name: 'Hassan', age: 11, country: 'Yemen', emoji: '🧒', status: 'Sponsored' },
+  { name: 'Zahra', age: 8, country: 'Somalia', emoji: '👧', status: 'Needs Sponsor' },
+]
+
+export default function Orphans() {
+  return (
+    <div className="orphans">
+      <section className="hero">
+        <div className="hero-content">
+          <h1>Our Orphans</h1>
+          <p>Meet the children whose lives you can help transform through sponsorship.</p>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="section">
+        <div className="container">
+          <h2 className="section-title">How Sponsorship Works</h2>
+          <p className="section-subtitle">
+            Through our charity partners, your contributions directly support orphans
+            who have lost parents due to war, extreme poverty, or disease.
+          </p>
+          <div className="how-grid">
+            <div className="card how-card">
+              <span className="how-step">1</span>
+              <h3>Choose to Sponsor</h3>
+              <p>Select a child or contribute to our general fund to support orphans in need.</p>
+            </div>
+            <div className="card how-card">
+              <span className="how-step">2</span>
+              <h3>Funds Are Delivered</h3>
+              <p>Your donation goes through registered charities like Islamic Relief and HCI.</p>
+            </div>
+            <div className="card how-card">
+              <span className="how-step">3</span>
+              <h3>Lives Are Changed</h3>
+              <p>Orphans receive food, healthcare, education, and the support they need to thrive.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Orphan Profiles */}
+      <section className="section" style={{ background: 'var(--bg-secondary)' }}>
+        <div className="container">
+          <h2 className="section-title">Children We Support</h2>
+          <p className="section-subtitle">
+            Each child has a unique story. Your sponsorship can make all the difference.
+          </p>
+          <div className="orphan-grid">
+            {orphans.map((child, i) => (
+              <div className="card orphan-card" key={i}>
+                <span className="orphan-avatar">{child.emoji}</span>
+                <h4>{child.name}</h4>
+                <p className="orphan-detail">Age {child.age} · {child.country}</p>
+                <span className={`orphan-status ${child.status === 'Sponsored' ? 'sponsored' : 'needs'}`}>
+                  {child.status}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="orphan-cta">
+            <Link to="/donate" className="btn btn-primary">Sponsor a Child</Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}

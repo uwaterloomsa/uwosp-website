@@ -1,0 +1,87 @@
+.ways-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.ways-card {
+  text-align: center;
+}
+
+.ways-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.ways-card h3 {
+  margin-bottom: 0.75rem;
+}
+
+.ways-card p {
+  color: var(--text-muted);
+}
+
+/* Volunteer Form */
+.volunteer-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-heading);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--accent-primary);
+}
+
+.form-group select {
+  cursor: pointer;
+}
+
+.volunteer-form .btn {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* FAQ */
+.faq-list {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item h4 {
+  margin-bottom: 0.5rem;
+  color: var(--accent-primary);
+}
+
+.faq-item p {
+  color: var(--text-muted);
+}

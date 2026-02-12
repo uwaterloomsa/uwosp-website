@@ -1,0 +1,93 @@
+.tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.tier-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tier-highlight {
+  border-color: var(--accent-primary);
+  background: linear-gradient(135deg, var(--bg-secondary), var(--accent-subtle));
+  position: relative;
+}
+
+.tier-highlight::before {
+  content: 'Most Popular';
+  position: absolute;
+  top: -12px;
+  background: var(--accent-primary);
+  color: #fff;
+  padding: 0.2rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.tier-emoji {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.tier-card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.tier-amount {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+  margin-bottom: 1rem;
+}
+
+.tier-card p {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+/* Impact */
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.impact-card {
+  text-align: center;
+}
+
+.impact-emoji {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.impact-amount {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+  margin-bottom: 0.5rem;
+}
+
+.impact-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* CTA */
+.donate-cta-section {
+  background: linear-gradient(135deg, var(--bg-primary), var(--accent-subtle));
+}
+
+.donate-cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
