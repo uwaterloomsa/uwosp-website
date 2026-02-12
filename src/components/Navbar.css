@@ -54,7 +54,7 @@
 .nav-link:hover,
 .nav-link.active {
   color: var(--text-heading);
-  background: rgba(233, 69, 96, 0.08);
+  background: rgba(59, 130, 246, 0.08);
 }
 
 .nav-donate {
