@@ -1,46 +1,15 @@
 import { Link } from "react-router-dom";
 import {
   HeartStraight,
-  Star,
-  Gift,
   BookOpen,
-  AppleLogo,
+  BowlFood,
   CoatHanger,
   SunHorizon,
+  CurrencyDollar,
 } from "@phosphor-icons/react";
 import AnimatedBackground from "../components/AnimatedBackground";
 import "./Donate.css";
 import type { ReactNode } from "react";
-
-const tiers: {
-  name: string;
-  amount: string;
-  icon: ReactNode;
-  desc: string;
-  highlight: boolean;
-}[] = [
-  {
-    name: "Monthly Sponsor",
-    amount: "$40/mo",
-    icon: <HeartStraight size={40} weight="duotone" />,
-    desc: "Provide ongoing support covering food, education, and healthcare for one orphan.",
-    highlight: false,
-  },
-  {
-    name: "Annual Sponsor",
-    amount: "$480/yr",
-    icon: <Star size={40} weight="duotone" />,
-    desc: "Commit to a full year of sponsorship and receive regular updates on your sponsored child.",
-    highlight: true,
-  },
-  {
-    name: "One-Time Gift",
-    amount: "Any amount",
-    icon: <Gift size={40} weight="duotone" />,
-    desc: "Make a one-time contribution to our general fund supporting orphans across all regions.",
-    highlight: false,
-  },
-];
 
 const impacts: { amount: string; impact: string; icon: ReactNode }[] = [
   {
@@ -51,7 +20,7 @@ const impacts: { amount: string; impact: string; icon: ReactNode }[] = [
   {
     amount: "$40",
     impact: "Covers food, healthcare, and education for one orphan for a month",
-    icon: <AppleLogo size={36} weight="duotone" />,
+    icon: <BowlFood size={36} weight="duotone" />,
   },
   {
     amount: "$100",
@@ -79,33 +48,27 @@ export default function Donate() {
         </div>
       </section>
 
-      {/* Donation Tiers */}
+      {/* General Donate */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title">Sponsorship Options</h2>
-          <p className="section-subtitle">
-            Choose how you'd like to support orphans in need.
-          </p>
-          <div className="tiers-grid">
-            {tiers.map((tier, i) => (
-              <div
-                className={`card tier-card ${tier.highlight ? "tier-highlight" : ""}`}
-                key={i}
-              >
-                <span className="tier-emoji">{tier.icon}</span>
-                <h3>{tier.name}</h3>
-                <div className="tier-amount">{tier.amount}</div>
-                <p>{tier.desc}</p>
-                <a
-                  href="https://www.launchgood.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-primary"
-                >
-                  Donate
-                </a>
-              </div>
-            ))}
+          <div className="donate-general card">
+            <span className="donate-general-icon">
+              <HeartStraight size={56} weight="duotone" />
+            </span>
+            <h2>Support Orphans in Need</h2>
+            <p>
+              Your donation goes directly towards providing food, healthcare,
+              education, and essential resources for orphans around the world.
+              Any amount makes a real difference.
+            </p>
+            <a
+              href="https://www.launchgood.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary donate-general-btn"
+            >
+              <CurrencyDollar size={20} weight="bold" /> Donate Now
+            </a>
           </div>
         </div>
       </section>

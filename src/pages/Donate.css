@@ -1,57 +1,41 @@
-.tiers-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-}
-
-.tier-card {
+/* General Donate Card */
+.donate-general {
   text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 3rem 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
 }
 
-.tier-highlight {
-  border-color: var(--accent-primary);
-  background: linear-gradient(135deg, var(--bg-secondary), var(--accent-subtle));
-  position: relative;
-}
-
-.tier-highlight::before {
-  content: 'Most Popular';
-  position: absolute;
-  top: -12px;
-  background: var(--accent-primary);
-  color: #fff;
-  padding: 0.2rem 1rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.tier-emoji {
+.donate-general-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
   color: var(--accent-primary);
-}
-
-.tier-card h3 {
   margin-bottom: 0.5rem;
 }
 
-.tier-amount {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--accent-primary);
-  margin-bottom: 1rem;
+.donate-general h2 {
+  font-size: 1.6rem;
+  color: var(--text-heading);
 }
 
-.tier-card p {
+.donate-general p {
   color: var(--text-muted);
-  margin-bottom: 1.5rem;
-  flex: 1;
+  line-height: 1.8;
+  max-width: 500px;
+}
+
+.donate-general-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
 }
 
 /* Impact */
