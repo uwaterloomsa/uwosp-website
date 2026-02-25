@@ -1,0 +1,133 @@
+/* ===== Application Modal ===== */
+.apply-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.apply-modal {
+  width: 100%;
+  max-width: 540px;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: applyModalIn 0.25s ease;
+}
+
+@keyframes applyModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.apply-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.apply-modal-header h2 {
+  font-size: 1.1rem;
+}
+
+.apply-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.apply-close:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.apply-form .form-group {
+  margin-bottom: 1.25rem;
+}
+
+.apply-form .form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-heading);
+}
+
+.apply-form .form-group input,
+.apply-form .form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.apply-form .form-group input:focus,
+.apply-form .form-group textarea:focus {
+  border-color: var(--accent-primary);
+}
+
+.apply-form .btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.apply-error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* Success state */
+.apply-success {
+  text-align: center;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: #2ed573;
+}
+
+.apply-success h3 {
+  color: var(--text-heading);
+}
+
+.apply-success p {
+  color: var(--text-muted);
+  max-width: 360px;
+}
+
+.apply-success .btn {
+  margin-top: 0.5rem;
+  width: auto;
+}

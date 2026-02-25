@@ -58,8 +58,11 @@
 }
 
 .info-icon {
-  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  color: var(--accent-primary);
 }
 
 .info-card h4 {

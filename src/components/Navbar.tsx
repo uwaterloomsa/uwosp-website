@@ -1,29 +1,36 @@
-import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import './Navbar.css'
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { HeartStraight, SignIn } from "@phosphor-icons/react";
+import "./Navbar.css";
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const location = useLocation()
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   const links = [
-    { to: '/about', label: 'About' },
-    { to: '/orphans', label: 'Our Orphans' },
-    { to: '/campaigns', label: 'Campaigns' },
-    { to: '/get-involved', label: 'Get Involved' },
-    { to: '/contact', label: 'Contact' },
-  ]
+    { to: "/about", label: "About" },
+    { to: "/orphans", label: "Our Impact" },
+    { to: "/campaigns", label: "Campaigns" },
+    { to: "/get-involved", label: "Get Involved" },
+    { to: "/contact", label: "Contact" },
+  ];
 
   return (
     <nav className="navbar">
       <div className="navbar-inner container">
-        <Link to="/" className="navbar-brand" onClick={() => setMenuOpen(false)}>
-          <span className="brand-icon">❤️</span>
+        <Link
+          to="/"
+          className="navbar-brand"
+          onClick={() => setMenuOpen(false)}
+        >
+          <span className="brand-icon">
+            <HeartStraight size={24} weight="fill" color="#ef4444" />
+          </span>
           <span className="brand-text">UWOSP</span>
         </Link>
 
         <button
-          className={`hamburger ${menuOpen ? 'active' : ''}`}
+          className={`hamburger ${menuOpen ? "active" : ""}`}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -32,12 +39,12 @@ export default function Navbar() {
           <span />
         </button>
 
-        <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
+        <div className={`navbar-links ${menuOpen ? "open" : ""}`}>
           {links.map((link) => (
             <Link
               key={link.to}
               to={link.to}
-              className={`nav-link ${location.pathname === link.to ? 'active' : ''}`}
+              className={`nav-link ${location.pathname === link.to ? "active" : ""}`}
               onClick={() => setMenuOpen(false)}
             >
               {link.label}
@@ -50,8 +57,16 @@ export default function Navbar() {
           >
             Donate
           </Link>
+          <Link
+            to="/admin/login"
+            className="nav-login"
+            onClick={() => setMenuOpen(false)}
+          >
+            <SignIn size={18} weight="bold" />
+            Login
+          </Link>
         </div>
       </div>
     </nav>
-  )
+  );
 }

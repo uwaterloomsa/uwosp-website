@@ -28,12 +28,15 @@
 }
 
 .footer-social a {
-  font-size: 1.4rem;
-  transition: transform var(--transition);
+  color: var(--text-muted);
+  transition: transform var(--transition), color var(--transition);
+  display: flex;
+  align-items: center;
 }
 
 .footer-social a:hover {
   transform: scale(1.2);
+  color: var(--accent-primary);
 }
 
 .footer-col h4 {

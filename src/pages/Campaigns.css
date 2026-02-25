@@ -67,9 +67,11 @@
 }
 
 .past-emoji {
-  font-size: 2.5rem;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 1rem;
+  color: var(--accent-primary);
 }
 
 .past-card h3 {
@@ -100,9 +102,11 @@
 }
 
 .event-emoji {
-  font-size: 2.5rem;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 0.5rem;
+  color: var(--accent-primary);
 }
 
 .event-date {

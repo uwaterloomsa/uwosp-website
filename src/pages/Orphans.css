@@ -44,9 +44,11 @@
 }
 
 .orphan-avatar {
-  font-size: 3rem;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 0.75rem;
+  color: var(--accent-primary);
 }
 
 .orphan-card h4 {

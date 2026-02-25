@@ -26,9 +26,11 @@
 }
 
 .mission-icon {
-  font-size: 3rem;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 1rem;
+  color: var(--accent-primary);
 }
 
 .mission-card h3 {
@@ -39,6 +41,8 @@
 /* Stats */
 .stats-section {
   background: var(--bg-secondary);
+  position: relative;
+  overflow: hidden;
 }
 
 .stats-grid {
@@ -74,7 +78,9 @@
 }
 
 .campaign-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   background: var(--accent-primary);
   color: #fff;
   padding: 0.3rem 1rem;
@@ -107,9 +113,11 @@
 }
 
 .help-icon {
-  font-size: 2.5rem;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 1rem;
+  color: var(--accent-primary);
 }
 
 .help-card h3 {
@@ -124,6 +132,8 @@
 /* Partners */
 .partners-section {
   background: var(--bg-secondary);
+  position: relative;
+  overflow: hidden;
 }
 
 .partners-grid {
