@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import {
-  AppleLogo,
+  BowlFood,
   FirstAidKit,
   Books,
   Fire,
@@ -89,7 +89,7 @@ export default function Home() {
           <div className="mission-grid">
             <div className="card mission-card">
               <span className="mission-icon">
-                <Apple size={48} weight="duotone" />
+                <BowlFood size={48} weight="duotone" />
               </span>
               <h3>Nutrition</h3>
               <p>
