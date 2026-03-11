@@ -83,7 +83,7 @@
 
 @keyframes bounce {
   0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(8px); }
+  50%       { transform: translateX(-50%) translateY(8px); }
 }
 
 /* ─── Impact Banner ─────────────────────────────────────────── */
@@ -106,26 +106,27 @@
 .banner-item {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.5rem;
 }
 
 .banner-icon {
   display: flex;
   align-items: center;
-  opacity: 0.85;
+  flex-shrink: 0;
 }
 
 .banner-icon svg {
-  width: 15px;
-  height: 15px;
-  stroke: #fff;
+  width: 18px;
+  height: 18px;
+  fill: #fff;
 }
 
 .divider {
   width: 1px;
-  height: 18px;
+  height: 20px;
   background: rgba(255, 255, 255, 0.35);
   display: inline-block;
+  flex-shrink: 0;
 }
 
 /* ─── Mission Cards ─────────────────────────────────────────── */
@@ -159,30 +160,30 @@
   transform: scale(1.06);
 }
 
-.mission-body { 
+.mission-body {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  justify-content:center;
-  align-items: center;
-  gap: 0.75rem;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .mission-icon {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 0.75rem;
   color: var(--accent-primary);
+  margin-bottom: 0.25rem;
 }
 
 .mission-icon svg {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
+  fill: currentColor;
 }
 
 .mission-card h3 {
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.4rem;
   font-size: 1.2rem;
 }
 
@@ -291,10 +292,10 @@
 .campaign-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   background: var(--accent-primary);
   color: #fff;
-  padding: 0.3rem 1rem;
+  padding: 0.35rem 1rem;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 600;
@@ -308,9 +309,9 @@
 }
 
 .badge-icon svg {
-  width: 14px;
-  height: 14px;
-  stroke: #fff;
+  width: 15px;
+  height: 15px;
+  fill: #fff;
 }
 
 .campaign-text-side h2 {
@@ -373,13 +374,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 1.25rem auto 0.5rem;
+  margin: 1.4rem auto 0.6rem;
   color: var(--accent-primary);
 }
 
 .help-icon svg {
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
+  fill: currentColor;
 }
 
 .help-card h3 {
@@ -397,14 +399,14 @@
   margin-bottom: 1.5rem;
 }
 
-/* ─── Partners ──────────────────────────────────────────────── */
+/* ─── Collaborators ─────────────────────────────────────────── */
 .partners-section {
   background: var(--bg-secondary);
 }
 
 .partners-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
   text-align: center;
 }
@@ -415,33 +417,42 @@
   border-radius: 12px;
   padding: 2rem 1.5rem;
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   color: var(--text-heading);
   transition: all var(--transition);
   text-decoration: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   cursor: pointer;
-}
-
-.partner-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent-primary);
-}
-
-.partner-icon svg {
-  width: 28px;
-  height: 28px;
 }
 
 .partner-card:hover {
   border-color: var(--accent-primary);
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
   transform: translateY(-2px);
+}
+
+.partner-logo-wrap {
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.partner-logo {
+  max-height: 160px;
+  max-width: 250px;
+  width: auto;
+  object-fit: contain;
+  /* keep logos readable on both light and dark backgrounds */
+  filter: none;
+}
+
+/* dim logos slightly on hover so the card lift feels interactive */
+.partner-card:hover .partner-logo {
+  filter: brightness(1.05);
 }
 
 /* ─── Final CTA ─────────────────────────────────────────────── */

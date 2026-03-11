@@ -3,6 +3,11 @@ import { useEffect, useRef } from 'react'
 import './Home.css'
 import orphansHero from '../images/orphans_landing.jpeg'
 
+import idrfLogo from '../images/idrf.webp'
+import islamicReliefLogo from '../images/islamic_relief.png'
+import nzfLogo from '../images/national_zakat_foundation.png'
+import nisaLogo from '../images/nisa_homes.png'
+
 function AnimatedCounter({ target, label }: { target: number; label: string }) {
   const ref = useRef<HTMLSpanElement>(null)
 
@@ -39,104 +44,88 @@ function AnimatedCounter({ target, label }: { target: number; label: string }) {
   )
 }
 
-// ── SVG Icons ──────────────────────────────────────────────────
+// ── SVG Icons — filled, bold ───────────────────────────────────
 
 const IconApple = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 2a4 4 0 0 1 4 4" />
-    <path d="M8.5 6C5 6 2 9.5 2 14c0 4 2.5 8 5 8 1.5 0 2.5-.5 3.5-.5s2 .5 3.5.5c2.5 0 5-4 5-8 0-4.5-3-8-6.5-8z" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M14.5 2.5c.8-.9 1.4-2.1 1.3-3.3-1.2.1-2.7.8-3.5 1.8-.8.8-1.5 2.1-1.3 3.3 1.3.1 2.7-.6 3.5-1.8z" opacity="0.85"/>
+    <path d="M18.9 8.3c-.7-.9-1.8-1.5-3-1.5-1.4 0-2 .7-3 .7s-1.7-.7-3-.7c-1.1 0-2.3.6-3 1.6C5.5 10 5 11.8 5 13.6c0 2.6.9 5.3 2.3 7.1.7.9 1.5 1.8 2.6 1.8 1 0 1.4-.6 2.7-.6 1.3 0 1.6.6 2.7.6 1.1 0 1.9-.9 2.6-1.8.5-.7.9-1.4 1.2-2.2-1.5-.6-2.6-2.1-2.6-3.8 0-1.6.9-3 2.4-3.7-.9-1.1-2.2-1.7-3.5-1.7l-.5.1z"/>
   </svg>
 )
 
 const IconHeart = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
   </svg>
 )
 
 const IconCross = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 2v20M2 12h20" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19 3h-4V1h-6v2H5C3.9 3 3 3.9 3 5v2c0 1.1.9 2 2 2h1v9c0 1.7 1.3 3 3 3h6c1.7 0 3-1.3 3-3V9h1c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 14h-2v-7h2v7zm4 0h-2v-7h2v7z"/>
+    <rect x="3" y="3" width="18" height="4" rx="1" ry="1"/>
   </svg>
 )
 
 const IconBook = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v6a5 5 0 0 0 5 5h3a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z" opacity="0.9"/>
+    <path d="M6 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h1a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5z"/>
+    <path d="M6 17v3l3-3H6z"/>
   </svg>
 )
 
 const IconUsers = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-    <circle cx="9" cy="7" r="4" />
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <circle cx="9" cy="7" r="4"/>
+    <path d="M17 11c1.7 0 3-1.3 3-3s-1.3-3-3-3"/>
+    <path d="M1 21v-1a8 8 0 0 1 16 0v1H1z"/>
+    <path d="M17 11c2.2 0 4 1.8 4 4v2h-4" opacity="0.75"/>
   </svg>
 )
 
 const IconShare = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="18" cy="5" r="3" />
-    <circle cx="6" cy="12" r="3" />
-    <circle cx="18" cy="19" r="3" />
-    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <circle cx="18" cy="5" r="3"/>
+    <circle cx="6" cy="12" r="3"/>
+    <circle cx="18" cy="19" r="3"/>
+    <path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
   </svg>
 )
 
 const IconGlobe = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <line x1="2" y1="12" x2="22" y2="12" />
-    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
   </svg>
 )
 
 const IconHandshake = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9 11l3 3L22 4" />
-    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M11 5.88L9.11 4H4v12h2.5l2 2h8l1-1V9.76L14.12 8H11V5.88zM6 14H5V5h3.38L10 6.62V9h4.38L16 10.62V16h-6.5L8 14H6z"/>
+    <path d="M10 14l2 2 5-5-1.5-1.5L11.5 14 10 12.5l-1.5 1.5z" opacity="0.9"/>
   </svg>
 )
 
 const IconDollar = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="12" y1="1" x2="12" y2="23" />
-    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
   </svg>
 )
 
 const IconMapPin = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
-    <circle cx="12" cy="10" r="3" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
   </svg>
 )
 
 const IconClock = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <polyline points="12 6 12 12 16 14" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/>
   </svg>
 )
 
 const IconFlame = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 17c.5 0 1-.1 1.4-.4M12 22c-4.4 0-8-3.6-8-8 0-3 1.7-5.6 4.2-6.9C8.7 6.4 9 5.7 9 5c0-.8.2-1.5.6-2.1C10.8 4.5 12 6.1 12 8c0 .5.2 1 .5 1.3.3.3.8.5 1.3.5a2 2 0 0 0 2-2c0-.4-.1-.7-.2-1.1C17.3 7.9 20 10.8 20 14c0 4.4-3.6 8-8 8z" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M13.5 0.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5 0.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
   </svg>
 )
 
@@ -178,12 +167,12 @@ export default function Home() {
           <span className="divider" aria-hidden="true" />
           <span className="banner-item">
             <span className="banner-icon"><IconHeart /></span>
-            <strong>150+ orphans sponsored </strong> 
+            <strong>150+ orphans sponsored</strong>
           </span>
           <span className="divider" aria-hidden="true" />
           <span className="banner-item">
             <span className="banner-icon"><IconClock /></span>
-            <strong>17 years of service </strong> 
+            <strong>17 years of service</strong>
           </span>
           <span className="divider" aria-hidden="true" />
           <span className="banner-item">
@@ -366,40 +355,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Partners ── */}
+      {/* ── Collaborators ── */}
       <section className="section partners-section">
         <div className="container">
-          <h2 className="section-title">Our Partners</h2>
+          <h2 className="section-title">Our Collaborators</h2>
           <p className="section-subtitle">
             We work with registered charities to maximize our impact.
           </p>
           <div className="partners-grid">
-            <a
-              href="https://www.islamic-relief.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="partner-card"
-            >
-              <span className="partner-icon"><IconHandshake /></span>
-              <span>Islamic Relief</span>
+            <a href="https://www.islamicreliefcanada.org" target="_blank" rel="noopener noreferrer" className="partner-card">
+              <div className="partner-logo-wrap">
+              <img src={islamicReliefLogo} alt="Islamic Relief" className="partner-logo partner-logo-xl" />
+              </div>
             </a>
-            <a
-              href="https://hci.ca"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="partner-card"
-            >
-              <span className="partner-icon"><IconHandshake /></span>
-              <span>Human Concern International</span>
+            <a href="https://www.nisafoundation.ca/programs/nisa-homes" target="_blank" rel="noopener noreferrer" className="partner-card">
+              <div className="partner-logo-wrap">
+              <img src={nisaLogo} alt="Nisa Homes" className="partner-logo partner-logo-xl" />
+              </div>
             </a>
-            <a
-              href="https://idrf.ca"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="partner-card"
-            >
-              <span className="partner-icon"><IconGlobe /></span>
-              <span>IDRF</span>
+            <a href="https://idrf.ca" target="_blank" rel="noopener noreferrer" className="partner-card">
+              <div className="partner-logo-wrap">
+              <img src={idrfLogo} alt="International Development and Relief Foundation" className="partner-logo partner-logo-xl" />
+              </div>
+            </a>
+            <a href="https://www.nzfcanada.com" target="_blank" rel="noopener noreferrer" className="partner-card">
+              <div className="partner-logo-wrap">
+              <img src={nzfLogo} alt="National Zakat Foundation" className="partner-logo partner-logo-xl" />
+              </div>
             </a>
           </div>
         </div>
