@@ -2,7 +2,7 @@ import './Contact.css'
 
 const faqs = [
   { q: 'How can I sponsor an orphan?', a: 'Visit our Donate page and choose a sponsorship tier, or contact us for more details.' },
-  { q: 'Is my donation tax-deductible?', a: 'Donations made through our registered charity partners (Islamic Relief, HCI, IDRF, Human Appeal) are tax-deductible.' },
+  { q: 'Is my donation tax-deductible?', a: 'Donations made through our registered charity partners (Islamic Relief, HCI, IDRF) are tax-deductible.' },
   { q: 'How do I know my money reaches the children?', a: 'Our charity partners provide regular reports and updates on sponsored children, which we share with donors.' },
   { q: 'Can I visit the children I sponsor?', a: 'Visits are arranged through our charity partners on a case-by-case basis. Contact us for more information.' },
   { q: 'How do I join the UWOSP team?', a: 'Fill out the volunteer form on our Get Involved page or reach out to us directly via email.' },

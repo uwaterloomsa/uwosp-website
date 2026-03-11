@@ -2,7 +2,7 @@ import './GetInvolved.css'
 
 const faqs = [
   { q: 'How much does it cost to sponsor an orphan?', a: 'Sponsorship costs vary by region but typically range from $40–$60/month through our charity partners.' },
-  { q: 'Where does my money go?', a: 'All funds go through registered charities (Islamic Relief, HCI, IDRF, Human Appeal) and are used for food, healthcare, education, and shelter.' },
+  { q: 'Where does my money go?', a: 'All funds go through registered charities (Islamic Relief, HCI, IDRF) and are used for food, healthcare, education, and shelter.' },
   { q: 'Can I choose which child to sponsor?', a: 'Yes! Through our partner charities, you can select a specific child or region to support.' },
 ]
 

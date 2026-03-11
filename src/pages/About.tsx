@@ -87,7 +87,7 @@ export default function About() {
           <h2 className="section-title">Our Collaborators</h2>
           <p className="section-subtitle">We partner with established charities to deliver aid.</p>
           <div className="collab-grid">
-            {['Islamic Relief', 'Human Concern International', 'IDRF', 'Human Appeal'].map((name) => (
+            {['Islamic Relief', 'Human Concern International', 'IDRF'].map((name) => (
               <div className="card collab-card" key={name}>
                 <span className="collab-icon">🤝</span>
                 <h4>{name}</h4>
