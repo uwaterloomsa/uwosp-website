@@ -7,6 +7,8 @@ import idrfLogo from '../images/idrf.webp'
 import islamicReliefLogo from '../images/islamic_relief.png'
 import nzfLogo from '../images/national_zakat_foundation.png'
 import nisaLogo from '../images/nisa_homes.png'
+import winterImage from '../images/winter.avif'
+import child from '../images/child.jpg'
 
 function AnimatedCounter({ target, label }: { target: number; label: string }) {
   const ref = useRef<HTMLSpanElement>(null)
@@ -176,8 +178,7 @@ export default function Home() {
           </span>
           <span className="divider" aria-hidden="true" />
           <span className="banner-item">
-            <span className="banner-icon"><IconDollar /></span>
-            <strong>$200,000+ raised</strong>
+            <strong>$   200,000+ raised</strong>
           </span>
         </div>
       </div>
@@ -278,14 +279,13 @@ export default function Home() {
           <div className="campaign-highlight card">
             <div className="campaign-img-side">
               <img
-                src="https://images.unsplash.com/photo-1542401886-65d6c61db217?w=700&q=80"
+                src={winterImage}
                 alt="Children in winter needing warmth"
                 loading="lazy"
               />
             </div>
             <div className="campaign-text-side">
               <div className="campaign-badge">
-                <span className="badge-icon"><IconFlame /></span>
                 Active Campaign
               </div>
               <h2>Winter Warmth Drive 2025</h2>
@@ -312,7 +312,7 @@ export default function Home() {
             <div className="card help-card">
               <div className="help-img-wrap">
                 <img
-                  src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80"
+                  src={child}
                   alt="Sponsor a child"
                   loading="lazy"
                 />
