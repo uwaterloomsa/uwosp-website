@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import './Navbar.css'
+import uwOSP from '../images/uwosp.avif'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -18,7 +19,7 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-inner container">
         <Link to="/" className="navbar-brand" onClick={() => setMenuOpen(false)}>
-          <span className="brand-icon">❤️</span>
+          <img src={uwOSP} alt="UWOSP Logo" className="brand-logo" />
           <span className="brand-text">UWOSP</span>
         </Link>
 

@@ -57,6 +57,13 @@
   background: rgba(59, 130, 246, 0.08);
 }
 
+.brand-logo {
+  max-width: 80%;
+  max-height: 52px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
 .nav-donate {
   margin-left: 0.75rem;
   padding: 0.6rem 1.5rem;

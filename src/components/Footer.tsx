@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import './Footer.css'
+import uwOSP from '../images/uwosp.avif'
 
 export default function Footer() {
   return (
@@ -7,7 +8,10 @@ export default function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <h3>❤️ UWOSP</h3>
+            <div>
+                <img src={uwOSP} alt="UWOSP Logo" className="footer-logo" />
+                <h1>UWOSP</h1>
+            </div>
             <p>
               The University of Waterloo Orphan Sponsorship Program — empowering
               orphans and building brighter futures since 2007.
