@@ -4,6 +4,7 @@ import {
   LinkedinLogo,
 } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
+import ParallaxHero from "../components/ParallaxHero";
 import "./Contact.css";
 
 export default function Contact() {
@@ -11,20 +12,13 @@ export default function Contact() {
 
   return (
     <div className="contact">
-      <section className="hero hero--image">
-        <img
-          className="hero-bg-img"
-          src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1400&q=80"
-          alt=""
-          loading="eager"
-        />
-        <div className="hero-content">
-          <h1>Get in Touch</h1>
-          <p>
-            Have a question or want to get involved? We'd love to hear from you.
-          </p>
-        </div>
-      </section>
+      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1400&q=80">
+        <h1>Contact Us</h1>
+        <p>
+          Have a question, want to volunteer, or make a donation? Reach out to
+          us!
+        </p>
+      </ParallaxHero>
 
       <section className="section">
         <div className="container">

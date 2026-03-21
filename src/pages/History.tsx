@@ -1,5 +1,6 @@
 import { Rocket, WifiHigh, TrendUp, Globe } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
+import ParallaxHero from "../components/ParallaxHero";
 import "./History.css";
 
 const timeline = [
@@ -38,21 +39,13 @@ export default function History() {
 
   return (
     <div className="history">
-      <section className="hero hero--image">
-        <img
-          className="hero-bg-img"
-          src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1400&q=80"
-          alt=""
-          loading="eager"
-        />
-        <div className="hero-content">
-          <h1>Our History</h1>
-          <p>
-            A look back at the journey of the Orphan Sponsorship Program at the
-            University of Waterloo.
-          </p>
-        </div>
-      </section>
+      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1400&q=80">
+        <h1>Our History</h1>
+        <p>
+          A look back at the journey of the Orphan Sponsorship Program at the
+          University of Waterloo.
+        </p>
+      </ParallaxHero>
 
       <section className="section">
         <div className="container">

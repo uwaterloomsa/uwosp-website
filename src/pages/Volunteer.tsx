@@ -1,3 +1,4 @@
+import ParallaxHero from "../components/ParallaxHero";
 import {
   HandHeart,
   Buildings,
@@ -40,21 +41,13 @@ export default function Volunteer() {
 
   return (
     <div className="volunteer-page">
-      <section className="hero hero--image">
-        <img
-          className="hero-bg-img"
-          src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1400&q=80"
-          alt=""
-          loading="eager"
-        />
-        <div className="hero-content">
-          <h1>Volunteer at Charities</h1>
-          <p>
-            Discover volunteer opportunities with our charity partners and make
-            a direct impact in your community.
-          </p>
-        </div>
-      </section>
+      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1400&q=80">
+        <h1>Volunteer at Charities</h1>
+        <p>
+          Discover volunteer opportunities with our charity partners and make a
+          direct impact in your community.
+        </p>
+      </ParallaxHero>
 
       {/* Intro */}
       <section className="section">

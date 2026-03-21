@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import ParallaxHero from "../components/ParallaxHero";
 import {
   Briefcase,
   MapPin,
@@ -51,24 +52,16 @@ export default function GetInvolved() {
 
   return (
     <div className="careers">
-      <section className="hero hero--image">
-        <img
-          className="hero-bg-img"
-          src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1400&q=80"
-          alt=""
-          loading="eager"
-        />
-        <div className="hero-content">
-          <h1>Join Our Team</h1>
-          <p>
-            Help us support orphans worldwide. We're looking for passionate UW
-            students to lead campaigns, organize events, and drive real change.
-          </p>
-          <a href="#open-roles" className="btn btn-primary careers-hero-cta">
-            View Open Roles <ArrowRight size={18} weight="bold" />
-          </a>
-        </div>
-      </section>
+      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1400&q=80">
+        <h1>Join Our Team</h1>
+        <p>
+          Help us support orphans worldwide. We're looking for passionate UW
+          students to lead campaigns, organize events, and drive real change.
+        </p>
+        <a href="#open-roles" className="btn btn-primary careers-hero-cta">
+          View Open Roles <ArrowRight size={18} weight="bold" />
+        </a>
+      </ParallaxHero>
 
       {/* Why Join */}
       <section className="section careers-why">

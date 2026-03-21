@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CaretDown } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
+import ParallaxHero from "../components/ParallaxHero";
 import "./FAQs.css";
 
 const faqs = [
@@ -40,18 +41,10 @@ export default function FAQs() {
 
   return (
     <div className="faqs-page">
-      <section className="hero hero--image">
-        <img
-          className="hero-bg-img"
-          src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1400&q=80"
-          alt=""
-          loading="eager"
-        />
-        <div className="hero-content">
-          <h1>FAQs</h1>
-          <p>Frequently asked questions about UWOSP.</p>
-        </div>
-      </section>
+      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1400&q=80">
+        <h1>FAQs</h1>
+        <p>Frequently asked questions about UWOSP.</p>
+      </ParallaxHero>
 
       <section className="section">
         <div className="container">

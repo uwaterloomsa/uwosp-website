@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ParallaxHero from "../components/ParallaxHero";
 import {
   CalendarBlank,
   Clock,
@@ -73,21 +74,13 @@ export default function Events() {
 
   return (
     <div className="events-page">
-      <section className="hero hero--image">
-        <img
-          className="hero-bg-img"
-          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
-          alt=""
-          loading="eager"
-        />
-        <div className="hero-content">
-          <h1>Events</h1>
-          <p>
-            Join us at our next event and be part of the change. From galas to
-            community iftars, there are many ways to get involved.
-          </p>
-        </div>
-      </section>
+      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80">
+        <h1>Events</h1>
+        <p>
+          Join us at our next event and be part of the change. From galas to
+          community iftars, there are many ways to get involved.
+        </p>
+      </ParallaxHero>
 
       {/* Events List */}
       <section className="section">

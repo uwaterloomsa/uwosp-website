@@ -1,4 +1,5 @@
 import useScrollReveal from "../hooks/useScrollReveal";
+import ParallaxHero from "../components/ParallaxHero";
 import "./Orphans.css";
 
 const COUNTRY_FLAGS: Record<string, string> = {
@@ -111,21 +112,10 @@ export default function Orphans() {
 
   return (
     <div className="orphans">
-      <section className="hero hero--image">
-        <img
-          className="hero-bg-img"
-          src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=1400&q=80"
-          alt=""
-          loading="eager"
-        />
-        <div className="hero-content">
-          <h1>Meet Our Children</h1>
-          <p>
-            Every child has a story. Get to know the orphans whose lives we're
-            changing together.
-          </p>
-        </div>
-      </section>
+      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=1400&q=80">
+        <h1>Our Orphans</h1>
+        <p>Get to know more about the orphans we're currently sponsoring. 🧸</p>
+      </ParallaxHero>
 
       {/* Orphan Profiles */}
       <section className="section orphan-profiles-section">
@@ -167,25 +157,6 @@ export default function Orphans() {
               ))}
             </ul>
           </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="cta-banner">
-        <div className="container">
-          <h2 className="reveal">Sponsor a Child Today</h2>
-          <p className="reveal">
-            Your support provides education, healthcare, and hope for children
-            who need it most.
-          </p>
-          <a
-            href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn reveal"
-          >
-            Donate Now
-          </a>
         </div>
       </section>
     </div>

@@ -1,4 +1,5 @@
 import useScrollReveal from "../hooks/useScrollReveal";
+import ParallaxHero from "../components/ParallaxHero";
 import "./About.css";
 
 const AVATAR_COLORS = [
@@ -108,22 +109,13 @@ export default function About() {
 
   return (
     <div className="about">
-      <section className="hero hero--image">
-        <img
-          className="hero-bg-img"
-          src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1400&q=80"
-          alt=""
-          loading="eager"
-        />
-        <div className="hero-content">
-          <h1>Meet the Team</h1>
-          <p>
-            Thanks to the support of countless volunteers over the last decade,
-            we have been able to support over a dozen orphans since our
-            inception.
-          </p>
-        </div>
-      </section>
+      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1400&q=80">
+        <h1>Meet the Team</h1>
+        <p>
+          Thanks to the support of countless volunteers over the last decade, we
+          have been able to support over a dozen orphans since our inception.
+        </p>
+      </ParallaxHero>
 
       <section className="section">
         <div className="container">

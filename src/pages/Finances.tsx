@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FileText } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
+import ParallaxHero from "../components/ParallaxHero";
 import "./Finances.css";
 
 const reports: { name: string; year: number; url: string }[] = [
@@ -44,18 +45,10 @@ export default function Finances() {
 
   return (
     <div className="finances">
-      <section className="hero hero--image">
-        <img
-          className="hero-bg-img"
-          src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1400&q=80"
-          alt=""
-          loading="eager"
-        />
-        <div className="hero-content">
-          <h1>Financial Reports</h1>
-          <p>View our financial statements for previous terms.</p>
-        </div>
-      </section>
+      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1400&q=80">
+        <h1>Financial Reports</h1>
+        <p>View our financial statements for previous terms.</p>
+      </ParallaxHero>
 
       <section className="section">
         <div className="container">

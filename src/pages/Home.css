@@ -1,179 +1,17 @@
-/* ═══ 3D Hero Section ═══ */
-.home-hero-3d {
-  min-height: 100vh;
-  background: oklch(0.12 0.03 264);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  padding-top: 64px;
-}
-
-.home-hero-3d-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  width: 100%;
-  max-width: var(--max-width-wide, 1400px);
-  margin: 0 auto;
-  padding: 3rem clamp(1.25rem, 4vw, 2.5rem);
-  gap: 2rem;
-}
-
-.home-hero-text {
-  position: relative;
-  z-index: 2;
-}
-
-.home-hero-text .hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 1rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 9999px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 1.25rem;
-  letter-spacing: 0.02em;
-  animation: heroFadeUp 0.5s var(--ease-out) 0.1s both;
-}
-
-.home-hero-text h1 {
-  font-size: clamp(2.5rem, 5.5vw, 4rem);
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.035em;
-  color: #fff;
-  margin-bottom: 1.25rem;
-  animation: heroFadeUp 0.6s var(--ease-out) 0.2s both;
-}
-
-.home-hero-text .text-accent {
-  color: oklch(0.75 0.15 264);
-}
-
-.home-hero-text p {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: clamp(1rem, 2vw, 1.1rem);
-  max-width: 460px;
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-  animation: heroFadeUp 0.5s var(--ease-out) 0.35s both;
-}
-
-/* Globe side */
-.home-hero-globe {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 500px;
-}
-
-.globe-3d-container {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.globe-3d-container canvas {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* Globe loading fallback */
-.globe-fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.globe-fallback-ring {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 2px solid rgba(93, 147, 253, 0.15);
-  border-top-color: oklch(0.55 0.19 264);
-  animation: globeSpin 1.2s linear infinite;
-}
-
-@keyframes globeSpin {
-  to { transform: rotate(360deg); }
-}
-
-/* Hero donate widget (dark theme) */
-.hero-donate-widget {
-  margin-top: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.85rem;
-  animation: heroFadeUp 0.5s var(--ease-out) 0.55s both;
-}
-
-.hero-donate-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.hero-donate-amounts {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.hero-donate-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 64px;
-  padding: 0.55rem 1.1rem;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.95rem;
-  font-family: var(--font-display);
-  text-decoration: none;
-  transition: background 0.2s var(--ease-standard), border-color 0.2s var(--ease-standard), transform 0.15s var(--ease-out);
-}
-
-.hero-donate-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
-  color: #fff;
-  transform: translateY(-2px);
-}
-
-.hero-donate-other {
-  background: #fff;
-  color: var(--primary);
-  font-weight: 700;
-  border: none;
-}
-
-.hero-donate-other:hover {
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--primary);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-}
-
-/* Old hero classes (kept for non-home heroes) */
 .home-hero {
   min-height: 100vh;
   padding-top: 7rem;
+}
+
+.home-hero .text-accent {
+  color: oklch(0.75 0.15 264);
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /* Mission */
@@ -195,9 +33,9 @@
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-lg);
-  max-width: 900px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
@@ -208,13 +46,12 @@
 
 .stat-number {
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 4.5vw, 3rem);
+  font-size: clamp(2rem, 4vw, 2.75rem);
   font-weight: 800;
   color: var(--primary);
   line-height: 1.2;
   margin-bottom: 0.25rem;
   font-variant-numeric: tabular-nums;
-  display: block;
 }
 
 .stat-label {
@@ -222,60 +59,9 @@
   font-size: 0.88rem;
 }
 
-/* Featured Campaigns */
-.featured-campaigns-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-lg);
-}
-
-.featured-campaign {
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.featured-campaign-img {
-  overflow: hidden;
-  height: 200px;
-}
-
-.featured-campaign-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s var(--ease-out);
-}
-
-.featured-campaign:hover .featured-campaign-img img {
-  transform: scale(1.04);
-}
-
-.featured-campaign-body {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.featured-campaign-body h3 {
-  font-size: 1.15rem;
-  margin-bottom: 0.5rem;
-}
-
-.featured-campaign-body p {
-  color: var(--text-muted);
-  font-size: 0.92rem;
-  line-height: 1.7;
-  margin-bottom: 1.25rem;
-  flex: 1;
-}
-
-/* Campaign Highlight (with fundraiser) */
+/* Campaign Highlight */
 .campaign-highlight {
   max-width: 720px;
-  margin: 0 auto;
   border-radius: 12px;
   padding: var(--space-xl);
   border-left: 4px solid var(--primary);
@@ -306,22 +92,6 @@
   max-width: 600px;
 }
 
-/* Tagline banner */
-.tagline-small {
-  font-size: 1rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.75);
-  margin-bottom: 0.25rem;
-  letter-spacing: 0.04em;
-}
-
-.tagline-big {
-  font-size: clamp(2rem, 5vw, 3.25rem);
-  color: #fff;
-  letter-spacing: -0.02em;
-  margin-bottom: 0;
-}
-
 /* How to Help */
 .help-grid {
   display: grid;
@@ -349,7 +119,6 @@
   line-height: 1.7;
   margin-bottom: 1.25rem;
   font-size: 0.92rem;
-  flex: 1;
 }
 
 /* Partners */
@@ -361,7 +130,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-md);
-  justify-content: center;
 }
 
 .partner-card {
@@ -370,14 +138,13 @@
   font-size: 0.92rem;
   color: var(--text-heading);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--surface);
-  transition: border-color 0.15s var(--ease-standard), box-shadow 0.15s var(--ease-standard);
+  transition: border-color 0.15s var(--ease-standard);
 }
 
 .partner-card:hover {
   border-color: var(--border-hover);
-  box-shadow: var(--shadow-sm);
 }
 
 .partner-card a {
@@ -424,49 +191,13 @@
 }
 
 /* Responsive */
-@media (max-width: 968px) {
-  .home-hero-3d-inner {
-    grid-template-columns: 1fr;
-    text-align: center;
-    padding-top: 5rem;
-    padding-bottom: 2rem;
-  }
-  .home-hero-text {
-    order: 1;
-  }
-  .home-hero-text p {
-    max-width: none;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .hero-donate-widget {
-    align-items: center;
-  }
-  .hero-donate-amounts {
-    justify-content: center;
-  }
-  .home-hero-globe {
-    order: 2;
-    min-height: 350px;
-    max-height: 400px;
-  }
-}
-
 @media (max-width: 768px) {
   .home-hero { min-height: auto; }
-  .home-hero-3d { min-height: auto; padding-bottom: 2rem; }
-  .home-hero-globe { min-height: 300px; max-height: 350px; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-md); }
+  .home-hero .hero-bg-img { height: 120%; top: -10%; }
+  .stats-grid { grid-template-columns: 1fr; gap: var(--space-md); }
   .help-grid { grid-template-columns: 1fr; gap: var(--space-md); }
-  .featured-campaigns-grid { grid-template-columns: 1fr; gap: var(--space-md); }
   .campaign-highlight { padding: var(--space-lg); }
   .partners-grid { justify-content: center; }
-  .hero-donate-btn { min-width: 56px; padding: 0.5rem 0.9rem; font-size: 0.88rem; }
-}
-
-@media (max-width: 480px) {
-  .stats-grid { grid-template-columns: 1fr; }
-  .home-hero-globe { min-height: 260px; }
 }
 
 @media (max-width: 480px) {

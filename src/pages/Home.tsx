@@ -1,29 +1,28 @@
 import { Link } from "react-router-dom";
-import { useEffect, useRef, useState, lazy, Suspense } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Fire,
   HeartStraight,
   Handshake,
   Megaphone,
   ArrowRight,
+  Newspaper,
+  ChartBar,
   CurrencyDollar,
 } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
+import ParallaxHero from "../components/ParallaxHero";
 import { onActiveFundraiser, getSponsors } from "../services/site";
 import type { Fundraiser, Sponsor } from "../types/site";
 import "./Home.css";
 
-const Globe3D = lazy(() => import("../components/Globe3D"));
-
 function AnimatedCounter({
   target,
   prefix,
-  suffix,
   label,
 }: {
   target: number;
   prefix?: string;
-  suffix?: string;
   label: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -37,7 +36,7 @@ function AnimatedCounter({
       if (!start) start = timestamp;
       const progress = Math.min((timestamp - start) / duration, 1);
       const val = Math.floor(progress * target).toLocaleString();
-      el.textContent = (prefix || "") + val + (suffix || "+");
+      el.textContent = (prefix || "") + val + "+";
       if (progress < 1) requestAnimationFrame(step);
     };
 
@@ -52,7 +51,7 @@ function AnimatedCounter({
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [target, prefix, suffix]);
+  }, [target, prefix]);
 
   return (
     <div className="stat-item">
@@ -63,8 +62,6 @@ function AnimatedCounter({
     </div>
   );
 }
-
-const DONATE_AMOUNTS = [25, 50, 100, 250];
 
 export default function Home() {
   useScrollReveal();
@@ -88,77 +85,31 @@ export default function Home() {
 
   return (
     <div className="home">
-      {/* Hero with 3D Globe */}
-      <section className="home-hero-3d">
-        <div className="home-hero-3d-inner">
-          <div className="home-hero-text">
-            <span className="hero-badge">University of Waterloo</span>
-            <h1>
-              Change A Child's
-              <br />
-              <span className="text-accent">Future Today</span>
-            </h1>
-            <p>
-              Supporting orphans around the world through financial aid,
-              education, healthcare, and the power of community.
-            </p>
-            <div className="hero-donate-widget">
-              <span className="hero-donate-label">
-                Choose an amount to give
-              </span>
-              <div className="hero-donate-amounts">
-                {DONATE_AMOUNTS.map((amt) => (
-                  <a
-                    key={amt}
-                    href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hero-donate-btn"
-                  >
-                    ${amt}
-                  </a>
-                ))}
-              </div>
-              <a
-                href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary hero-donate-other"
-              >
-                Donate Any Amount
-              </a>
-            </div>
-          </div>
-          <div className="home-hero-globe">
-            <Suspense
-              fallback={
-                <div className="globe-fallback">
-                  <div className="globe-fallback-ring" />
-                </div>
-              }
-            >
-              <Globe3D />
-            </Suspense>
-          </div>
+      {/* Hero */}
+      <ParallaxHero
+        imgSrc="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1400&q=80"
+        className="home-hero"
+      >
+        <span className="hero-badge">University of Waterloo</span>
+        <h1>
+          Orphan Sponsorship
+          <br />
+          <span className="text-accent">Program</span>
+        </h1>
+        <p>
+          At the University of Waterloo, the Orphan Sponsorship Program aims to
+          provide for the needs and well-being of orphans around the world
+          through financial support.
+        </p>
+        <div className="hero-buttons">
+          <Link to="/campaigns" className="btn btn-primary">
+            Learn More
+          </Link>
+          <Link to="/donate" className="btn btn-outline">
+            Donate
+          </Link>
         </div>
-      </section>
-
-      {/* Impact Stats */}
-      <section className="section stats-section">
-        <div className="container">
-          <div className="stats-grid">
-            <AnimatedCounter target={22} suffix="+" label="Orphans Sponsored" />
-            <AnimatedCounter
-              target={50}
-              prefix="$"
-              suffix="k+"
-              label="Raised in 2024"
-            />
-            <AnimatedCounter target={5} suffix="" label="Countries Reached" />
-            <AnimatedCounter target={18} suffix="+" label="Years of Impact" />
-          </div>
-        </div>
-      </section>
+      </ParallaxHero>
 
       {/* Mission */}
       <section className="section">
@@ -196,17 +147,63 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Campaigns */}
+      {/* Extended mission */}
       <section className="section" style={{ background: "var(--bg-alt)" }}>
         <div className="container">
+          <div className="split split--reverse reveal">
+            <div>
+              <h2 className="section-title">Beyond Sponsorship</h2>
+              <div
+                className="mission-text"
+                style={{ maxWidth: "none", textAlign: "left", margin: 0 }}
+              >
+                <p>
+                  We not only sponsor and support orphans globally, but we also
+                  collaborate with registered charities to assist countries
+                  abroad dealing with extreme poverty, natural disasters,
+                  conflict, and other crises.
+                </p>
+                <p>
+                  We strive to empower orphaned youth to break out of the cycle
+                  of poverty, through ensuring their access to nutrition,
+                  healthcare, and quality education.
+                </p>
+              </div>
+            </div>
+            <div className="split-image image-hover-zoom">
+              <img
+                src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&q=80"
+                alt="Volunteers organizing supplies for communities in need"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="section" style={{ background: "var(--bg-alt)" }}>
+        <div className="container" style={{ textAlign: "center" }}>
           <h2 className="section-title section-title--center reveal">
-            Our Campaigns
+            Monthly Newsletter
           </h2>
           <p className="section-subtitle section-subtitle--center reveal">
-            We collaborate with verified charities to support communities in
-            crisis.
+            Stay up to date with our latest initiatives and impact stories.
           </p>
+          <a
+            href="https://cdn.shopify.com/s/files/1/0251/8210/9742/files/February_2025_OSP_Monthly_Newsletter.pdf?v=1742059567"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary reveal"
+          >
+            <Newspaper size={18} weight="bold" /> Read Newsletter
+          </a>
+        </div>
+      </section>
 
+      {/* Live Fundraiser — admin-managed with real-time amounts */}
+      <section className="section">
+        <div className="container">
           {fundraiser ? (
             <div className="campaign-highlight card reveal-scale">
               <div className="campaign-badge">
@@ -230,125 +227,47 @@ export default function Home() {
               </Link>
             </div>
           ) : (
-            <div className="featured-campaigns-grid">
-              <div className="featured-campaign card reveal stagger-1">
-                <div className="featured-campaign-img">
-                  <img
-                    src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&q=80"
-                    alt="Orphan sponsorship"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="featured-campaign-body">
-                  <h3>Orphan Sponsorship</h3>
-                  <p>
-                    Provide financial support for orphans' education,
-                    healthcare, and daily needs across five countries.
-                  </p>
-                  <Link to="/orphans" className="btn btn-primary">
-                    Learn More
-                  </Link>
-                </div>
+            <div className="campaign-highlight card reveal-scale">
+              <div className="campaign-badge">
+                <Fire size={18} weight="fill" /> Current Campaign
               </div>
-              <div className="featured-campaign card reveal stagger-2">
-                <div className="featured-campaign-img">
-                  <img
-                    src="https://images.unsplash.com/photo-1593113630400-ea4288922497?w=600&q=80"
-                    alt="Community support"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="featured-campaign-body">
-                  <h3>Ramadan Fundraiser</h3>
-                  <p>
-                    Support Gaza families arriving in Canada with food, rent,
-                    and critical needs this Ramadan.
-                  </p>
-                  <a
-                    href="https://uow-ansaar.raiselysite.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-primary"
-                  >
-                    Donate Now
-                  </a>
-                </div>
-              </div>
-              <div className="featured-campaign card reveal stagger-3">
-                <div className="featured-campaign-img">
-                  <img
-                    src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&q=80"
-                    alt="Emergency relief"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="featured-campaign-body">
-                  <h3>Emergency Relief</h3>
-                  <p>
-                    Collaborate with charities to assist countries dealing with
-                    poverty, disasters, and conflict.
-                  </p>
-                  <Link to="/campaigns" className="btn btn-outline">
-                    View All
-                  </Link>
-                </div>
-              </div>
+              <h2>UWOSP x NZF | Ramadan Fundraiser</h2>
+              <p>
+                Gaza families arriving in Canada may have found safety, but
+                their struggles are far from over. They carry the weight of loss
+                — homes destroyed, loved ones gone, and families still in
+                danger. On top of that, they face the overwhelming challenge of
+                starting over, with food, rent, and other critical needs often
+                out of reach. But together, we can ease their burden. This
+                Ramadan, join National Zakat Foundation Canada and UW MSA in
+                supporting our brothers and sisters from Gaza.
+              </p>
+              <a
+                href="https://uow-ansaar.raiselysite.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+              >
+                Learn More
+              </a>
             </div>
           )}
         </div>
       </section>
 
-      {/* Tagline banner */}
-      <section className="cta-banner">
+      {/* Impact Stats */}
+      <section className="section stats-section">
         <div className="container">
-          <p className="tagline-small reveal">Together, we are</p>
-          <h2 className="tagline-big reveal">Students Helping Children</h2>
-        </div>
-      </section>
-
-      {/* Beyond Sponsorship */}
-      <section className="section">
-        <div className="container">
-          <div className="split split--reverse reveal">
-            <div>
-              <h2 className="section-title">Beyond Sponsorship</h2>
-              <div
-                className="mission-text"
-                style={{ maxWidth: "none", textAlign: "left", margin: 0 }}
-              >
-                <p>
-                  We not only sponsor and support orphans globally, but we also
-                  collaborate with registered charities to assist countries
-                  abroad dealing with extreme poverty, natural disasters,
-                  conflict, and other crises.
-                </p>
-                <p>
-                  We strive to empower orphaned youth to break out of the cycle
-                  of poverty, through ensuring their access to nutrition,
-                  healthcare, and quality education.
-                </p>
-              </div>
-              <Link
-                to="/get-involved"
-                className="btn btn-outline"
-                style={{ marginTop: "1.5rem" }}
-              >
-                Get Involved <ArrowRight size={16} weight="bold" />
-              </Link>
-            </div>
-            <div className="split-image image-hover-zoom">
-              <img
-                src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&q=80"
-                alt="Volunteers organizing supplies for communities in need"
-                loading="lazy"
-              />
-            </div>
+          <div className="stats-grid">
+            <AnimatedCounter target={22} label="Orphans Sponsored" />
+            <AnimatedCounter target={50000} prefix="$" label="Raised in 2024" />
+            <AnimatedCounter target={5} label="Countries Impacted" />
           </div>
         </div>
       </section>
 
-      {/* Quick Links */}
-      <section className="section" style={{ background: "var(--bg-alt)" }}>
+      {/* Quick Links Grid */}
+      <section className="section">
         <div className="container">
           <div className="help-grid">
             <div className="card help-card reveal stagger-1">
@@ -356,61 +275,76 @@ export default function Home() {
                 <HeartStraight size={28} weight="duotone" />
               </span>
               <h3>Our Orphans</h3>
-              <p>Meet the children whose lives we're changing together.</p>
+              <p>Learn more about the orphans we're currently sponsoring.</p>
               <Link to="/orphans" className="btn btn-outline">
-                View Orphans <ArrowRight size={16} weight="bold" />
+                Learn More <ArrowRight size={16} weight="bold" />
               </Link>
             </div>
             <div className="card help-card reveal stagger-2">
               <span className="icon-block">
                 <Handshake size={28} weight="duotone" />
               </span>
-              <h3>Join the Team</h3>
-              <p>Contribute your skills and make a real difference.</p>
-              <Link to="/get-involved" className="btn btn-outline">
-                Open Roles <ArrowRight size={16} weight="bold" />
+              <h3>Other Projects</h3>
+              <p>Learn about other campaigns we've run.</p>
+              <Link to="/campaigns" className="btn btn-outline">
+                View Projects <ArrowRight size={16} weight="bold" />
               </Link>
             </div>
             <div className="card help-card reveal stagger-3">
               <span className="icon-block">
-                <Megaphone size={28} weight="duotone" />
+                <ChartBar size={28} weight="duotone" />
               </span>
-              <h3>Events & Campaigns</h3>
-              <p>See our upcoming events and past campaigns.</p>
-              <Link to="/campaigns" className="btn btn-outline">
-                Explore <ArrowRight size={16} weight="bold" />
+              <h3>Financial Reports</h3>
+              <p>View all our triannual financial reports.</p>
+              <Link to="/finances" className="btn btn-outline">
+                View Reports <ArrowRight size={16} weight="bold" />
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Donate CTA */}
-      <section className="cta-banner">
+      {/* Donate & Get Involved */}
+      <section className="section">
         <div className="container">
-          <h2 className="reveal">Ready to Make a Difference?</h2>
-          <p className="reveal">
-            Every contribution supports orphans' education, healthcare, and a
-            brighter future.
-          </p>
-          <a
-            href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn reveal"
-          >
-            <CurrencyDollar size={20} weight="bold" /> Donate Now
-          </a>
+          <div className="help-grid">
+            <div className="card help-card reveal stagger-1">
+              <span className="icon-block">
+                <CurrencyDollar size={28} weight="duotone" />
+              </span>
+              <h3>Donate to Us</h3>
+              <p>
+                Donate to support our club events and booth, helping us raise
+                funds and attract more people to our fundraisers.
+              </p>
+              <a
+                href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+              >
+                Donate
+              </a>
+            </div>
+            <div className="card help-card reveal stagger-2">
+              <span className="icon-block">
+                <Megaphone size={28} weight="duotone" />
+              </span>
+              <h3>Get Involved</h3>
+              <p>Interested in helping out? Let us know!</p>
+              <Link to="/contact" className="btn btn-outline">
+                Contact Us
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Partners */}
       <section className="section partners-section">
         <div className="container">
-          <h2 className="section-title section-title--center reveal">
-            Our Partners
-          </h2>
-          <p className="section-subtitle section-subtitle--center reveal">
+          <h2 className="section-title reveal">Our Partners</h2>
+          <p className="section-subtitle reveal">
             We work with registered charities to maximize our impact.
           </p>
           <div className="partners-grid">

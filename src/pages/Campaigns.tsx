@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Fire } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
+import ParallaxHero from "../components/ParallaxHero";
 import "./Campaigns.css";
 
 const fall2025Events = [
@@ -32,21 +33,14 @@ export default function Campaigns() {
 
   return (
     <div className="campaigns">
-      <section className="hero hero--image">
-        <img
-          className="hero-bg-img"
-          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
-          alt=""
-          loading="eager"
-        />
-        <div className="hero-content">
-          <h1>Events &amp; Campaigns</h1>
-          <p>
-            Fun, engaging events that bring our community together to support
-            orphans and those in need around the world.
-          </p>
-        </div>
-      </section>
+      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80">
+        <h1>Events &amp; Campaigns</h1>
+        <p>
+          In addition to our weekly booths, we organize public events that
+          combine supporting our monthly fundraisers with fun and engaging
+          activities!
+        </p>
+      </ParallaxHero>
 
       {/* Description */}
       <section className="section">

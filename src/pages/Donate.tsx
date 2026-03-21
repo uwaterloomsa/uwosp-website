@@ -6,66 +6,19 @@ import {
   Users,
   Heartbeat,
 } from "@phosphor-icons/react";
-import useScrollReveal from "../hooks/useScrollReveal";
+import ParallaxHero from "../components/ParallaxHero";
 import "./Donate.css";
 
-const DONATE_AMOUNTS = [25, 50, 100, 250, 500];
-
 export default function Donate() {
-  useScrollReveal();
-
   return (
     <div className="donate">
-      <section className="hero hero--image">
-        <img
-          className="hero-bg-img"
-          src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1400&q=80"
-          alt=""
-          loading="eager"
-        />
-        <div className="hero-content">
-          <h1>Make a Difference</h1>
-          <p>
-            Your generosity can change a child's life. Every dollar provides
-            education, healthcare, and hope.
-          </p>
-        </div>
-      </section>
-
-      {/* Quick donate amounts */}
-      <section className="section donate-amounts-section">
-        <div className="container">
-          <div className="donate-amounts-card card reveal-scale">
-            <h2 className="section-title section-title--center">
-              Choose an Amount to Give
-            </h2>
-            <p className="section-subtitle section-subtitle--center">
-              All donations are processed securely through WUSA.
-            </p>
-            <div className="donate-amounts-grid">
-              {DONATE_AMOUNTS.map((amt) => (
-                <a
-                  key={amt}
-                  href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="donate-amount-btn"
-                >
-                  ${amt}
-                </a>
-              ))}
-            </div>
-            <a
-              href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary donate-amount-custom"
-            >
-              <CurrencyDollar size={20} weight="bold" /> Donate Any Amount
-            </a>
-          </div>
-        </div>
-      </section>
+      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1400&q=80">
+        <h1>Donate</h1>
+        <p>
+          Your generosity can change a child's life. Every dollar makes a
+          difference.
+        </p>
+      </ParallaxHero>
 
       {/* Impact stats */}
       <section className="section donate-impact-section">
@@ -115,15 +68,14 @@ export default function Donate() {
               />
             </div>
             <div className="donate-general">
-              <h2>Where Your Money Goes</h2>
+              <h2>Donate to Us</h2>
               <p>
-                Your donations support our club events and booth, helping us
-                raise funds and attract more people to our fundraisers.
+                Donate to support our club events and booth, helping us raise
+                funds and attract more people to our fundraisers.
               </p>
               <p>
-                Through verified charities like Human Concern International and
-                Islamic Relief, funds go directly to orphans' education,
-                healthcare, and daily needs.
+                If you also want to donate to our current fundraiser, you can
+                contribute directly through the link below!
               </p>
               <a
                 href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
