@@ -19,10 +19,9 @@ export default function Contact() {
           loading="eager"
         />
         <div className="hero-content">
-          <h1>Contact Us</h1>
+          <h1>Get in Touch</h1>
           <p>
-            Have a question, want to volunteer, or make a donation? Reach out to
-            us!
+            Have a question or want to get involved? We'd love to hear from you.
           </p>
         </div>
       </section>

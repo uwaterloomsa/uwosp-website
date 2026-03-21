@@ -35,6 +35,9 @@
   --space-xl: 4rem;
   --space-2xl: 6rem;
   --space-3xl: 8rem;
+
+  /* Layout */
+  --max-width-wide: 1400px;
 }
 
 *, *::before, *::after {
@@ -61,8 +64,8 @@ body {
 h1, h2, h3 {
   font-family: var(--font-display);
   color: var(--text-heading);
-  line-height: 1.1;
-  font-weight: 700;
+  line-height: 1.08;
+  font-weight: 800;
   text-wrap: balance;
 }
 
@@ -101,9 +104,9 @@ button, input, textarea, select { font-family: inherit; font-size: inherit; }
 }
 
 .section-title {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.025em;
 }
 
 .section-title--center {
@@ -130,10 +133,10 @@ button, input, textarea, select { font-family: inherit; font-size: inherit; }
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.75rem;
-  border-radius: 8px;
+  padding: 0.8rem 1.85rem;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   cursor: pointer;
   border: none;
   text-align: center;
@@ -199,7 +202,7 @@ button, input, textarea, select { font-family: inherit; font-size: inherit; }
 
 /* ═══ Hero ═══ */
 .hero {
-  min-height: 60vh;
+  min-height: 65vh;
   display: flex;
   align-items: center;
   text-align: center;
@@ -238,16 +241,17 @@ button, input, textarea, select { font-family: inherit; font-size: inherit; }
 }
 
 .hero h1 {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(2.5rem, 6.5vw, 4.25rem);
   margin-bottom: 1.25rem;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 800;
 }
 
 .hero-content {
   position: relative;
   z-index: 1;
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
 }
 
@@ -471,10 +475,54 @@ button, input, textarea, select { font-family: inherit; font-size: inherit; }
   justify-content: center;
   width: 56px;
   height: 56px;
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--primary-subtle);
   color: var(--primary);
   flex-shrink: 0;
+}
+
+/* ═══ Full-width CTA banner ═══ */
+.cta-banner {
+  background: var(--primary);
+  color: #fff;
+  padding: var(--space-2xl) 0;
+  text-align: center;
+}
+
+.cta-banner h2 {
+  color: #fff;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-bottom: 0.75rem;
+}
+
+.cta-banner p {
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 540px;
+  margin: 0 auto 1.5rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.cta-banner .btn {
+  background: #fff;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.cta-banner .btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ═══ Container wide variant ═══ */
+.container--wide {
+  max-width: var(--max-width-wide);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+  position: relative;
+  z-index: 1;
 }
 
 /* ═══ Accessibility ═══ */

@@ -119,9 +119,10 @@ export default function Orphans() {
           loading="eager"
         />
         <div className="hero-content">
-          <h1>Our Orphans</h1>
+          <h1>Meet Our Children</h1>
           <p>
-            Get to know more about the orphans we're currently sponsoring. 🧸
+            Every child has a story. Get to know the orphans whose lives we're
+            changing together.
           </p>
         </div>
       </section>
@@ -166,6 +167,25 @@ export default function Orphans() {
               ))}
             </ul>
           </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="cta-banner">
+        <div className="container">
+          <h2 className="reveal">Sponsor a Child Today</h2>
+          <p className="reveal">
+            Your support provides education, healthcare, and hope for children
+            who need it most.
+          </p>
+          <a
+            href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn reveal"
+          >
+            Donate Now
+          </a>
         </div>
       </section>
     </div>

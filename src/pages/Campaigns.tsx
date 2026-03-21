@@ -42,9 +42,8 @@ export default function Campaigns() {
         <div className="hero-content">
           <h1>Events &amp; Campaigns</h1>
           <p>
-            In addition to our weekly booths, we organize public events that
-            combine supporting our monthly fundraisers with fun and engaging
-            activities!
+            Fun, engaging events that bring our community together to support
+            orphans and those in need around the world.
           </p>
         </div>
       </section>
