@@ -60,7 +60,9 @@ export default function Home() {
       <section className="hero home-hero">
         <AnimatedBackground variant="hero" />
         <div className="hero-content">
-          <span className="hero-badge">\uD83C\uDF0D Making a Difference Since 2007</span>
+          <span className="hero-badge">
+            \uD83C\uDF0D Making a Difference Since 2007
+          </span>
           <h1>
             Empowering Orphans,
             <br />

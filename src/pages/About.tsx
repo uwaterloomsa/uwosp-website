@@ -81,7 +81,10 @@ export default function About() {
               "IDRF",
               "Human Appeal",
             ].map((name, i) => (
-              <div className={`card collab-card reveal stagger-${i + 1}`} key={name}>
+              <div
+                className={`card collab-card reveal stagger-${i + 1}`}
+                key={name}
+              >
                 <span className="collab-icon">
                   <Handshake size={40} weight="duotone" />
                 </span>
