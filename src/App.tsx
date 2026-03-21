@@ -8,6 +8,9 @@ import Campaigns from "./pages/Campaigns";
 import GetInvolved from "./pages/GetInvolved";
 import Contact from "./pages/Contact";
 import Donate from "./pages/Donate";
+import History from "./pages/History";
+import FAQs from "./pages/FAQs";
+import Finances from "./pages/Finances";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import ScrollToTop from "./components/ScrollToTop";
@@ -26,6 +29,9 @@ function App() {
             <Route path="/orphans" element={<Orphans />} />
             <Route path="/campaigns" element={<Campaigns />} />
             <Route path="/get-involved" element={<GetInvolved />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/faqs" element={<FAQs />} />
+            <Route path="/finances" element={<Finances />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/donate" element={<Donate />} />
             <Route path="/admin/login" element={<AdminLogin />} />

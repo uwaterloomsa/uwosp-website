@@ -12,6 +12,9 @@ import {
   Users,
   ClipboardText,
   X,
+  CurrencyDollar,
+  CalendarBlank,
+  Handshake,
 } from "@phosphor-icons/react";
 import { logout } from "./AdminLogin";
 import {
@@ -21,18 +24,56 @@ import {
   deletePosting,
   getApplications,
 } from "../services/postings";
+import {
+  getFundraisers,
+  createFundraiser,
+  updateFundraiser,
+  deleteFundraiser,
+  getEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+  getSponsors,
+  createSponsor,
+  updateSponsor,
+  deleteSponsor,
+} from "../services/site";
 import type { Posting, Application } from "../types/postings";
+import type { Fundraiser, SiteEvent, Sponsor } from "../types/site";
 import "./AdminDashboard.css";
 
-type Tab = "postings" | "applications";
+type Tab = "postings" | "applications" | "fundraisers" | "events" | "sponsors";
 
-const emptyForm = {
+const emptyPostingForm = {
   title: "",
   description: "",
   responsibilities: [""],
   requirements: [""],
   category: "volunteer" as Posting["category"],
   status: "open" as Posting["status"],
+};
+
+const emptyFundraiserForm = {
+  title: "",
+  description: "",
+  goalAmount: 0,
+  raisedAmount: 0,
+  isActive: true,
+};
+
+const emptyEventForm = {
+  title: "",
+  description: "",
+  date: "",
+  time: "",
+  location: "",
+  isFeatured: false,
+};
+
+const emptySponsorForm = {
+  name: "",
+  website: "",
+  tier: "bronze" as Sponsor["tier"],
 };
 
 export default function AdminDashboard() {
@@ -45,10 +86,28 @@ export default function AdminDashboard() {
   const [applications, setApplications] = useState<Application[]>([]);
   const [filterPostingId, setFilterPostingId] = useState<string | "all">("all");
 
-  // Form
+  // Fundraisers
+  const [fundraisers, setFundraisers] = useState<Fundraiser[]>([]);
+  const [showFundForm, setShowFundForm] = useState(false);
+  const [editFundId, setEditFundId] = useState<string | null>(null);
+  const [fundForm, setFundForm] = useState(emptyFundraiserForm);
+
+  // Events
+  const [events, setEvents] = useState<SiteEvent[]>([]);
+  const [showEventForm, setShowEventForm] = useState(false);
+  const [editEventId, setEditEventId] = useState<string | null>(null);
+  const [eventForm, setEventForm] = useState(emptyEventForm);
+
+  // Sponsors
+  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+  const [showSponsorForm, setShowSponsorForm] = useState(false);
+  const [editSponsorId, setEditSponsorId] = useState<string | null>(null);
+  const [sponsorForm, setSponsorForm] = useState(emptySponsorForm);
+
+  // Posting form
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState(emptyPostingForm);
   const [saving, setSaving] = useState(false);
 
   // Application viewer
@@ -72,140 +131,108 @@ export default function AdminDashboard() {
     if (!authed) return;
     loadPostings();
     loadApplications();
+    loadFundraisers();
+    loadEvents();
+    loadSponsors();
   }, [authed]);
 
   async function loadPostings() {
-    try {
-      setPostings(await getPostings());
-    } catch (err) {
-      console.error("Failed to load postings:", err);
-    }
+    try { setPostings(await getPostings()); } catch (err) { console.error("Failed to load postings:", err); }
   }
-
   async function loadApplications(pid?: string) {
-    try {
-      setApplications(
-        await getApplications(pid && pid !== "all" ? pid : undefined),
-      );
-    } catch (err) {
-      console.error("Failed to load applications:", err);
-    }
+    try { setApplications(await getApplications(pid && pid !== "all" ? pid : undefined)); } catch (err) { console.error("Failed to load applications:", err); }
+  }
+  async function loadFundraisers() {
+    try { setFundraisers(await getFundraisers()); } catch (err) { console.error(err); }
+  }
+  async function loadEvents() {
+    try { setEvents(await getEvents()); } catch (err) { console.error(err); }
+  }
+  async function loadSponsors() {
+    try { setSponsors(await getSponsors()); } catch (err) { console.error(err); }
   }
 
-  function openNewForm() {
-    setForm(emptyForm);
-    setEditingId(null);
-    setShowForm(true);
-  }
-
+  /* ───── Posting helpers ───── */
+  function openNewForm() { setForm(emptyPostingForm); setEditingId(null); setShowForm(true); }
   function openEditForm(p: Posting) {
-    setForm({
-      title: p.title,
-      description: p.description,
-      responsibilities: p.responsibilities.length ? p.responsibilities : [""],
-      requirements: p.requirements.length ? p.requirements : [""],
-      category: p.category,
-      status: p.status,
-    });
-    setEditingId(p.id);
-    setShowForm(true);
+    setForm({ title: p.title, description: p.description, responsibilities: p.responsibilities.length ? p.responsibilities : [""], requirements: p.requirements.length ? p.requirements : [""], category: p.category, status: p.status });
+    setEditingId(p.id); setShowForm(true);
   }
-
   async function handleSave(e: React.FormEvent) {
-    e.preventDefault();
-    setSaving(true);
-    const cleaned = {
-      ...form,
-      responsibilities: form.responsibilities.filter((r) => r.trim()),
-      requirements: form.requirements.filter((r) => r.trim()),
-    };
-    try {
-      if (editingId) {
-        await updatePosting(editingId, cleaned);
-      } else {
-        await createPosting(cleaned);
-      }
-      setShowForm(false);
-      await loadPostings();
-    } catch (err) {
-      console.error("Save failed:", err);
-    } finally {
-      setSaving(false);
-    }
+    e.preventDefault(); setSaving(true);
+    const cleaned = { ...form, responsibilities: form.responsibilities.filter((r) => r.trim()), requirements: form.requirements.filter((r) => r.trim()) };
+    try { if (editingId) { await updatePosting(editingId, cleaned); } else { await createPosting(cleaned); } setShowForm(false); await loadPostings(); } catch (err) { console.error("Save failed:", err); } finally { setSaving(false); }
   }
-
   async function handleDelete(id: string) {
     if (!confirm("Delete this posting? This cannot be undone.")) return;
-    try {
-      await deletePosting(id);
-      await loadPostings();
-    } catch (err) {
-      console.error("Delete failed:", err);
-    }
+    try { await deletePosting(id); await loadPostings(); } catch (err) { console.error(err); }
   }
-
   async function handleToggleStatus(p: Posting) {
     const next = p.status === "open" ? "closed" : "open";
-    await updatePosting(p.id, { status: next });
-    await loadPostings();
+    await updatePosting(p.id, { status: next }); await loadPostings();
+  }
+  function addListItem(key: "responsibilities" | "requirements") { setForm((prev) => ({ ...prev, [key]: [...prev[key], ""] })); }
+  function updateListItem(key: "responsibilities" | "requirements", idx: number, value: string) {
+    setForm((prev) => { const copy = [...prev[key]]; copy[idx] = value; return { ...prev, [key]: copy }; });
+  }
+  function removeListItem(key: "responsibilities" | "requirements", idx: number) {
+    setForm((prev) => ({ ...prev, [key]: prev[key].filter((_, i) => i !== idx) }));
   }
 
-  function addListItem(key: "responsibilities" | "requirements") {
-    setForm((prev) => ({ ...prev, [key]: [...prev[key], ""] }));
+  /* ───── Fundraiser helpers ───── */
+  async function handleFundSave(e: React.FormEvent) {
+    e.preventDefault(); setSaving(true);
+    try {
+      if (editFundId) { await updateFundraiser(editFundId, fundForm); }
+      else { await createFundraiser(fundForm); }
+      setShowFundForm(false); await loadFundraisers();
+    } catch (err) { console.error(err); } finally { setSaving(false); }
+  }
+  async function handleFundDelete(id: string) {
+    if (!confirm("Delete this fundraiser?")) return;
+    try { await deleteFundraiser(id); await loadFundraisers(); } catch (err) { console.error(err); }
   }
 
-  function updateListItem(
-    key: "responsibilities" | "requirements",
-    idx: number,
-    value: string,
-  ) {
-    setForm((prev) => {
-      const copy = [...prev[key]];
-      copy[idx] = value;
-      return { ...prev, [key]: copy };
-    });
+  /* ───── Event helpers ───── */
+  async function handleEventSave(e: React.FormEvent) {
+    e.preventDefault(); setSaving(true);
+    try {
+      if (editEventId) { await updateEvent(editEventId, eventForm); }
+      else { await createEvent(eventForm); }
+      setShowEventForm(false); await loadEvents();
+    } catch (err) { console.error(err); } finally { setSaving(false); }
+  }
+  async function handleEventDelete(id: string) {
+    if (!confirm("Delete this event?")) return;
+    try { await deleteEvent(id); await loadEvents(); } catch (err) { console.error(err); }
   }
 
-  function removeListItem(
-    key: "responsibilities" | "requirements",
-    idx: number,
-  ) {
-    setForm((prev) => ({
-      ...prev,
-      [key]: prev[key].filter((_, i) => i !== idx),
-    }));
+  /* ───── Sponsor helpers ───── */
+  async function handleSponsorSave(e: React.FormEvent) {
+    e.preventDefault(); setSaving(true);
+    try {
+      if (editSponsorId) { await updateSponsor(editSponsorId, sponsorForm); }
+      else { await createSponsor(sponsorForm); }
+      setShowSponsorForm(false); await loadSponsors();
+    } catch (err) { console.error(err); } finally { setSaving(false); }
+  }
+  async function handleSponsorDelete(id: string) {
+    if (!confirm("Delete this sponsor?")) return;
+    try { await deleteSponsor(id); await loadSponsors(); } catch (err) { console.error(err); }
   }
 
-  if (loading) {
-    return (
-      <div className="admin-loading">
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
+  if (loading) return <div className="admin-loading"><p>Loading...</p></div>;
   if (!authed) return null;
 
-  const filteredApps =
-    filterPostingId === "all"
-      ? applications
-      : applications.filter((a) => a.postingId === filterPostingId);
+  const filteredApps = filterPostingId === "all" ? applications : applications.filter((a) => a.postingId === filterPostingId);
 
   return (
     <div className="admin-dashboard">
       {/* Header */}
       <header className="admin-header">
         <div className="container admin-header-inner">
-          <h1>
-            <ClipboardText size={28} weight="duotone" /> Admin Dashboard
-          </h1>
-          <button
-            className="btn btn-secondary admin-logout"
-            onClick={async () => {
-              await logout();
-              navigate("/admin/login");
-            }}
-          >
+          <h1><ClipboardText size={28} weight="duotone" /> Admin Dashboard</h1>
+          <button className="btn btn-secondary admin-logout" onClick={async () => { await logout(); navigate("/admin/login"); }}>
             <SignOut size={18} weight="bold" /> Sign Out
           </button>
         </div>
@@ -214,91 +241,47 @@ export default function AdminDashboard() {
       {/* Tabs */}
       <div className="container">
         <div className="admin-tabs">
-          <button
-            className={`admin-tab ${tab === "postings" ? "active" : ""}`}
-            onClick={() => setTab("postings")}
-          >
-            <Briefcase size={18} weight="duotone" /> Postings ({postings.length}
-            )
+          <button className={`admin-tab ${tab === "postings" ? "active" : ""}`} onClick={() => setTab("postings")}>
+            <Briefcase size={18} weight="duotone" /> Postings ({postings.length})
           </button>
-          <button
-            className={`admin-tab ${tab === "applications" ? "active" : ""}`}
-            onClick={() => {
-              setTab("applications");
-              loadApplications();
-            }}
-          >
-            <Users size={18} weight="duotone" /> Applications (
-            {applications.length})
+          <button className={`admin-tab ${tab === "applications" ? "active" : ""}`} onClick={() => { setTab("applications"); loadApplications(); }}>
+            <Users size={18} weight="duotone" /> Applications ({applications.length})
+          </button>
+          <button className={`admin-tab ${tab === "fundraisers" ? "active" : ""}`} onClick={() => setTab("fundraisers")}>
+            <CurrencyDollar size={18} weight="duotone" /> Fundraisers ({fundraisers.length})
+          </button>
+          <button className={`admin-tab ${tab === "events" ? "active" : ""}`} onClick={() => setTab("events")}>
+            <CalendarBlank size={18} weight="duotone" /> Events ({events.length})
+          </button>
+          <button className={`admin-tab ${tab === "sponsors" ? "active" : ""}`} onClick={() => setTab("sponsors")}>
+            <Handshake size={18} weight="duotone" /> Sponsors ({sponsors.length})
           </button>
         </div>
 
-        {/* ───── Postings Tab ───── */}
+        {/* ═══════ Postings Tab ═══════ */}
         {tab === "postings" && (
           <div className="admin-panel">
             <div className="admin-panel-header">
               <h2>Position Postings</h2>
-              <button className="btn btn-primary" onClick={openNewForm}>
-                <Plus size={18} weight="bold" /> New Posting
-              </button>
+              <button className="btn btn-primary" onClick={openNewForm}><Plus size={18} weight="bold" /> New Posting</button>
             </div>
-
             {postings.length === 0 ? (
-              <div className="admin-empty card">
-                <Briefcase size={48} weight="duotone" />
-                <p>No postings yet. Create your first position!</p>
-              </div>
+              <div className="admin-empty card"><Briefcase size={48} weight="duotone" /><p>No postings yet. Create your first position!</p></div>
             ) : (
               <div className="admin-table-wrap">
                 <table className="admin-table">
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Category</th>
-                      <th>Status</th>
-                      <th>Created</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
+                  <thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
                   <tbody>
                     {postings.map((p) => (
                       <tr key={p.id}>
                         <td className="admin-td-title">{p.title}</td>
-                        <td>
-                          <span
-                            className={`admin-badge admin-badge--${p.category}`}
-                          >
-                            {p.category}
-                          </span>
-                        </td>
-                        <td>
-                          <button
-                            className={`admin-status-btn admin-status--${p.status}`}
-                            onClick={() => handleToggleStatus(p)}
-                            title="Click to toggle"
-                          >
-                            {p.status}
-                          </button>
-                        </td>
-                        <td className="admin-td-date">
-                          {new Date(p.createdAt).toLocaleDateString()}
-                        </td>
+                        <td><span className={`admin-badge admin-badge--${p.category}`}>{p.category}</span></td>
+                        <td><button className={`admin-status-btn admin-status--${p.status}`} onClick={() => handleToggleStatus(p)} title="Click to toggle">{p.status}</button></td>
+                        <td className="admin-td-date">{new Date(p.createdAt).toLocaleDateString()}</td>
                         <td>
                           <div className="admin-actions">
-                            <button
-                              className="admin-action-btn"
-                              title="Edit"
-                              onClick={() => openEditForm(p)}
-                            >
-                              <PencilSimple size={16} weight="bold" />
-                            </button>
-                            <button
-                              className="admin-action-btn admin-action-btn--danger"
-                              title="Delete"
-                              onClick={() => handleDelete(p.id)}
-                            >
-                              <Trash size={16} weight="bold" />
-                            </button>
+                            <button className="admin-action-btn" title="Edit" onClick={() => openEditForm(p)}><PencilSimple size={16} weight="bold" /></button>
+                            <button className="admin-action-btn admin-action-btn--danger" title="Delete" onClick={() => handleDelete(p.id)}><Trash size={16} weight="bold" /></button>
                           </div>
                         </td>
                       </tr>
@@ -310,67 +293,138 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* ───── Applications Tab ───── */}
+        {/* ═══════ Applications Tab ═══════ */}
         {tab === "applications" && (
           <div className="admin-panel">
             <div className="admin-panel-header">
               <h2>Applications</h2>
-              <select
-                className="admin-filter-select"
-                value={filterPostingId}
-                onChange={(e) => {
-                  setFilterPostingId(e.target.value);
-                  loadApplications(e.target.value);
-                }}
-              >
+              <select className="admin-filter-select" value={filterPostingId} onChange={(e) => { setFilterPostingId(e.target.value); loadApplications(e.target.value); }}>
                 <option value="all">All Postings</option>
-                {postings.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.title}
-                  </option>
-                ))}
+                {postings.map((p) => (<option key={p.id} value={p.id}>{p.title}</option>))}
               </select>
             </div>
-
             {filteredApps.length === 0 ? (
-              <div className="admin-empty card">
-                <Users size={48} weight="duotone" />
-                <p>No applications received yet.</p>
-              </div>
+              <div className="admin-empty card"><Users size={48} weight="duotone" /><p>No applications received yet.</p></div>
             ) : (
               <div className="admin-table-wrap">
                 <table className="admin-table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Position</th>
-                      <th>Submitted</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
+                  <thead><tr><th>Name</th><th>Email</th><th>Position</th><th>Submitted</th><th>Actions</th></tr></thead>
                   <tbody>
                     {filteredApps.map((a) => (
                       <tr key={a.id}>
                         <td>{a.name}</td>
                         <td className="admin-td-email">{a.email}</td>
-                        <td>
-                          <span className="admin-badge admin-badge--volunteer">
-                            {a.postingTitle}
-                          </span>
-                        </td>
-                        <td className="admin-td-date">
-                          {new Date(a.submittedAt).toLocaleDateString()}
-                        </td>
+                        <td><span className="admin-badge admin-badge--volunteer">{a.postingTitle}</span></td>
+                        <td className="admin-td-date">{new Date(a.submittedAt).toLocaleDateString()}</td>
+                        <td><div className="admin-actions"><button className="admin-action-btn" title="View" onClick={() => setViewApp(a)}><Eye size={16} weight="bold" /></button></div></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ═══════ Fundraisers Tab ═══════ */}
+        {tab === "fundraisers" && (
+          <div className="admin-panel">
+            <div className="admin-panel-header">
+              <h2>Fundraisers</h2>
+              <button className="btn btn-primary" onClick={() => { setFundForm(emptyFundraiserForm); setEditFundId(null); setShowFundForm(true); }}>
+                <Plus size={18} weight="bold" /> New Fundraiser
+              </button>
+            </div>
+            {fundraisers.length === 0 ? (
+              <div className="admin-empty card"><CurrencyDollar size={48} weight="duotone" /><p>No fundraisers yet. Create your first!</p></div>
+            ) : (
+              <div className="admin-table-wrap">
+                <table className="admin-table">
+                  <thead><tr><th>Title</th><th>Goal</th><th>Raised</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody>
+                    {fundraisers.map((f) => (
+                      <tr key={f.id}>
+                        <td className="admin-td-title">{f.title}</td>
+                        <td className="admin-td-date">${f.goalAmount.toLocaleString()}</td>
+                        <td className="admin-td-date">${f.raisedAmount.toLocaleString()}</td>
+                        <td><span className={`admin-badge ${f.isActive ? "admin-badge--executive" : "admin-badge--volunteer"}`}>{f.isActive ? "Active" : "Inactive"}</span></td>
                         <td>
                           <div className="admin-actions">
-                            <button
-                              className="admin-action-btn"
-                              title="View"
-                              onClick={() => setViewApp(a)}
-                            >
-                              <Eye size={16} weight="bold" />
-                            </button>
+                            <button className="admin-action-btn" title="Edit" onClick={() => { setFundForm({ title: f.title, description: f.description, goalAmount: f.goalAmount, raisedAmount: f.raisedAmount, isActive: f.isActive }); setEditFundId(f.id); setShowFundForm(true); }}><PencilSimple size={16} weight="bold" /></button>
+                            <button className="admin-action-btn admin-action-btn--danger" title="Delete" onClick={() => handleFundDelete(f.id)}><Trash size={16} weight="bold" /></button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ═══════ Events Tab ═══════ */}
+        {tab === "events" && (
+          <div className="admin-panel">
+            <div className="admin-panel-header">
+              <h2>Events</h2>
+              <button className="btn btn-primary" onClick={() => { setEventForm(emptyEventForm); setEditEventId(null); setShowEventForm(true); }}>
+                <Plus size={18} weight="bold" /> New Event
+              </button>
+            </div>
+            {events.length === 0 ? (
+              <div className="admin-empty card"><CalendarBlank size={48} weight="duotone" /><p>No events yet. Create your first!</p></div>
+            ) : (
+              <div className="admin-table-wrap">
+                <table className="admin-table">
+                  <thead><tr><th>Title</th><th>Date</th><th>Location</th><th>Featured</th><th>Actions</th></tr></thead>
+                  <tbody>
+                    {events.map((ev) => (
+                      <tr key={ev.id}>
+                        <td className="admin-td-title">{ev.title}</td>
+                        <td className="admin-td-date">{ev.date}</td>
+                        <td>{ev.location}</td>
+                        <td><span className={`admin-badge ${ev.isFeatured ? "admin-badge--executive" : "admin-badge--volunteer"}`}>{ev.isFeatured ? "Yes" : "No"}</span></td>
+                        <td>
+                          <div className="admin-actions">
+                            <button className="admin-action-btn" title="Edit" onClick={() => { setEventForm({ title: ev.title, description: ev.description, date: ev.date, time: ev.time, location: ev.location, isFeatured: ev.isFeatured }); setEditEventId(ev.id); setShowEventForm(true); }}><PencilSimple size={16} weight="bold" /></button>
+                            <button className="admin-action-btn admin-action-btn--danger" title="Delete" onClick={() => handleEventDelete(ev.id)}><Trash size={16} weight="bold" /></button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ═══════ Sponsors Tab ═══════ */}
+        {tab === "sponsors" && (
+          <div className="admin-panel">
+            <div className="admin-panel-header">
+              <h2>Sponsors / Partners</h2>
+              <button className="btn btn-primary" onClick={() => { setSponsorForm(emptySponsorForm); setEditSponsorId(null); setShowSponsorForm(true); }}>
+                <Plus size={18} weight="bold" /> New Sponsor
+              </button>
+            </div>
+            {sponsors.length === 0 ? (
+              <div className="admin-empty card"><Handshake size={48} weight="duotone" /><p>No sponsors yet. Add your first partner!</p></div>
+            ) : (
+              <div className="admin-table-wrap">
+                <table className="admin-table">
+                  <thead><tr><th>Name</th><th>Tier</th><th>Website</th><th>Actions</th></tr></thead>
+                  <tbody>
+                    {sponsors.map((s) => (
+                      <tr key={s.id}>
+                        <td className="admin-td-title">{s.name}</td>
+                        <td><span className={`admin-badge admin-badge--${s.tier === "gold" ? "executive" : s.tier === "silver" ? "lead" : "volunteer"}`}>{s.tier}</span></td>
+                        <td className="admin-td-email">{s.website || "—"}</td>
+                        <td>
+                          <div className="admin-actions">
+                            <button className="admin-action-btn" title="Edit" onClick={() => { setSponsorForm({ name: s.name, website: s.website, tier: s.tier }); setEditSponsorId(s.id); setShowSponsorForm(true); }}><PencilSimple size={16} weight="bold" /></button>
+                            <button className="admin-action-btn admin-action-btn--danger" title="Delete" onClick={() => handleSponsorDelete(s.id)}><Trash size={16} weight="bold" /></button>
                           </div>
                         </td>
                       </tr>
@@ -383,212 +437,190 @@ export default function AdminDashboard() {
         )}
       </div>
 
-      {/* ───── Posting Form Modal ───── */}
+      {/* ═══════ Posting Form Modal ═══════ */}
       {showForm && (
         <div className="admin-modal-overlay" onClick={() => setShowForm(false)}>
-          <div
-            className="admin-modal card"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="admin-modal card" onClick={(e) => e.stopPropagation()}>
             <div className="admin-modal-header">
               <h2>{editingId ? "Edit Posting" : "New Posting"}</h2>
-              <button
-                className="admin-modal-close"
-                onClick={() => setShowForm(false)}
-              >
-                <X size={20} weight="bold" />
-              </button>
+              <button className="admin-modal-close" onClick={() => setShowForm(false)}><X size={20} weight="bold" /></button>
             </div>
             <form className="admin-form" onSubmit={handleSave}>
               <div className="form-group">
                 <label htmlFor="post-title">Position Title</label>
-                <input
-                  id="post-title"
-                  type="text"
-                  value={form.title}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, title: e.target.value }))
-                  }
-                  placeholder="e.g. VP Marketing"
-                  required
-                />
+                <input id="post-title" type="text" value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} placeholder="e.g. VP Marketing" required />
               </div>
-
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="post-cat">Category</label>
-                  <select
-                    id="post-cat"
-                    value={form.category}
-                    onChange={(e) =>
-                      setForm((f) => ({
-                        ...f,
-                        category: e.target.value as Posting["category"],
-                      }))
-                    }
-                  >
-                    <option value="executive">Executive</option>
-                    <option value="lead">Lead</option>
-                    <option value="volunteer">Volunteer</option>
+                  <select id="post-cat" value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value as Posting["category"] }))}>
+                    <option value="executive">Executive</option><option value="lead">Lead</option><option value="volunteer">Volunteer</option>
                   </select>
                 </div>
                 <div className="form-group">
                   <label htmlFor="post-status">Status</label>
-                  <select
-                    id="post-status"
-                    value={form.status}
-                    onChange={(e) =>
-                      setForm((f) => ({
-                        ...f,
-                        status: e.target.value as Posting["status"],
-                      }))
-                    }
-                  >
-                    <option value="open">Open</option>
-                    <option value="closed">Closed</option>
+                  <select id="post-status" value={form.status} onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as Posting["status"] }))}>
+                    <option value="open">Open</option><option value="closed">Closed</option>
                   </select>
                 </div>
               </div>
-
               <div className="form-group">
                 <label htmlFor="post-desc">Description</label>
-                <textarea
-                  id="post-desc"
-                  rows={4}
-                  value={form.description}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, description: e.target.value }))
-                  }
-                  placeholder="Describe the position..."
-                  required
-                />
+                <textarea id="post-desc" rows={4} value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} placeholder="Describe the position..." required />
               </div>
-
               <div className="form-group">
                 <label>Responsibilities</label>
                 {form.responsibilities.map((r, i) => (
                   <div className="form-list-item" key={i}>
-                    <input
-                      type="text"
-                      value={r}
-                      onChange={(e) =>
-                        updateListItem("responsibilities", i, e.target.value)
-                      }
-                      placeholder={`Responsibility ${i + 1}`}
-                    />
-                    {form.responsibilities.length > 1 && (
-                      <button
-                        type="button"
-                        className="form-list-remove"
-                        onClick={() => removeListItem("responsibilities", i)}
-                      >
-                        <X size={14} />
-                      </button>
-                    )}
+                    <input type="text" value={r} onChange={(e) => updateListItem("responsibilities", i, e.target.value)} placeholder={`Responsibility ${i + 1}`} />
+                    {form.responsibilities.length > 1 && (<button type="button" className="form-list-remove" onClick={() => removeListItem("responsibilities", i)}><X size={14} /></button>)}
                   </div>
                 ))}
-                <button
-                  type="button"
-                  className="form-list-add"
-                  onClick={() => addListItem("responsibilities")}
-                >
-                  <Plus size={14} /> Add
-                </button>
+                <button type="button" className="form-list-add" onClick={() => addListItem("responsibilities")}><Plus size={14} /> Add</button>
               </div>
-
               <div className="form-group">
                 <label>Requirements</label>
                 {form.requirements.map((r, i) => (
                   <div className="form-list-item" key={i}>
-                    <input
-                      type="text"
-                      value={r}
-                      onChange={(e) =>
-                        updateListItem("requirements", i, e.target.value)
-                      }
-                      placeholder={`Requirement ${i + 1}`}
-                    />
-                    {form.requirements.length > 1 && (
-                      <button
-                        type="button"
-                        className="form-list-remove"
-                        onClick={() => removeListItem("requirements", i)}
-                      >
-                        <X size={14} />
-                      </button>
-                    )}
+                    <input type="text" value={r} onChange={(e) => updateListItem("requirements", i, e.target.value)} placeholder={`Requirement ${i + 1}`} />
+                    {form.requirements.length > 1 && (<button type="button" className="form-list-remove" onClick={() => removeListItem("requirements", i)}><X size={14} /></button>)}
                   </div>
                 ))}
-                <button
-                  type="button"
-                  className="form-list-add"
-                  onClick={() => addListItem("requirements")}
-                >
-                  <Plus size={14} /> Add
-                </button>
+                <button type="button" className="form-list-add" onClick={() => addListItem("requirements")}><Plus size={14} /> Add</button>
               </div>
-
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={saving}
-              >
-                {saving
-                  ? "Saving..."
-                  : editingId
-                    ? "Update Posting"
-                    : "Create Posting"}
-              </button>
+              <button type="submit" className="btn btn-primary" disabled={saving}>{saving ? "Saving..." : editingId ? "Update Posting" : "Create Posting"}</button>
             </form>
           </div>
         </div>
       )}
 
-      {/* ───── Application View Modal ───── */}
+      {/* ═══════ Fundraiser Form Modal ═══════ */}
+      {showFundForm && (
+        <div className="admin-modal-overlay" onClick={() => setShowFundForm(false)}>
+          <div className="admin-modal card" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-modal-header">
+              <h2>{editFundId ? "Edit Fundraiser" : "New Fundraiser"}</h2>
+              <button className="admin-modal-close" onClick={() => setShowFundForm(false)}><X size={20} weight="bold" /></button>
+            </div>
+            <form className="admin-form" onSubmit={handleFundSave}>
+              <div className="form-group">
+                <label htmlFor="fund-title">Title</label>
+                <input id="fund-title" type="text" value={fundForm.title} onChange={(e) => setFundForm((f) => ({ ...f, title: e.target.value }))} placeholder="e.g. Winter Warmth Drive 2025" required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="fund-desc">Description</label>
+                <textarea id="fund-desc" rows={3} value={fundForm.description} onChange={(e) => setFundForm((f) => ({ ...f, description: e.target.value }))} placeholder="Describe the fundraiser..." required />
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="fund-goal">Goal Amount ($)</label>
+                  <input id="fund-goal" type="number" min={0} value={fundForm.goalAmount} onChange={(e) => setFundForm((f) => ({ ...f, goalAmount: Number(e.target.value) }))} required />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="fund-raised">Raised Amount ($)</label>
+                  <input id="fund-raised" type="number" min={0} value={fundForm.raisedAmount} onChange={(e) => setFundForm((f) => ({ ...f, raisedAmount: Number(e.target.value) }))} />
+                </div>
+              </div>
+              <div className="form-group">
+                <label className="form-checkbox-label">
+                  <input type="checkbox" checked={fundForm.isActive} onChange={(e) => setFundForm((f) => ({ ...f, isActive: e.target.checked }))} />
+                  Active (shown on landing page)
+                </label>
+              </div>
+              <button type="submit" className="btn btn-primary" disabled={saving}>{saving ? "Saving..." : editFundId ? "Update Fundraiser" : "Create Fundraiser"}</button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ═══════ Event Form Modal ═══════ */}
+      {showEventForm && (
+        <div className="admin-modal-overlay" onClick={() => setShowEventForm(false)}>
+          <div className="admin-modal card" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-modal-header">
+              <h2>{editEventId ? "Edit Event" : "New Event"}</h2>
+              <button className="admin-modal-close" onClick={() => setShowEventForm(false)}><X size={20} weight="bold" /></button>
+            </div>
+            <form className="admin-form" onSubmit={handleEventSave}>
+              <div className="form-group">
+                <label htmlFor="evt-title">Title</label>
+                <input id="evt-title" type="text" value={eventForm.title} onChange={(e) => setEventForm((f) => ({ ...f, title: e.target.value }))} placeholder="e.g. Annual Charity Gala" required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="evt-desc">Description</label>
+                <textarea id="evt-desc" rows={3} value={eventForm.description} onChange={(e) => setEventForm((f) => ({ ...f, description: e.target.value }))} placeholder="Describe the event..." required />
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="evt-date">Date</label>
+                  <input id="evt-date" type="text" value={eventForm.date} onChange={(e) => setEventForm((f) => ({ ...f, date: e.target.value }))} placeholder="e.g. March 15, 2025" required />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="evt-time">Time</label>
+                  <input id="evt-time" type="text" value={eventForm.time} onChange={(e) => setEventForm((f) => ({ ...f, time: e.target.value }))} placeholder="e.g. 6:00 PM" />
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="evt-loc">Location</label>
+                <input id="evt-loc" type="text" value={eventForm.location} onChange={(e) => setEventForm((f) => ({ ...f, location: e.target.value }))} placeholder="e.g. Federation Hall, UWaterloo" />
+              </div>
+              <div className="form-group">
+                <label className="form-checkbox-label">
+                  <input type="checkbox" checked={eventForm.isFeatured} onChange={(e) => setEventForm((f) => ({ ...f, isFeatured: e.target.checked }))} />
+                  Featured (shown on landing page)
+                </label>
+              </div>
+              <button type="submit" className="btn btn-primary" disabled={saving}>{saving ? "Saving..." : editEventId ? "Update Event" : "Create Event"}</button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ═══════ Sponsor Form Modal ═══════ */}
+      {showSponsorForm && (
+        <div className="admin-modal-overlay" onClick={() => setShowSponsorForm(false)}>
+          <div className="admin-modal card" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-modal-header">
+              <h2>{editSponsorId ? "Edit Sponsor" : "New Sponsor"}</h2>
+              <button className="admin-modal-close" onClick={() => setShowSponsorForm(false)}><X size={20} weight="bold" /></button>
+            </div>
+            <form className="admin-form" onSubmit={handleSponsorSave}>
+              <div className="form-group">
+                <label htmlFor="sp-name">Name</label>
+                <input id="sp-name" type="text" value={sponsorForm.name} onChange={(e) => setSponsorForm((f) => ({ ...f, name: e.target.value }))} placeholder="e.g. Islamic Relief" required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="sp-web">Website URL</label>
+                <input id="sp-web" type="url" value={sponsorForm.website} onChange={(e) => setSponsorForm((f) => ({ ...f, website: e.target.value }))} placeholder="https://..." />
+              </div>
+              <div className="form-group">
+                <label htmlFor="sp-tier">Tier</label>
+                <select id="sp-tier" value={sponsorForm.tier} onChange={(e) => setSponsorForm((f) => ({ ...f, tier: e.target.value as Sponsor["tier"] }))}>
+                  <option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option>
+                </select>
+              </div>
+              <button type="submit" className="btn btn-primary" disabled={saving}>{saving ? "Saving..." : editSponsorId ? "Update Sponsor" : "Create Sponsor"}</button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ═══════ Application View Modal ═══════ */}
       {viewApp && (
         <div className="admin-modal-overlay" onClick={() => setViewApp(null)}>
-          <div
-            className="admin-modal card"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="admin-modal card" onClick={(e) => e.stopPropagation()}>
             <div className="admin-modal-header">
               <h2>Application Details</h2>
-              <button
-                className="admin-modal-close"
-                onClick={() => setViewApp(null)}
-              >
-                <X size={20} weight="bold" />
-              </button>
+              <button className="admin-modal-close" onClick={() => setViewApp(null)}><X size={20} weight="bold" /></button>
             </div>
             <div className="app-detail">
-              <div className="app-detail-row">
-                <span className="app-label">Name</span>
-                <span>{viewApp.name}</span>
-              </div>
-              <div className="app-detail-row">
-                <span className="app-label">Email</span>
-                <a href={`mailto:${viewApp.email}`}>{viewApp.email}</a>
-              </div>
-              <div className="app-detail-row">
-                <span className="app-label">Position</span>
-                <span>{viewApp.postingTitle}</span>
-              </div>
-              <div className="app-detail-row">
-                <span className="app-label">Program</span>
-                <span>{viewApp.program}</span>
-              </div>
-              <div className="app-detail-row">
-                <span className="app-label">Submitted</span>
-                <span>{new Date(viewApp.submittedAt).toLocaleString()}</span>
-              </div>
-              <div className="app-detail-block">
-                <span className="app-label">Why Interested</span>
-                <p>{viewApp.whyInterested}</p>
-              </div>
-              <div className="app-detail-block">
-                <span className="app-label">Experience</span>
-                <p>{viewApp.experience}</p>
-              </div>
+              <div className="app-detail-row"><span className="app-label">Name</span><span>{viewApp.name}</span></div>
+              <div className="app-detail-row"><span className="app-label">Email</span><a href={`mailto:${viewApp.email}`}>{viewApp.email}</a></div>
+              <div className="app-detail-row"><span className="app-label">Position</span><span>{viewApp.postingTitle}</span></div>
+              <div className="app-detail-row"><span className="app-label">Program</span><span>{viewApp.program}</span></div>
+              <div className="app-detail-row"><span className="app-label">Submitted</span><span>{new Date(viewApp.submittedAt).toLocaleString()}</span></div>
+              <div className="app-detail-block"><span className="app-label">Why Interested</span><p>{viewApp.whyInterested}</p></div>
+              <div className="app-detail-block"><span className="app-label">Experience</span><p>{viewApp.experience}</p></div>
             </div>
           </div>
         </div>

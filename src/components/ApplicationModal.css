@@ -86,7 +86,7 @@
 .apply-form .form-group input:focus,
 .apply-form .form-group textarea:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.08);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.08);
 }
 
 .apply-form .btn {
@@ -111,7 +111,7 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  color: #16a34a;
+  color: #2563eb;
 }
 
 .apply-success h3 { color: var(--text-heading); }

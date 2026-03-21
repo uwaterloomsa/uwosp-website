@@ -7,8 +7,8 @@
 }
 
 .animated-bg--hero { opacity: 1; }
-.animated-bg--section { opacity: 0.6; }
-.animated-bg--subtle { opacity: 0.35; }
+.animated-bg--section { opacity: 0.5; }
+.animated-bg--subtle { opacity: 0.3; }
 
 .bg-svg {
   position: absolute;
@@ -17,122 +17,27 @@
   height: 100%;
 }
 
-/* Aurora bands - transform + opacity only */
-.bg-aurora { will-change: transform, opacity; }
-
-.bg-aurora--1 {
-  animation: auroraWave1 28s ease-in-out infinite;
-}
-.bg-aurora--2 {
-  animation: auroraWave2 24s ease-in-out infinite;
-  animation-delay: -8s;
+.bg-orb--1 {
+  animation: orbDrift1 24s ease-in-out infinite;
 }
 
-@keyframes auroraWave1 {
-  0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.5; }
-  25% { transform: translateY(-25px) scaleY(1.15); opacity: 0.8; }
-  50% { transform: translateY(15px) scaleY(0.85); opacity: 0.35; }
-  75% { transform: translateY(-12px) scaleY(1.08); opacity: 0.65; }
+.bg-orb--2 {
+  animation: orbDrift2 28s ease-in-out infinite;
 }
 
-@keyframes auroraWave2 {
-  0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.4; }
-  33% { transform: translateY(20px) scaleY(1.2); opacity: 0.65; }
-  66% { transform: translateY(-18px) scaleY(0.88); opacity: 0.3; }
+@keyframes orbDrift1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(20px, -15px); }
 }
 
-/* Orbs - floating with scale variation for organic feel */
-.bg-orb { will-change: transform, opacity; }
-
-.bg-orb--1 { animation: orbFloat1 22s ease-in-out infinite; }
-.bg-orb--2 { animation: orbFloat2 26s ease-in-out infinite; animation-delay: -7s; }
-.bg-orb--3 { animation: orbFloat3 20s ease-in-out infinite; animation-delay: -14s; }
-.bg-orb--4 { animation: orbFloat1 28s ease-in-out infinite; animation-delay: -4s; }
-
-@keyframes orbFloat1 {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-  25% { transform: translate(30px, -25px) scale(1.08); opacity: 0.75; }
-  50% { transform: translate(-15px, 20px) scale(0.92); opacity: 0.4; }
-  75% { transform: translate(20px, 10px) scale(1.04); opacity: 0.6; }
+@keyframes orbDrift2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-15px, 12px); }
 }
 
-@keyframes orbFloat2 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.45; }
-  33% { transform: translate(-20px, 15px) scale(1.1) rotate(5deg); opacity: 0.7; }
-  66% { transform: translate(25px, -20px) scale(0.9) rotate(-3deg); opacity: 0.35; }
-}
-
-@keyframes orbFloat3 {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.55; }
-  50% { transform: translate(-25px, -15px) scale(1.12); opacity: 0.3; }
-}
-
-/* Geometric shapes - varied animations for complex feel */
-.bg-shape { will-change: transform, opacity; }
-
-.bg-shape--1  { animation: shapeFloat1 20s ease-in-out infinite; }
-.bg-shape--2  { animation: shapeFloat2 24s ease-in-out infinite; animation-delay: -5s; }
-.bg-shape--3  { animation: shapeFloat3 18s ease-in-out infinite; animation-delay: -10s; }
-.bg-shape--4  { animation: shapeFloat1 22s ease-in-out infinite; animation-delay: -3s; }
-.bg-shape--5  { animation: shapeFloat2 20s ease-in-out infinite; animation-delay: -8s; }
-.bg-shape--6  { animation: shapeFloat3 16s ease-in-out infinite; animation-delay: -2s; }
-.bg-shape--7  { animation: shapeFloat1 24s ease-in-out infinite; animation-delay: -12s; }
-.bg-shape--8  { animation: shapeFloat2 18s ease-in-out infinite; animation-delay: -6s; }
-.bg-shape--9  { animation: shapeFloat3 22s ease-in-out infinite; animation-delay: -4s; }
-
-@keyframes shapeFloat1 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.5; }
-  25% { transform: translate(25px, -30px) rotate(90deg) scale(1.1); opacity: 0.8; }
-  50% { transform: translate(-15px, 20px) rotate(180deg) scale(0.9); opacity: 0.35; }
-  75% { transform: translate(20px, -10px) rotate(270deg) scale(1.05); opacity: 0.65; }
-}
-
-@keyframes shapeFloat2 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.45; }
-  33% { transform: translate(-30px, 15px) rotate(120deg) scale(1.15); opacity: 0.7; }
-  66% { transform: translate(20px, -25px) rotate(240deg) scale(0.85); opacity: 0.3; }
-}
-
-@keyframes shapeFloat3 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.6; }
-  50% { transform: translate(-12px, -22px) rotate(180deg) scale(1.08); opacity: 0.35; }
-}
-
-/* Particles - rising float */
-.bg-particle {
-  position: absolute;
-  background: rgba(194, 65, 12, 0.2);
-  border-radius: 50%;
-  will-change: transform, opacity;
-  animation: particleRise linear infinite;
-}
-
-@keyframes particleRise {
-  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
-  10% { opacity: 0.5; }
-  50% { transform: translateY(-40vh) translateX(15px) scale(0.75); opacity: 0.25; }
-  90% { opacity: 0.4; }
-  100% { transform: translateY(-80vh) translateX(-10px) scale(0.35); opacity: 0; }
-}
-
-/* Wave at bottom */
-.bg-wave {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  z-index: 1;
-}
-
-/* Reduce motion */
 @media (prefers-reduced-motion: reduce) {
-  .bg-orb, .bg-shape, .bg-particle, .bg-aurora, .bg-wave-path {
-    animation: none !important;
+  .bg-orb--1,
+  .bg-orb--2 {
+    animation: none;
   }
-}
-
-@media (max-width: 768px) {
-  .bg-particle { animation-duration: 20s !important; }
-  .bg-aurora { opacity: 0.35; }
 }

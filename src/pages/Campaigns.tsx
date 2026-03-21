@@ -1,107 +1,78 @@
 import { Link } from "react-router-dom";
-import {
-  Moon,
-  Backpack,
-  Cow,
-  Snowflake,
-  Fire,
-  Confetti,
-  Lightbulb,
-  ForkKnife,
-} from "@phosphor-icons/react";
-import AnimatedBackground from "../components/AnimatedBackground";
+import { Fire } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import "./Campaigns.css";
-import type { ReactNode } from "react";
 
-const pastCampaigns: {
-  title: string;
-  raised: string;
-  icon: ReactNode;
-  desc: string;
-}[] = [
-  {
-    title: "Ramadan Giving 2024",
-    raised: "$12,000",
-    icon: <Moon size={36} weight="duotone" />,
-    desc: "Raised funds during Ramadan to sponsor 15 orphans for a full year.",
-  },
-  {
-    title: "Back to School 2023",
-    raised: "$8,500",
-    icon: <Backpack size={36} weight="duotone" />,
-    desc: "Provided school supplies and tuition for orphans in Syria and Palestine.",
-  },
-  {
-    title: "Eid al-Adha Drive 2023",
-    raised: "$6,200",
-    icon: <Cow size={36} weight="duotone" />,
-    desc: "Delivered Eid gifts and meals to sponsored children and their communities.",
-  },
-  {
-    title: "Winter Relief 2022",
-    raised: "$10,000",
-    icon: <Snowflake size={36} weight="duotone" />,
-    desc: "Supplied warm clothing and heating for families facing harsh winters.",
-  },
+const fall2025Events = [
+  { name: "Auction Night", emoji: "🎪" },
+  { name: "UWOSP x UWMSA Rock Climbing Event", emoji: "🧗" },
+  { name: "Sheikh & S'mores", emoji: "🔥" },
+  { name: "UWOSP x IDRF | Soccer for Palestine", emoji: "⚽" },
+  { name: "Paint, Play & Pour for Sudan", emoji: "🎨" },
 ];
 
-const events: { title: string; date: string; icon: ReactNode; desc: string }[] =
-  [
-    {
-      title: "Annual Charity Gala",
-      date: "March 2025",
-      icon: <Confetti size={36} weight="duotone" />,
-      desc: "Our biggest fundraising event of the year featuring guest speakers and dinner.",
-    },
-    {
-      title: "Orphan Awareness Week",
-      date: "April 2025",
-      icon: <Lightbulb size={36} weight="duotone" />,
-      desc: "A week of workshops, talks, and social media campaigns to raise awareness.",
-    },
-    {
-      title: "Community Iftar",
-      date: "Ramadan 2025",
-      icon: <ForkKnife size={36} weight="duotone" />,
-      desc: "Breaking fast together while raising funds for orphan sponsorship.",
-    },
-  ];
+const winter2025Events = [
+  { name: "Exam De-Stressor", emoji: "📚" },
+  { name: "EOT Dinner", emoji: "🍽️" },
+  { name: "Charity Trivia Night", emoji: "🧠" },
+  { name: "Iftar", emoji: "🌙" },
+  { name: "Palestine Fundraiser", emoji: "🇵🇸" },
+  { name: "Ramadan Palestine Iftar", emoji: "🌙" },
+  { name: "Ramadan Market", emoji: "🛍️" },
+  { name: "Rock Climbing for Lebanon", emoji: "🧗" },
+  { name: "End of Term Dinner + Auction", emoji: "🎪" },
+  { name: "Charity Week", emoji: "💙" },
+  { name: "Auction Night", emoji: "🎪" },
+  { name: "Charity Bazaar (Solidarity Souk)", emoji: "🛍️" },
+  { name: "Painting + Crafts for Palestine", emoji: "🎨" },
+];
 
 export default function Campaigns() {
   useScrollReveal();
 
   return (
     <div className="campaigns">
-      <section className="hero">
-        <AnimatedBackground variant="hero" />
+      <section className="hero hero--image">
+        <img
+          className="hero-bg-img"
+          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
+          alt=""
+          loading="eager"
+        />
         <div className="hero-content">
           <h1>Events &amp; Campaigns</h1>
-          <p>See our active campaigns, past successes, and upcoming events.</p>
+          <p>
+            In addition to our weekly booths, we organize public events that
+            combine supporting our monthly fundraisers with fun and engaging
+            activities!
+          </p>
         </div>
       </section>
 
-      {/* Active Campaign */}
+      {/* Description */}
+      <section className="section">
+        <div className="container">
+          <div className="mission-text reveal">
+            <p>
+              Our fundraisers go beyond orphan sponsorships — we also raise
+              funds to aid and support countries in need that are suffering from
+              difficulties and crises such as extreme poverty, war, etc.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Current Campaign */}
       <section className="section">
         <div className="container">
           <div className="active-campaign card reveal-scale">
             <div className="campaign-badge">
-              <Fire size={18} weight="fill" /> Active Now
+              <Fire size={18} weight="fill" /> Current Campaign
             </div>
-            <h2>Winter Warmth Drive 2025</h2>
-            <div className="campaign-progress">
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: "65%" }} />
-              </div>
-              <div className="progress-stats">
-                <span>$13,000 raised</span>
-                <span>Goal: $20,000</span>
-              </div>
-            </div>
+            <h2>UWOSP x IDRF | Sudan Emergency Relief</h2>
             <p>
-              Help us provide warm clothing, blankets, and heating supplies to
-              orphans facing harsh winter conditions across Syria, Yemen, and
-              Palestine.
+              We are currently raising funds in collaboration with IDRF for
+              emergency relief in Sudan.
             </p>
             <Link to="/donate" className="btn btn-primary">
               Contribute Now
@@ -110,40 +81,36 @@ export default function Campaigns() {
         </div>
       </section>
 
-      {/* Past Campaigns */}
-      <section className="section past-campaigns-section">
+      {/* Fall 2025 Events */}
+      <section className="section">
         <div className="container">
-          <h2 className="section-title reveal">Past Campaigns</h2>
-          <p className="section-subtitle reveal">
-            A look back at what we've accomplished together.
-          </p>
-          <div className="past-grid">
-            {pastCampaigns.map((c, i) => (
-              <div className="card past-card" key={i}>
-                <span className="past-emoji">{c.icon}</span>
-                <h3>{c.title}</h3>
-                <p className="past-raised">{c.raised} raised</p>
-                <p>{c.desc}</p>
+          <h2 className="section-title reveal">Fall 2025</h2>
+          <div className="events-list">
+            {fall2025Events.map((event, i) => (
+              <div
+                className={`card event-card reveal stagger-${(i % 6) + 1}`}
+                key={i}
+              >
+                <span className="event-emoji">{event.emoji}</span>
+                <h3>{event.name}</h3>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Upcoming Events */}
+      {/* Winter 2025 Events */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title reveal">Upcoming Events</h2>
-          <p className="section-subtitle reveal">
-            Join us at our next event and be part of the change.
-          </p>
-          <div className="events-grid">
-            {events.map((e, i) => (
-              <div className="card event-card" key={i}>
-                <span className="event-emoji">{e.icon}</span>
-                <div className="event-date">{e.date}</div>
-                <h3>{e.title}</h3>
-                <p>{e.desc}</p>
+          <h2 className="section-title reveal">Winter 2025</h2>
+          <div className="events-list">
+            {winter2025Events.map((event, i) => (
+              <div
+                className={`card event-card reveal stagger-${(i % 6) + 1}`}
+                key={i}
+              >
+                <span className="event-emoji">{event.emoji}</span>
+                <h3>{event.name}</h3>
               </div>
             ))}
           </div>

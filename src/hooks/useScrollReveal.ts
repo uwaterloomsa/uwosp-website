@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export default function useScrollReveal() {
   useEffect(() => {
     const elements = document.querySelectorAll(
-      ".reveal, .reveal-left, .reveal-right, .reveal-scale"
+      ".reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-flip, .reveal-blur"
     );
 
     if (!elements.length) return;

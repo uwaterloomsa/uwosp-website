@@ -1,18 +1,109 @@
-import { Link } from "react-router-dom";
-import { UserCircle } from "@phosphor-icons/react";
-import AnimatedBackground from "../components/AnimatedBackground";
 import useScrollReveal from "../hooks/useScrollReveal";
 import "./Orphans.css";
 
+const COUNTRY_FLAGS: Record<string, string> = {
+  Kosovo: "🇽🇰",
+  Mali: "🇲🇱",
+  Palestine: "🇵🇸",
+};
+
+const AVATAR_COLORS = [
+  "oklch(0.55 0.18 264)",
+  "oklch(0.55 0.15 200)",
+  "oklch(0.55 0.15 150)",
+  "oklch(0.55 0.18 330)",
+  "oklch(0.50 0.15 30)",
+  "oklch(0.50 0.12 280)",
+];
+
+function getInitial(name: string) {
+  return name.trim()[0].toUpperCase();
+}
+
+function getColor(name: string) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++)
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+}
+
 const orphans = [
-  { name: "Ahmad", age: 8, country: "Syria", status: "Sponsored" },
-  { name: "Fatima", age: 6, country: "Palestine", status: "Needs Sponsor" },
-  { name: "Yusuf", age: 10, country: "Yemen", status: "Sponsored" },
-  { name: "Amina", age: 7, country: "Somalia", status: "Needs Sponsor" },
-  { name: "Omar", age: 9, country: "Syria", status: "Sponsored" },
-  { name: "Mariam", age: 5, country: "Palestine", status: "Needs Sponsor" },
-  { name: "Hassan", age: 11, country: "Yemen", status: "Sponsored" },
-  { name: "Zahra", age: 8, country: "Somalia", status: "Needs Sponsor" },
+  {
+    name: "Stina",
+    country: "Kosovo",
+    description:
+      "Stina lives in Kosovo. She likes to collect cuddly bears and her dream is to become a police officer! She lives with her mother and older brother.",
+    years: "2017-2027",
+  },
+  {
+    name: "Kalilou",
+    country: "Mali",
+    description:
+      "Kalilou lives with his mother in Mali and is a student in fourth grade. Kalilou loves playing football with his friends after school and he is a creative artist.",
+    years: "2017-2030",
+  },
+  {
+    name: "Muhammed",
+    country: "Palestine",
+    description:
+      "Muhammed lives in Palestine with his mother. He loves collecting sea shells and swimming in his free time. Muhammed's dream is to become a teacher!",
+    years: "2017-2023",
+  },
+  {
+    name: "Marah",
+    country: "Palestine",
+    description:
+      "Marah lives with her mother and three siblings in Palestine. She is currently eight years old.",
+    years: "2021-2029",
+  },
+  {
+    name: "Ali",
+    country: "Palestine",
+    description: "Ali lives in Palestine and is currently 5 years old.",
+    years: "2025-2026",
+  },
+  {
+    name: "Hayat",
+    country: "Palestine",
+    description:
+      "Hayat lives with her mother in Palestine. She is currently four years old.",
+    years: "2025-2026",
+  },
+  {
+    name: "Malek",
+    country: "Palestine",
+    description: "Malek lives in Palestine and is currently three years old.",
+    years: "2025-2026",
+  },
+  {
+    name: "Mariam",
+    country: "Palestine",
+    description:
+      "Mariam lives with her mother in Palestine. She is currently zero years old.",
+    years: "2025-2026",
+  },
+  {
+    name: "Sela",
+    country: "Palestine",
+    description: "Sela lives in Palestine and is currently three years old.",
+    years: "2025-2026",
+  },
+];
+
+const pastSponsorships = [
+  "Yasin Hassoun",
+  "Abdul Karim Jaber",
+  "AbdulRahman Brijwee",
+  "Hashim Mushtaq",
+  "Seemab Sadiq",
+  "Marwa Mohammad",
+  "Mena Rahmat Gul",
+  "Abdur Rahman",
+  "Toyaffa Alam Shad",
+  "Sughra Akhter",
+  "Tariq Shah",
+  "Syeda Umama Sherazi",
+  "Muhammed Abu Hendy",
 ];
 
 export default function Orphans() {
@@ -20,85 +111,60 @@ export default function Orphans() {
 
   return (
     <div className="orphans">
-      <section className="hero">
-        <AnimatedBackground variant="hero" />
+      <section className="hero hero--image">
+        <img
+          className="hero-bg-img"
+          src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=1400&q=80"
+          alt=""
+          loading="eager"
+        />
         <div className="hero-content">
-          <h1>Our Impact</h1>
+          <h1>Our Orphans</h1>
           <p>
-            Meet the children whose lives you can help transform through
-            sponsorship.
+            Get to know more about the orphans we're currently sponsoring. 🧸
           </p>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="section">
-        <div className="container">
-          <h2 className="section-title reveal">How Sponsorship Works</h2>
-          <p className="section-subtitle reveal">
-            Through our charity partners, your contributions directly support
-            orphans who have lost parents due to war, extreme poverty, or
-            disease.
-          </p>
-          <div className="how-grid">
-            <div className="card how-card reveal stagger-1">
-              <span className="how-step">1</span>
-              <h3>Choose to Sponsor</h3>
-              <p>
-                Select a child or contribute to our general fund to support
-                orphans in need.
-              </p>
-            </div>
-            <div className="card how-card reveal stagger-2">
-              <span className="how-step">2</span>
-              <h3>Funds Are Delivered</h3>
-              <p>
-                Your donation goes through registered charities like Islamic
-                Relief and HCI.
-              </p>
-            </div>
-            <div className="card how-card reveal stagger-3">
-              <span className="how-step">3</span>
-              <h3>Lives Are Changed</h3>
-              <p>
-                Orphans receive food, healthcare, education, and the support
-                they need to thrive.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
       {/* Orphan Profiles */}
       <section className="section orphan-profiles-section">
         <div className="container">
-          <h2 className="section-title reveal">Children We Support</h2>
-          <p className="section-subtitle reveal">
-            Each child has a unique story. Your sponsorship can make all the
-            difference.
-          </p>
           <div className="orphan-grid">
             {orphans.map((child, i) => (
-              <div className="card orphan-card" key={i}>
-                <span className="orphan-avatar">
-                  <UserCircle size={48} weight="duotone" />
+              <div
+                className={`card orphan-card reveal stagger-${(i % 6) + 1}`}
+                key={i}
+              >
+                <span
+                  className="orphan-avatar"
+                  style={{ background: getColor(child.name) }}
+                >
+                  {getInitial(child.name)}
                 </span>
                 <h4>{child.name}</h4>
                 <p className="orphan-detail">
-                  Age {child.age} · {child.country}
+                  {COUNTRY_FLAGS[child.country] || ""} {child.country}
                 </p>
-                <span
-                  className={`orphan-status ${child.status === "Sponsored" ? "sponsored" : "needs"}`}
-                >
-                  {child.status}
+                <p className="orphan-bio">{child.description}</p>
+                <span className="orphan-status sponsored">
+                  Sponsored {child.years}
                 </span>
               </div>
             ))}
           </div>
-          <div className="orphan-cta">
-            <Link to="/donate" className="btn btn-primary">
-              Sponsor a Child
-            </Link>
+        </div>
+      </section>
+
+      {/* Past Sponsorships */}
+      <section className="section">
+        <div className="container">
+          <h2 className="section-title reveal">Past Sponsorships</h2>
+          <div className="past-sponsorships reveal">
+            <ul className="past-list">
+              {pastSponsorships.map((name, i) => (
+                <li key={i}>{name}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>

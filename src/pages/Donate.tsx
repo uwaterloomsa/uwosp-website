@@ -1,46 +1,25 @@
 import { Link } from "react-router-dom";
 import {
   HeartStraight,
-  BookOpen,
-  BowlFood,
-  CoatHanger,
-  SunHorizon,
   CurrencyDollar,
+  GlobeHemisphereWest,
+  Users,
+  Heartbeat,
 } from "@phosphor-icons/react";
-import AnimatedBackground from "../components/AnimatedBackground";
 import "./Donate.css";
-import type { ReactNode } from "react";
-
-const impacts: { amount: string; impact: string; icon: ReactNode }[] = [
-  {
-    amount: "$10",
-    impact: "Provides school supplies for one child for a month",
-    icon: <BookOpen size={36} weight="duotone" />,
-  },
-  {
-    amount: "$40",
-    impact: "Covers food, healthcare, and education for one orphan for a month",
-    icon: <BowlFood size={36} weight="duotone" />,
-  },
-  {
-    amount: "$100",
-    impact: "Provides winter clothing and supplies for a family",
-    icon: <CoatHanger size={36} weight="duotone" />,
-  },
-  {
-    amount: "$480",
-    impact: "Sponsors one orphan for an entire year",
-    icon: <SunHorizon size={36} weight="duotone" />,
-  },
-];
 
 export default function Donate() {
   return (
     <div className="donate">
-      <section className="hero">
-        <AnimatedBackground variant="hero" />
+      <section className="hero hero--image">
+        <img
+          className="hero-bg-img"
+          src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1400&q=80"
+          alt=""
+          loading="eager"
+        />
         <div className="hero-content">
-          <h1>Make a Donation</h1>
+          <h1>Donate</h1>
           <p>
             Your generosity can change a child's life. Every dollar makes a
             difference.
@@ -48,49 +27,72 @@ export default function Donate() {
         </div>
       </section>
 
-      {/* General Donate */}
-      <section className="section">
+      {/* Impact stats */}
+      <section className="section donate-impact-section">
         <div className="container">
-          <div className="donate-general card">
-            <span className="donate-general-icon">
-              <HeartStraight size={56} weight="duotone" />
-            </span>
-            <h2>Support Orphans in Need</h2>
-            <p>
-              Your donation goes directly towards providing food, healthcare,
-              education, and essential resources for orphans around the world.
-              Any amount makes a real difference.
-            </p>
-            <a
-              href="https://www.launchgood.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary donate-general-btn"
-            >
-              <CurrencyDollar size={20} weight="bold" /> Donate Now
-            </a>
+          <div className="donate-impact-grid">
+            <div className="donate-impact-item reveal stagger-1">
+              <span className="icon-block">
+                <HeartStraight size={24} weight="duotone" />
+              </span>
+              <strong>9</strong>
+              <span>Orphans Currently Sponsored</span>
+            </div>
+            <div className="donate-impact-item reveal stagger-2">
+              <span className="icon-block">
+                <GlobeHemisphereWest size={24} weight="duotone" />
+              </span>
+              <strong>5</strong>
+              <span>Countries Reached</span>
+            </div>
+            <div className="donate-impact-item reveal stagger-3">
+              <span className="icon-block">
+                <Users size={24} weight="duotone" />
+              </span>
+              <strong>22+</strong>
+              <span>Orphans Sponsored Since 2007</span>
+            </div>
+            <div className="donate-impact-item reveal stagger-4">
+              <span className="icon-block">
+                <Heartbeat size={24} weight="duotone" />
+              </span>
+              <strong>$50k+</strong>
+              <span>Raised in 2024</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Impact */}
-      <section
-        className="section"
-        style={{ background: "var(--bg-secondary)" }}
-      >
+      {/* General Donate */}
+      <section className="section">
         <div className="container">
-          <h2 className="section-title">Your Impact</h2>
-          <p className="section-subtitle">
-            See how your donation translates into real change.
-          </p>
-          <div className="impact-grid">
-            {impacts.map((item, i) => (
-              <div className="card impact-card" key={i}>
-                <span className="impact-emoji">{item.icon}</span>
-                <div className="impact-amount">{item.amount}</div>
-                <p>{item.impact}</p>
-              </div>
-            ))}
+          <div className="split reveal">
+            <div className="split-image image-hover-zoom">
+              <img
+                src="https://images.unsplash.com/photo-1593113630400-ea4288922497?w=800&q=80"
+                alt="Hands coming together in support"
+                loading="lazy"
+              />
+            </div>
+            <div className="donate-general">
+              <h2>Donate to Us</h2>
+              <p>
+                Donate to support our club events and booth, helping us raise
+                funds and attract more people to our fundraisers.
+              </p>
+              <p>
+                If you also want to donate to our current fundraiser, you can
+                contribute directly through the link below!
+              </p>
+              <a
+                href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary donate-general-btn"
+              >
+                <CurrencyDollar size={20} weight="bold" /> Donate Now
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -100,17 +102,17 @@ export default function Donate() {
         <div className="container" style={{ textAlign: "center" }}>
           <h2 className="section-title">Ready to Help?</h2>
           <p className="section-subtitle">
-            Donations are processed through our verified charity partners and
-            are tax-deductible.
+            Donations are processed through WUSA and our verified charity
+            partners.
           </p>
           <div className="donate-cta-buttons">
             <a
-              href="https://www.launchgood.com"
+              href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary"
             >
-              Donate on LaunchGood
+              Donate via WUSA
             </a>
             <Link to="/contact" className="btn btn-outline">
               Contact Us

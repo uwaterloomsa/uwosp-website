@@ -29,7 +29,7 @@
 
 .login-form .form-group input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.08);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.08);
 }
 
 .login-form .btn {
