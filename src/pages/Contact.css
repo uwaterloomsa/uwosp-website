@@ -18,7 +18,14 @@
   padding: 1.25rem;
   background: var(--surface);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
   border-radius: 12px;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.contact-info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .contact-info-card h4 {
@@ -72,6 +79,7 @@
 .form-group input:focus,
 .form-group textarea:focus {
   border-color: var(--primary);
+  box-shadow: 0 0 0 3px oklch(0.49 0.19 264 / 0.08);
 }
 
 .contact-form .btn { width: 100%; }

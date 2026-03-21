@@ -13,6 +13,8 @@ import FAQs from "./pages/FAQs";
 import Finances from "./pages/Finances";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import Events from "./pages/Events";
+import Volunteer from "./pages/Volunteer";
 import ScrollToTop from "./components/ScrollToTop";
 import "./App.css";
 
@@ -34,6 +36,8 @@ function App() {
             <Route path="/finances" element={<Finances />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/donate" element={<Donate />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/volunteer" element={<Volunteer />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>

@@ -19,7 +19,7 @@
 
 .donate-impact-item strong {
   font-family: var(--font-display);
-  font-size: 1.75rem;
+  font-size: clamp(2rem, 4vw, 2.75rem);
   font-weight: 800;
   color: var(--primary);
 }
@@ -53,10 +53,6 @@
 }
 
 /* CTA */
-.donate-cta-section {
-  background: var(--bg-alt);
-}
-
 .donate-cta-buttons {
   display: flex;
   gap: 0.75rem;

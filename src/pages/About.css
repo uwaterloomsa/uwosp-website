@@ -41,53 +41,76 @@
   border-bottom: 1px solid var(--border);
 }
 
-/* Team Grid */
-.team-grid {
+/* Leadership Grid — IDRF-inspired centered, prominent cards */
+.leadership-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-lg);
+  max-width: 960px;
+  margin: 0 auto;
 }
 
+/* Team Card — modern centered style like IDRF */
 .team-card {
   display: flex;
-  gap: 1rem;
-  padding: 1.25rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 1.5rem 1rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  transition: border-color 0.15s var(--ease-standard);
+  border-radius: 12px;
+  transition: border-color 0.15s var(--ease-standard), transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
 
 .team-card:hover {
-  border-color: var(--border-hover);
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.team-card--leader {
+  padding: 2rem 1.25rem;
 }
 
 .team-card-photo {
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  background: var(--bg-alt);
-  color: #fff;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   letter-spacing: 0.02em;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.team-card-photo--lg {
+  width: 72px;
+  height: 72px;
+  font-size: 1.05rem;
+}
+
+.team-card:hover .team-card-photo {
+  transform: scale(1.08);
 }
 
 .team-card-info {
-  flex: 1;
   min-width: 0;
 }
 
 .team-card-info h4 {
   font-family: var(--font-display);
   font-size: 0.95rem;
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.15rem;
   color: var(--text-heading);
+}
+
+.team-card--leader .team-card-info h4 {
+  font-size: 1.05rem;
 }
 
 .team-card-role {
@@ -95,69 +118,19 @@
   font-size: 0.78rem;
   font-weight: 600;
   color: var(--primary);
-  margin-bottom: 0.35rem;
-}
-
-.team-card-info p {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  line-height: 1.6;
 }
 
 @media (max-width: 768px) {
   .about-mission-layout { grid-template-columns: 1fr; }
-  .team-grid { grid-template-columns: 1fr; }
+  .leadership-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-.team-card-contact {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--bg-alt, var(--bg-secondary, #f5f0eb));
-  color: var(--text-muted);
-  transition: transform 0.2s ease-out, color 0.15s ease-out;
-}
-
-.team-card-contact:hover {
-  color: var(--primary);
-  transform: translateY(-2px) scale(1.1);
-}
-
-/* Collaborators */
-.collab-grid {
+/* Team Grid */
+.team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.collab-card {
-  text-align: center;
-  padding: 2rem;
-}
-
-.collab-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-  color: var(--primary);
-  transition: transform 0.2s ease-out;
-}
-
-.collab-card:hover .collab-icon {
-  transform: scale(1.15) rotate(5deg);
-}
-
-.collab-card h4 {
-  margin-bottom: 0.5rem;
-}
-
-.collab-card p {
-  color: var(--text-muted);
-  font-size: 0.9rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-md);
 }
 
 /* Department Sections */
@@ -166,40 +139,27 @@
 }
 
 .department-title {
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   font-family: var(--font-display);
   color: var(--primary);
   margin-bottom: 1.25rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--primary);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .about-mission-layout {
-    grid-template-columns: 1fr;
-  }
+  .about-mission-layout { grid-template-columns: 1fr; }
+  .about-mission-image img { height: 240px; }
+  .mission-statement { padding: 2rem 1.25rem; font-size: 1rem; }
+  .leadership-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .collab-grid { grid-template-columns: 1fr; }
+}
 
-  .about-mission-image img {
-    height: 240px;
-  }
-
-  .mission-statement {
-    padding: 2rem 1.25rem;
-    font-size: 1rem;
-  }
-
-  .team-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .team-card {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .collab-grid {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 480px) {
+  .leadership-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
 }

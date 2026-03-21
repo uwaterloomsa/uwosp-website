@@ -11,7 +11,7 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: var(--border);
+  background: linear-gradient(to bottom, var(--primary), oklch(0.78 0.10 264));
   border-radius: 2px;
 }
 
@@ -36,11 +36,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: var(--primary);
   color: #fff;
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px oklch(0.49 0.19 264 / 0.2);
 }
 
 .timeline-year {

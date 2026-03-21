@@ -1,3 +1,4 @@
+import { EnvelopeSimple } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import ParallaxHero from "../components/ParallaxHero";
 import "./About.css";
@@ -24,20 +25,28 @@ function getAvatarColor(name: string) {
   return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
 }
 
+interface Member {
+  name: string;
+  role?: string;
+}
+
+const leadership: Member[] = [
+  { name: "Reem Abdelazim", role: "President" },
+  { name: "Yahya Rizwan", role: "VP Operations" },
+  { name: "Hadi Meski", role: "VP Finance" },
+  { name: "Alysha Butt", role: "VP Outreach" },
+  { name: "Erick Rahi", role: "VP Fundraising" },
+  { name: "Ahmed Elalem", role: "VP Logistics" },
+  { name: "Emaan Zafar", role: "VP Marketing" },
+];
+
 const departments: {
   name: string;
-  members: { name: string; role?: string }[];
+  members: Member[];
 }[] = [
   {
-    name: "President",
-    members: [{ name: "Reem Abdelazim" }],
-  },
-  {
     name: "Operations",
-    members: [
-      { name: "Yahya Rizwan", role: "Executive" },
-      { name: "Saif Al-Din Ali" },
-    ],
+    members: [{ name: "Saif Al-Din Ali" }],
   },
   {
     name: "Advisors",
@@ -49,15 +58,11 @@ const departments: {
   },
   {
     name: "Finance",
-    members: [
-      { name: "Hadi Meski", role: "Executive" },
-      { name: "Jawad Hussain" },
-    ],
+    members: [{ name: "Jawad Hussain" }],
   },
   {
     name: "Outreach",
     members: [
-      { name: "Alysha Butt", role: "Executive" },
       { name: "Asiyah Malik" },
       { name: "Hanin Shamsheer" },
       { name: "Sumaiyah Shakeel" },
@@ -67,7 +72,6 @@ const departments: {
   {
     name: "Fundraising",
     members: [
-      { name: "Erick Rahi", role: "Executive" },
       { name: "Aya Zahabi" },
       { name: "Ayesha Amanullah" },
       { name: "Muhammad Musfir Ehtsham" },
@@ -80,7 +84,6 @@ const departments: {
   {
     name: "Logistics",
     members: [
-      { name: "Ahmed Elalem", role: "Executive" },
       { name: "Sameen Ahmed" },
       { name: "Faiq Ali" },
       { name: "Muhammad Ayan Asim" },
@@ -93,7 +96,6 @@ const departments: {
   {
     name: "Marketing & Social Media",
     members: [
-      { name: "Emaan Zafar", role: "Executive" },
       { name: "Nyle Faridi" },
       { name: "Zeba Shaikh" },
       { name: "Rowson Akter" },
@@ -103,6 +105,23 @@ const departments: {
     ],
   },
 ];
+
+function MemberCard({ member, large }: { member: Member; large?: boolean }) {
+  return (
+    <div className={`team-card${large ? " team-card--leader" : ""}`}>
+      <div
+        className={`team-card-photo${large ? " team-card-photo--lg" : ""}`}
+        style={{ background: getAvatarColor(member.name), color: "#fff" }}
+      >
+        {getInitials(member.name)}
+      </div>
+      <div className="team-card-info">
+        <h4>{member.name}</h4>
+        {member.role && <span className="team-card-role">{member.role}</span>}
+      </div>
+    </div>
+  );
+}
 
 export default function About() {
   useScrollReveal();
@@ -117,12 +136,35 @@ export default function About() {
         </p>
       </ParallaxHero>
 
+      {/* Leadership */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title reveal">Our Fall 2025 Team</h2>
-          <p className="section-subtitle reveal">
-            The dedicated students leading UWOSP and driving our mission
-            forward.
+          <h2 className="section-title section-title--center reveal">
+            Leadership
+          </h2>
+          <p className="section-subtitle section-subtitle--center reveal">
+            The executive team steering UWOSP's vision and impact.
+          </p>
+
+          <div className="leadership-grid">
+            {leadership.map((m, i) => (
+              <div className={`reveal stagger-${(i % 6) + 1}`} key={m.name}>
+                <MemberCard member={m} large />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Departments */}
+      <section className="section" style={{ background: "var(--bg-alt)" }}>
+        <div className="container">
+          <h2 className="section-title section-title--center reveal">
+            Our Fall 2025 Team
+          </h2>
+          <p className="section-subtitle section-subtitle--center reveal">
+            The dedicated students driving our mission forward across every
+            department.
           </p>
 
           {departments.map((dept, di) => (
@@ -130,30 +172,32 @@ export default function About() {
               <h3 className="department-title">{dept.name}</h3>
               <div className="team-grid">
                 {dept.members.map((member, mi) => (
-                  <div
-                    className={`team-card reveal stagger-${(mi % 6) + 1}`}
-                    key={mi}
-                  >
-                    <div
-                      className="team-card-photo"
-                      style={{
-                        background: getAvatarColor(member.name),
-                        color: "#fff",
-                      }}
-                    >
-                      {getInitials(member.name)}
-                    </div>
-                    <div className="team-card-info">
-                      <h4>{member.name}</h4>
-                      {member.role && (
-                        <span className="team-card-role">{member.role}</span>
-                      )}
-                    </div>
+                  <div className={`reveal stagger-${(mi % 6) + 1}`} key={mi}>
+                    <MemberCard member={member} />
                   </div>
                 ))}
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <section className="section section--accent">
+        <div className="container" style={{ textAlign: "center" }}>
+          <h2 className="section-title section-title--center reveal">
+            Want to Join the Team?
+          </h2>
+          <p
+            className="section-subtitle section-subtitle--center reveal"
+            style={{ color: "rgba(255,255,255,0.85)" }}
+          >
+            We're always looking for passionate students to help make a
+            difference.
+          </p>
+          <a href="/get-involved" className="btn btn-outline reveal">
+            <EnvelopeSimple size={18} weight="bold" /> Get Involved
+          </a>
         </div>
       </section>
     </div>

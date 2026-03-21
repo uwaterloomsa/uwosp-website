@@ -28,38 +28,189 @@
 
 /* Stats */
 .stats-section {
-  background: var(--bg-alt);
+  background: var(--primary);
+  padding: var(--space-2xl) 0;
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-lg);
-  max-width: 700px;
+  gap: 0;
+  max-width: 800px;
   margin: 0 auto;
 }
 
 .stat-item {
   text-align: center;
   padding: var(--space-lg) var(--space-md);
+  position: relative;
+}
+
+.stat-item + .stat-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .stat-number {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
   font-weight: 800;
-  color: var(--primary);
+  color: #fff;
   line-height: 1.2;
   margin-bottom: 0.25rem;
   font-variant-numeric: tabular-nums;
 }
 
 .stat-label {
-  color: var(--text-muted);
-  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-/* Campaign Highlight */
+/* Fundraiser Featured */
+.fundraiser-section {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+}
+
+.fundraiser-featured {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--space-xl);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--primary);
+  border-radius: 16px;
+  padding: var(--space-xl) var(--space-2xl);
+}
+
+.fundraiser-featured-content h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.fundraiser-featured-content p {
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  max-width: 600px;
+}
+
+.fundraiser-featured-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fundraiser-amount-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  min-width: 180px;
+}
+
+.fundraiser-amount {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.fundraiser-amount-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+/* Events Preview */
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.section-header-row .section-title {
+  margin-bottom: 0.25rem;
+}
+
+.section-header-row .section-subtitle {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.events-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.event-preview-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  position: relative;
+}
+
+.event-preview-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--primary-subtle);
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.event-preview-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.event-preview-body h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-preview-meta {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.event-preview-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.event-preview-date {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+/* Campaign Highlight (legacy) */
 .campaign-highlight {
   max-width: 720px;
   border-radius: 12px;
@@ -121,6 +272,10 @@
   font-size: 0.92rem;
 }
 
+.help-card:hover .icon-block {
+  transform: translateY(-3px) scale(1.05);
+}
+
 /* Partners */
 .partners-section {
   background: var(--bg-alt);
@@ -140,11 +295,13 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
-  transition: border-color 0.15s var(--ease-standard);
+  transition: border-color 0.15s var(--ease-standard), background 0.15s var(--ease-standard), transform 0.2s var(--ease-out);
 }
 
 .partner-card:hover {
-  border-color: var(--border-hover);
+  border-color: var(--primary);
+  background: var(--primary-subtle);
+  transform: translateY(-1px);
 }
 
 .partner-card a {
@@ -175,6 +332,9 @@
   background: var(--primary);
   border-radius: 9999px;
   transition: width 1s var(--ease-standard);
+  background-image: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: progressShimmer 2.5s ease-in-out infinite;
 }
 
 .progress-stats {
@@ -195,9 +355,15 @@
   .home-hero { min-height: auto; }
   .home-hero .hero-bg-img { height: 120%; top: -10%; }
   .stats-grid { grid-template-columns: 1fr; gap: var(--space-md); }
+  .stat-item + .stat-item::before { display: none; }
   .help-grid { grid-template-columns: 1fr; gap: var(--space-md); }
   .campaign-highlight { padding: var(--space-lg); }
   .partners-grid { justify-content: center; }
+  .fundraiser-featured { grid-template-columns: 1fr; }
+  .fundraiser-featured-visual { justify-content: flex-start; }
+  .fundraiser-amount-display { width: 100%; }
+  .events-preview-grid { grid-template-columns: 1fr; }
+  .section-header-row { flex-direction: column; align-items: flex-start; }
 }
 
 @media (max-width: 480px) {

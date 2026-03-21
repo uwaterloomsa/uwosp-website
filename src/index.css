@@ -23,7 +23,7 @@
   --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 
-  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-body: 'Outfit', system-ui, sans-serif;
   --max-width: 1200px;
 
@@ -102,12 +102,27 @@ button, input, textarea, select { font-family: inherit; font-size: inherit; }
 
 .section-title {
   font-size: clamp(1.75rem, 4vw, 2.5rem);
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   letter-spacing: -0.02em;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 2px;
+  margin-top: 0.5rem;
 }
 
 .section-title--center {
   text-align: center;
+}
+
+.section-title--center::after {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .section-subtitle {
@@ -189,12 +204,13 @@ button, input, textarea, select { font-family: inherit; font-size: inherit; }
   border-radius: 12px;
   padding: 1.75rem;
   position: relative;
-  transition: border-color 0.2s var(--ease-standard), box-shadow 0.2s var(--ease-standard);
+  transition: border-color 0.2s var(--ease-standard), box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out);
 }
 
 .card:hover {
   border-color: var(--border-hover);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
 }
 
 /* ═══ Hero ═══ */
@@ -528,6 +544,40 @@ button, input, textarea, select { font-family: inherit; font-size: inherit; }
   background: var(--primary-subtle);
   color: var(--primary);
   flex-shrink: 0;
+  transition: transform 0.25s var(--ease-out);
+}
+
+/* ═══ Accent Section ═══ */
+.section--accent {
+  background: var(--primary);
+}
+
+.section--accent .section-title,
+.section--accent h2 { color: #fff; }
+
+.section--accent .section-title::after { background: rgba(255, 255, 255, 0.35); }
+
+.section--accent .section-subtitle,
+.section--accent p { color: rgba(255, 255, 255, 0.85); }
+
+.section--accent .btn-primary {
+  background: #fff;
+  color: var(--primary);
+}
+
+.section--accent .btn-primary:hover {
+  background: oklch(0.95 0.01 264);
+  color: var(--primary);
+}
+
+.section--accent .btn-outline {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.section--accent .btn-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 /* ═══ Accessibility ═══ */

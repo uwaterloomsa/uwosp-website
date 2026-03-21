@@ -66,11 +66,11 @@ export default function FAQs() {
                     className={`faq-caret ${openIndex === i ? "open" : ""}`}
                   />
                 </button>
-                {openIndex === i && (
-                  <div className="faq-answer">
+                <div className={`faq-answer ${openIndex === i ? "open" : ""}`}>
+                  <div className="faq-answer-inner">
                     <p>{faq.a}</p>
                   </div>
-                )}
+                </div>
               </div>
             ))}
           </div>

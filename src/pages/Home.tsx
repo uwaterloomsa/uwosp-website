@@ -4,16 +4,23 @@ import {
   Fire,
   HeartStraight,
   Handshake,
-  Megaphone,
   ArrowRight,
   Newspaper,
   ChartBar,
   CurrencyDollar,
+  Megaphone,
+  CalendarBlank,
+  Clock,
+  MapPin,
+  Confetti,
+  Lightbulb,
+  ForkKnife,
 } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import ParallaxHero from "../components/ParallaxHero";
-import { onActiveFundraiser, getSponsors } from "../services/site";
-import type { Fundraiser, Sponsor } from "../types/site";
+import { onActiveFundraiser, getSponsors, getEvents } from "../services/site";
+import type { Fundraiser, Sponsor, SiteEvent } from "../types/site";
+import type { ReactNode } from "react";
 import "./Home.css";
 
 function AnimatedCounter({
@@ -67,11 +74,15 @@ export default function Home() {
   useScrollReveal();
   const [fundraiser, setFundraiser] = useState<Fundraiser | null>(null);
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+  const [events, setEvents] = useState<SiteEvent[]>([]);
 
   useEffect(() => {
     const unsub = onActiveFundraiser(setFundraiser);
     getSponsors()
       .then(setSponsors)
+      .catch(() => {});
+    getEvents()
+      .then((all) => setEvents(all.slice(0, 3)))
       .catch(() => {});
     return unsub;
   }, []);
@@ -82,6 +93,47 @@ export default function Home() {
         Math.round((fundraiser.raisedAmount / fundraiser.goalAmount) * 100),
       )
     : 0;
+
+  const fallbackEvents: {
+    title: string;
+    date: string;
+    time: string;
+    location: string;
+    icon: ReactNode;
+  }[] = [
+    {
+      title: "Annual Charity Gala",
+      date: "March 2025",
+      time: "6:00 PM",
+      location: "Federation Hall",
+      icon: <Confetti size={20} weight="duotone" />,
+    },
+    {
+      title: "Orphan Awareness Week",
+      date: "April 2025",
+      time: "All Week",
+      location: "SLC, UWaterloo",
+      icon: <Lightbulb size={20} weight="duotone" />,
+    },
+    {
+      title: "Community Iftar",
+      date: "Ramadan 2025",
+      time: "Sunset",
+      location: "PAC, UWaterloo",
+      icon: <ForkKnife size={20} weight="duotone" />,
+    },
+  ];
+
+  const displayEvents =
+    events.length > 0
+      ? events.map((e) => ({
+          title: e.title,
+          date: e.date,
+          time: e.time,
+          location: e.location,
+          icon: <CalendarBlank size={20} weight="duotone" />,
+        }))
+      : fallbackEvents;
 
   return (
     <div className="home">
@@ -111,14 +163,90 @@ export default function Home() {
         </div>
       </ParallaxHero>
 
+      {/* Live Fundraiser — featured immediately after hero */}
+      <section className="section fundraiser-section">
+        <div className="container">
+          {fundraiser ? (
+            <div className="fundraiser-featured reveal-scale">
+              <div className="fundraiser-featured-content">
+                <div className="campaign-badge">
+                  <Fire size={18} weight="fill" /> Active Fundraiser
+                </div>
+                <h2>{fundraiser.title}</h2>
+                <p>{fundraiser.description}</p>
+                <div className="campaign-progress">
+                  <div className="progress-bar">
+                    <div
+                      className="progress-fill"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <div className="progress-stats">
+                    <span>
+                      ${fundraiser.raisedAmount.toLocaleString()} raised
+                    </span>
+                    <span>Goal: ${fundraiser.goalAmount.toLocaleString()}</span>
+                  </div>
+                </div>
+                <Link to="/donate" className="btn btn-primary">
+                  Contribute Now <ArrowRight size={16} weight="bold" />
+                </Link>
+              </div>
+              <div className="fundraiser-featured-visual">
+                <div className="fundraiser-amount-display">
+                  <span className="fundraiser-amount">
+                    ${fundraiser.raisedAmount.toLocaleString()}
+                  </span>
+                  <span className="fundraiser-amount-label">raised so far</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="fundraiser-featured reveal-scale">
+              <div className="fundraiser-featured-content">
+                <div className="campaign-badge">
+                  <Fire size={18} weight="fill" /> Current Campaign
+                </div>
+                <h2>UWOSP x NZF | Ramadan Fundraiser</h2>
+                <p>
+                  Gaza families arriving in Canada may have found safety, but
+                  their struggles are far from over. They carry the weight of
+                  loss — homes destroyed, loved ones gone, and families still in
+                  danger. Together, we can ease their burden.
+                </p>
+                <a
+                  href="https://uow-ansaar.raiselysite.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary"
+                >
+                  Learn More <ArrowRight size={16} weight="bold" />
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Impact Stats */}
+      <section className="section stats-section">
+        <div className="container">
+          <div className="stats-grid">
+            <AnimatedCounter target={22} label="Orphans Sponsored" />
+            <AnimatedCounter target={50000} prefix="$" label="Raised in 2024" />
+            <AnimatedCounter target={5} label="Countries Impacted" />
+          </div>
+        </div>
+      </section>
+
       {/* Mission */}
       <section className="section">
         <div className="container">
           <div className="split reveal">
             <div className="split-image image-hover-zoom">
               <img
-                src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&q=80"
-                alt="Community volunteers working together"
+                src="https://images.unsplash.com/photo-1497375638960-ca368c7231e4?w=800&q=80"
+                alt="Children smiling and playing together"
                 loading="lazy"
               />
             </div>
@@ -172,11 +300,50 @@ export default function Home() {
             </div>
             <div className="split-image image-hover-zoom">
               <img
-                src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&q=80"
-                alt="Volunteers organizing supplies for communities in need"
+                src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=800&q=80"
+                alt="Child writing at a school desk"
                 loading="lazy"
               />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Events Preview */}
+      <section className="section">
+        <div className="container">
+          <div className="section-header-row reveal">
+            <div>
+              <h2 className="section-title">Upcoming Events</h2>
+              <p className="section-subtitle">
+                Join us at our next event and be part of the change.
+              </p>
+            </div>
+            <Link to="/events" className="btn btn-outline">
+              View All Events <ArrowRight size={16} weight="bold" />
+            </Link>
+          </div>
+          <div className="events-preview-grid">
+            {displayEvents.map((e, i) => (
+              <div
+                className={`card event-preview-card reveal stagger-${i + 1}`}
+                key={i}
+              >
+                <div className="event-preview-icon">{e.icon}</div>
+                <div className="event-preview-body">
+                  <h3>{e.title}</h3>
+                  <div className="event-preview-meta">
+                    <span>
+                      <Clock size={13} weight="bold" /> {e.time}
+                    </span>
+                    <span>
+                      <MapPin size={13} weight="bold" /> {e.location}
+                    </span>
+                  </div>
+                </div>
+                <span className="event-preview-date">{e.date}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -198,71 +365,6 @@ export default function Home() {
           >
             <Newspaper size={18} weight="bold" /> Read Newsletter
           </a>
-        </div>
-      </section>
-
-      {/* Live Fundraiser — admin-managed with real-time amounts */}
-      <section className="section">
-        <div className="container">
-          {fundraiser ? (
-            <div className="campaign-highlight card reveal-scale">
-              <div className="campaign-badge">
-                <Fire size={18} weight="fill" /> Active Fundraiser
-              </div>
-              <h2>{fundraiser.title}</h2>
-              <p>{fundraiser.description}</p>
-              <div className="campaign-progress">
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: `${pct}%` }} />
-                </div>
-                <div className="progress-stats">
-                  <span>
-                    ${fundraiser.raisedAmount.toLocaleString()} raised
-                  </span>
-                  <span>Goal: ${fundraiser.goalAmount.toLocaleString()}</span>
-                </div>
-              </div>
-              <Link to="/donate" className="btn btn-primary">
-                Contribute Now
-              </Link>
-            </div>
-          ) : (
-            <div className="campaign-highlight card reveal-scale">
-              <div className="campaign-badge">
-                <Fire size={18} weight="fill" /> Current Campaign
-              </div>
-              <h2>UWOSP x NZF | Ramadan Fundraiser</h2>
-              <p>
-                Gaza families arriving in Canada may have found safety, but
-                their struggles are far from over. They carry the weight of loss
-                — homes destroyed, loved ones gone, and families still in
-                danger. On top of that, they face the overwhelming challenge of
-                starting over, with food, rent, and other critical needs often
-                out of reach. But together, we can ease their burden. This
-                Ramadan, join National Zakat Foundation Canada and UW MSA in
-                supporting our brothers and sisters from Gaza.
-              </p>
-              <a
-                href="https://uow-ansaar.raiselysite.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary"
-              >
-                Learn More
-              </a>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Impact Stats */}
-      <section className="section stats-section">
-        <div className="container">
-          <div className="stats-grid">
-            <AnimatedCounter target={22} label="Orphans Sponsored" />
-            <AnimatedCounter target={50000} prefix="$" label="Raised in 2024" />
-            <AnimatedCounter target={5} label="Countries Impacted" />
-          </div>
         </div>
       </section>
 

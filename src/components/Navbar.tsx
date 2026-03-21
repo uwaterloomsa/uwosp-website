@@ -13,6 +13,7 @@ export default function Navbar() {
   const mainLinks = [
     { to: "/orphans", label: "Our Orphans" },
     { to: "/campaigns", label: "Campaigns" },
+    { to: "/events", label: "Events" },
     { to: "/get-involved", label: "Join Us" },
     { to: "/contact", label: "Contact" },
   ];

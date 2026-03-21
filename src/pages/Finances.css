@@ -46,13 +46,18 @@
 }
 
 .report-card:hover {
-  border-color: var(--border-hover);
+  border-color: var(--primary);
   color: var(--primary);
 }
 
 .report-card svg {
   color: var(--primary);
   flex-shrink: 0;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.report-card:hover svg {
+  transform: translateY(-2px) scale(1.08);
 }
 
 .report-card h4 {

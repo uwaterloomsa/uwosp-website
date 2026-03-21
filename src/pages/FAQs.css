@@ -21,6 +21,12 @@
   cursor: pointer;
   text-align: left;
   gap: 1rem;
+  transition: background 0.15s var(--ease-standard);
+  border-radius: 11px;
+}
+
+.faq-question:hover {
+  background: oklch(0.97 0.01 264);
 }
 
 .faq-question h4 {
@@ -39,10 +45,21 @@
 }
 
 .faq-answer {
-  padding: 0 1.25rem 1.1rem;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s var(--ease-out);
 }
 
-.faq-answer p {
+.faq-answer.open {
+  grid-template-rows: 1fr;
+}
+
+.faq-answer-inner {
+  overflow: hidden;
+}
+
+.faq-answer-inner p {
+  padding: 0 1.25rem 1.1rem;
   color: var(--text-muted);
   line-height: 1.7;
   font-size: 0.92rem;

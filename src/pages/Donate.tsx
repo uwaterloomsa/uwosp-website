@@ -91,10 +91,12 @@ export default function Donate() {
       </section>
 
       {/* CTA */}
-      <section className="section donate-cta-section">
+      <section className="section section--accent donate-cta-section">
         <div className="container" style={{ textAlign: "center" }}>
-          <h2 className="section-title">Ready to Help?</h2>
-          <p className="section-subtitle">
+          <h2 className="section-title section-title--center">
+            Ready to Help?
+          </h2>
+          <p className="section-subtitle section-subtitle--center">
             Donations are processed through WUSA and our verified charity
             partners.
           </p>

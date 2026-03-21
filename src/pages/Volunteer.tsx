@@ -4,6 +4,12 @@ import {
   Buildings,
   MapPin,
   ArrowSquareOut,
+  CalendarCheck,
+  Megaphone,
+  PencilLine,
+  UsersThree,
+  Clock,
+  ShieldCheck,
 } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import { Link } from "react-router-dom";
@@ -70,6 +76,69 @@ export default function Volunteer() {
               alt="Diverse group of volunteers at a community center"
               loading="lazy"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Volunteer Roles */}
+      <section className="section" style={{ background: "var(--bg-alt)" }}>
+        <div className="container">
+          <h2 className="section-title section-title--center reveal">
+            Types of Volunteer Roles
+          </h2>
+          <p className="section-subtitle section-subtitle--center reveal">
+            There are many ways to contribute — find the role that fits your
+            skills and interests.
+          </p>
+          <div className="roles-grid">
+            <div className="card role-card reveal stagger-1">
+              <CalendarCheck size={32} weight="duotone" className="role-icon" />
+              <h3>Event Coordination</h3>
+              <p>
+                Help plan and run charity events, fundraising dinners, and
+                awareness campaigns on campus and in the community.
+              </p>
+            </div>
+            <div className="card role-card reveal stagger-2">
+              <Megaphone size={32} weight="duotone" className="role-icon" />
+              <h3>Outreach & Marketing</h3>
+              <p>
+                Spread the word about our mission through social media content,
+                campus booths, and community engagement.
+              </p>
+            </div>
+            <div className="card role-card reveal stagger-3">
+              <PencilLine size={32} weight="duotone" className="role-icon" />
+              <h3>Content & Design</h3>
+              <p>
+                Create graphics, write newsletters, produce videos, or help
+                maintain our website and digital presence.
+              </p>
+            </div>
+            <div className="card role-card reveal stagger-4">
+              <UsersThree size={32} weight="duotone" className="role-icon" />
+              <h3>Community Support</h3>
+              <p>
+                Assist with on-the-ground charity activities like food drives,
+                donation sorting, and direct community aid.
+              </p>
+            </div>
+            <div className="card role-card reveal stagger-5">
+              <Clock size={32} weight="duotone" className="role-icon" />
+              <h3>Flexible Commitment</h3>
+              <p>
+                Whether you have a few hours a week or can commit to a full
+                term, there are roles that fit every schedule.
+              </p>
+            </div>
+            <div className="card role-card reveal stagger-6">
+              <ShieldCheck size={32} weight="duotone" className="role-icon" />
+              <h3>Verified Hours</h3>
+              <p>
+                Receive verified volunteer hours for your contributions —
+                recognized by the university and future employers.
+              </p>
+            </div>
           </div>
         </div>
       </section>
