@@ -76,9 +76,7 @@ export default function Navbar() {
             >
               About <CaretDown size={14} weight="bold" />
             </button>
-            <div
-              className={`nav-dropdown-menu ${dropdownOpen ? "open" : ""}`}
-            >
+            <div className={`nav-dropdown-menu ${dropdownOpen ? "open" : ""}`}>
               {aboutLinks.map((link) => (
                 <Link
                   key={link.to}
@@ -100,16 +98,10 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link
-            to="/donate"
-            className="btn btn-primary nav-donate"
-          >
+          <Link to="/donate" className="btn btn-primary nav-donate">
             Donate
           </Link>
-          <Link
-            to="/admin/login"
-            className="nav-login"
-          >
+          <Link to="/admin/login" className="nav-login">
             <SignIn size={18} weight="bold" />
             Login
           </Link>

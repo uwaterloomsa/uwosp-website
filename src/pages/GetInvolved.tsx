@@ -170,9 +170,7 @@ export default function GetInvolved() {
                   >
                     <button
                       className="careers-row-header"
-                      onClick={() =>
-                        setExpandedId(isOpen ? null : posting.id)
-                      }
+                      onClick={() => setExpandedId(isOpen ? null : posting.id)}
                     >
                       <div className="careers-row-left">
                         <h3 className="careers-row-title">{posting.title}</h3>
