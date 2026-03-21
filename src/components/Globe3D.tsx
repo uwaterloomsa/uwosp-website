@@ -37,12 +37,7 @@ function GlobeWireframe() {
   return (
     <mesh ref={meshRef}>
       <sphereGeometry args={[GLOBE_RADIUS, 48, 48]} />
-      <meshBasicMaterial
-        color="#1d4ed8"
-        wireframe
-        transparent
-        opacity={0.12}
-      />
+      <meshBasicMaterial color="#1d4ed8" wireframe transparent opacity={0.12} />
     </mesh>
   );
 }
@@ -154,10 +149,7 @@ function Particles({ count = 300 }: { count?: number }) {
   return (
     <points ref={ref}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         <bufferAttribute attach="attributes-size" args={[sizes, 1]} />
       </bufferGeometry>
       <pointsMaterial
@@ -186,8 +178,7 @@ function PulseRing() {
       const t = (clock.getElapsedTime() % 2) / 2;
       const scale = 1 + t * 3;
       ref.current.scale.set(scale, scale, scale);
-      (ref.current.material as THREE.MeshBasicMaterial).opacity =
-        0.5 * (1 - t);
+      (ref.current.material as THREE.MeshBasicMaterial).opacity = 0.5 * (1 - t);
     }
     if (groupRef.current) {
       groupRef.current.rotation.y += 0.08 * (1 / 60);
@@ -199,11 +190,7 @@ function PulseRing() {
       <group position={uwPos}>
         <mesh
           ref={ref}
-          rotation={[
-            Math.PI / 2 - (LOCATIONS[0].lat * Math.PI) / 180,
-            0,
-            0,
-          ]}
+          rotation={[Math.PI / 2 - (LOCATIONS[0].lat * Math.PI) / 180, 0, 0]}
         >
           <ringGeometry args={[0.04, 0.06, 32]} />
           <meshBasicMaterial
