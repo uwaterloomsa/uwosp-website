@@ -24,7 +24,7 @@ export default function Navbar() {
           onClick={() => setMenuOpen(false)}
         >
           <span className="brand-icon">
-            <HeartStraight size={24} weight="fill" color="#ef4444" />
+            <HeartStraight size={24} weight="fill" color="#c2410c" />
           </span>
           <span className="brand-text">UWOSP</span>
         </Link>

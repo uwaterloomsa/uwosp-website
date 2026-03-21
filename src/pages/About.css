@@ -4,8 +4,9 @@
   text-align: center;
   font-size: 1.1rem;
   line-height: 1.9;
-  background: linear-gradient(135deg, var(--bg-secondary), var(--accent-subtle));
-  border-color: var(--accent-primary);
+  padding: 3rem;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
 }
 
 /* Team */
@@ -17,6 +18,7 @@
 
 .team-card {
   text-align: center;
+  padding: 2rem 1.5rem;
 }
 
 .team-avatar {
@@ -24,7 +26,12 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  color: var(--accent-primary);
+  color: var(--primary);
+  transition: transform 0.2s ease-out;
+}
+
+.team-card:hover .team-avatar {
+  transform: translateY(-4px) scale(1.1) rotate(-5deg);
 }
 
 .team-card h4 {
@@ -45,6 +52,7 @@
 
 .collab-card {
   text-align: center;
+  padding: 2rem;
 }
 
 .collab-icon {
@@ -52,7 +60,12 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  color: var(--accent-primary);
+  color: var(--primary);
+  transition: transform 0.2s ease-out;
+}
+
+.collab-card:hover .collab-icon {
+  transform: scale(1.15) rotate(5deg);
 }
 
 .collab-card h4 {

@@ -1,5 +1,6 @@
 import { User, Handshake } from "@phosphor-icons/react";
 import AnimatedBackground from "../components/AnimatedBackground";
+import useScrollReveal from "../hooks/useScrollReveal";
 import "./About.css";
 
 const team = [
@@ -12,6 +13,8 @@ const team = [
 ];
 
 export default function About() {
+  useScrollReveal();
+
   return (
     <div className="about">
       <section className="hero">
@@ -27,8 +30,8 @@ export default function About() {
       {/* Mission */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title">Our Mission</h2>
-          <div className="mission-statement card">
+          <h2 className="section-title reveal">Our Mission</h2>
+          <div className="mission-statement card reveal-scale">
             <p>
               At the University of Waterloo, the Orphan Sponsorship Program aims
               to provide for the needs and well-being of orphans around the
@@ -46,13 +49,13 @@ export default function About() {
       {/* Team */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title">Our Team</h2>
-          <p className="section-subtitle">
+          <h2 className="section-title reveal">Our Team</h2>
+          <p className="section-subtitle reveal">
             Meet the dedicated students leading UWOSP.
           </p>
           <div className="team-grid">
             {team.map((member, i) => (
-              <div className="card team-card" key={i}>
+              <div className={`card team-card reveal stagger-${i + 1}`} key={i}>
                 <span className="team-avatar">
                   <User size={48} weight="duotone" />
                 </span>
@@ -65,13 +68,10 @@ export default function About() {
       </section>
 
       {/* Collaborators */}
-      <section
-        className="section"
-        style={{ background: "var(--bg-secondary)" }}
-      >
+      <section className="section collaborators-section">
         <div className="container">
-          <h2 className="section-title">Our Collaborators</h2>
-          <p className="section-subtitle">
+          <h2 className="section-title reveal">Our Collaborators</h2>
+          <p className="section-subtitle reveal">
             We partner with established charities to deliver aid.
           </p>
           <div className="collab-grid">
@@ -80,8 +80,8 @@ export default function About() {
               "Human Concern International",
               "IDRF",
               "Human Appeal",
-            ].map((name) => (
-              <div className="card collab-card" key={name}>
+            ].map((name, i) => (
+              <div className={`card collab-card reveal stagger-${i + 1}`} key={name}>
                 <span className="collab-icon">
                   <Handshake size={40} weight="duotone" />
                 </span>

@@ -10,6 +10,7 @@ import {
   ForkKnife,
 } from "@phosphor-icons/react";
 import AnimatedBackground from "../components/AnimatedBackground";
+import useScrollReveal from "../hooks/useScrollReveal";
 import "./Campaigns.css";
 import type { ReactNode } from "react";
 
@@ -68,6 +69,8 @@ const events: { title: string; date: string; icon: ReactNode; desc: string }[] =
   ];
 
 export default function Campaigns() {
+  useScrollReveal();
+
   return (
     <div className="campaigns">
       <section className="hero">
@@ -81,7 +84,7 @@ export default function Campaigns() {
       {/* Active Campaign */}
       <section className="section">
         <div className="container">
-          <div className="active-campaign card">
+          <div className="active-campaign card reveal-scale">
             <div className="campaign-badge">
               <Fire size={18} weight="fill" /> Active Now
             </div>
@@ -108,13 +111,10 @@ export default function Campaigns() {
       </section>
 
       {/* Past Campaigns */}
-      <section
-        className="section"
-        style={{ background: "var(--bg-secondary)" }}
-      >
+      <section className="section past-campaigns-section">
         <div className="container">
-          <h2 className="section-title">Past Campaigns</h2>
-          <p className="section-subtitle">
+          <h2 className="section-title reveal">Past Campaigns</h2>
+          <p className="section-subtitle reveal">
             A look back at what we've accomplished together.
           </p>
           <div className="past-grid">
@@ -133,8 +133,8 @@ export default function Campaigns() {
       {/* Upcoming Events */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title">Upcoming Events</h2>
-          <p className="section-subtitle">
+          <h2 className="section-title reveal">Upcoming Events</h2>
+          <p className="section-subtitle reveal">
             Join us at our next event and be part of the change.
           </p>
           <div className="events-grid">

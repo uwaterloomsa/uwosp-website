@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { UserCircle } from "@phosphor-icons/react";
 import AnimatedBackground from "../components/AnimatedBackground";
+import useScrollReveal from "../hooks/useScrollReveal";
 import "./Orphans.css";
 
 const orphans = [
@@ -15,6 +16,8 @@ const orphans = [
 ];
 
 export default function Orphans() {
+  useScrollReveal();
+
   return (
     <div className="orphans">
       <section className="hero">
@@ -31,14 +34,14 @@ export default function Orphans() {
       {/* How It Works */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title">How Sponsorship Works</h2>
-          <p className="section-subtitle">
+          <h2 className="section-title reveal">How Sponsorship Works</h2>
+          <p className="section-subtitle reveal">
             Through our charity partners, your contributions directly support
             orphans who have lost parents due to war, extreme poverty, or
             disease.
           </p>
           <div className="how-grid">
-            <div className="card how-card">
+            <div className="card how-card reveal stagger-1">
               <span className="how-step">1</span>
               <h3>Choose to Sponsor</h3>
               <p>
@@ -46,7 +49,7 @@ export default function Orphans() {
                 orphans in need.
               </p>
             </div>
-            <div className="card how-card">
+            <div className="card how-card reveal stagger-2">
               <span className="how-step">2</span>
               <h3>Funds Are Delivered</h3>
               <p>
@@ -54,7 +57,7 @@ export default function Orphans() {
                 Relief and HCI.
               </p>
             </div>
-            <div className="card how-card">
+            <div className="card how-card reveal stagger-3">
               <span className="how-step">3</span>
               <h3>Lives Are Changed</h3>
               <p>
@@ -67,13 +70,10 @@ export default function Orphans() {
       </section>
 
       {/* Orphan Profiles */}
-      <section
-        className="section"
-        style={{ background: "var(--bg-secondary)" }}
-      >
+      <section className="section orphan-profiles-section">
         <div className="container">
-          <h2 className="section-title">Children We Support</h2>
-          <p className="section-subtitle">
+          <h2 className="section-title reveal">Children We Support</h2>
+          <p className="section-subtitle reveal">
             Each child has a unique story. Your sponsorship can make all the
             difference.
           </p>

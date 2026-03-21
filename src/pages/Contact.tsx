@@ -5,6 +5,7 @@ import {
   MapPin,
 } from "@phosphor-icons/react";
 import AnimatedBackground from "../components/AnimatedBackground";
+import useScrollReveal from "../hooks/useScrollReveal";
 import "./Contact.css";
 
 const faqs = [
@@ -31,6 +32,8 @@ const faqs = [
 ];
 
 export default function Contact() {
+  useScrollReveal();
+
   return (
     <div className="contact">
       <section className="hero">
@@ -46,7 +49,7 @@ export default function Contact() {
           <div className="contact-layout">
             {/* Form */}
             <form
-              className="contact-form card"
+              className="contact-form card reveal-left"
               onSubmit={(e) => e.preventDefault()}
             >
               <h2>Send a Message</h2>
@@ -72,7 +75,7 @@ export default function Contact() {
             </form>
 
             {/* Info */}
-            <div className="contact-info">
+            <div className="contact-info reveal-right">
               <div className="card info-card">
                 <span className="info-icon">
                   <EnvelopeSimple size={32} weight="duotone" />
@@ -107,12 +110,9 @@ export default function Contact() {
       </section>
 
       {/* FAQ */}
-      <section
-        className="section"
-        style={{ background: "var(--bg-secondary)" }}
-      >
+      <section className="section faq-section">
         <div className="container">
-          <h2 className="section-title">Frequently Asked Questions</h2>
+          <h2 className="section-title reveal">Frequently Asked Questions</h2>
           <div className="faq-list">
             {faqs.map((faq, i) => (
               <div className="faq-item card" key={i}>

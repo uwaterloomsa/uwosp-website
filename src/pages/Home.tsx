@@ -10,6 +10,7 @@ import {
   Megaphone,
 } from "@phosphor-icons/react";
 import AnimatedBackground from "../components/AnimatedBackground";
+import useScrollReveal from "../hooks/useScrollReveal";
 import "./Home.css";
 
 function AnimatedCounter({ target, label }: { target: number; label: string }) {
@@ -51,12 +52,15 @@ function AnimatedCounter({ target, label }: { target: number; label: string }) {
 }
 
 export default function Home() {
+  useScrollReveal();
+
   return (
     <div className="home">
       {/* Hero */}
       <section className="hero home-hero">
         <AnimatedBackground variant="hero" />
         <div className="hero-content">
+          <span className="hero-badge">\uD83C\uDF0D Making a Difference Since 2007</span>
           <h1>
             Empowering Orphans,
             <br />
@@ -81,13 +85,13 @@ export default function Home() {
       {/* Mission Cards */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title">Our Mission</h2>
-          <p className="section-subtitle">
+          <h2 className="section-title reveal">Our Mission</h2>
+          <p className="section-subtitle reveal">
             We believe our support can help provide orphans with the security
             and tools to thrive.
           </p>
           <div className="mission-grid">
-            <div className="card mission-card">
+            <div className="card mission-card reveal stagger-1">
               <span className="mission-icon">
                 <BowlFood size={48} weight="duotone" />
               </span>
@@ -97,7 +101,7 @@ export default function Home() {
                 for proper growth and development.
               </p>
             </div>
-            <div className="card mission-card">
+            <div className="card mission-card reveal stagger-2">
               <span className="mission-icon">
                 <FirstAidKit size={48} weight="duotone" />
               </span>
@@ -107,7 +111,7 @@ export default function Home() {
                 to children in need.
               </p>
             </div>
-            <div className="card mission-card">
+            <div className="card mission-card reveal stagger-3">
               <span className="mission-icon">
                 <Books size={48} weight="duotone" />
               </span>
@@ -125,8 +129,8 @@ export default function Home() {
       <section className="section stats-section">
         <AnimatedBackground variant="subtle" />
         <div className="container">
-          <h2 className="section-title">Our Impact</h2>
-          <p className="section-subtitle">
+          <h2 className="section-title reveal">Our Impact</h2>
+          <p className="section-subtitle reveal">
             Together we are making a difference around the world.
           </p>
           <div className="stats-grid">
@@ -141,7 +145,7 @@ export default function Home() {
       {/* Current Campaign */}
       <section className="section">
         <div className="container">
-          <div className="campaign-highlight card">
+          <div className="campaign-highlight card reveal-scale">
             <div className="campaign-badge">
               <Fire size={18} weight="fill" /> Active Campaign
             </div>
@@ -161,13 +165,13 @@ export default function Home() {
       {/* How You Can Help */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title">How You Can Help</h2>
-          <p className="section-subtitle">
+          <h2 className="section-title reveal">How You Can Help</h2>
+          <p className="section-subtitle reveal">
             There are many ways to support our mission and make a lasting
             impact.
           </p>
           <div className="help-grid">
-            <div className="card help-card">
+            <div className="card help-card reveal stagger-1">
               <span className="help-icon">
                 <HeartStraight size={40} weight="duotone" />
               </span>
@@ -180,7 +184,7 @@ export default function Home() {
                 Sponsor Now
               </Link>
             </div>
-            <div className="card help-card">
+            <div className="card help-card reveal stagger-2">
               <span className="help-icon">
                 <Handshake size={40} weight="duotone" />
               </span>
@@ -192,7 +196,7 @@ export default function Home() {
                 Get Involved
               </Link>
             </div>
-            <div className="card help-card">
+            <div className="card help-card reveal stagger-3">
               <span className="help-icon">
                 <Megaphone size={40} weight="duotone" />
               </span>
@@ -210,15 +214,17 @@ export default function Home() {
       <section className="section partners-section">
         <AnimatedBackground variant="subtle" />
         <div className="container">
-          <h2 className="section-title">Our Partners</h2>
-          <p className="section-subtitle">
+          <h2 className="section-title reveal">Our Partners</h2>
+          <p className="section-subtitle reveal">
             We work with registered charities to maximize our impact.
           </p>
           <div className="partners-grid">
-            <div className="partner-card">Islamic Relief</div>
-            <div className="partner-card">Human Concern International</div>
-            <div className="partner-card">IDRF</div>
-            <div className="partner-card">Human Appeal</div>
+            <div className="partner-card reveal stagger-1">Islamic Relief</div>
+            <div className="partner-card reveal stagger-2">
+              Human Concern International
+            </div>
+            <div className="partner-card reveal stagger-3">IDRF</div>
+            <div className="partner-card reveal stagger-4">Human Appeal</div>
           </div>
         </div>
       </section>

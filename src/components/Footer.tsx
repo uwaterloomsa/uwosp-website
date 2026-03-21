@@ -17,7 +17,7 @@ export default function Footer() {
               <HeartStraight
                 size={22}
                 weight="fill"
-                color="#ef4444"
+                color="#c2410c"
                 style={{ verticalAlign: "middle", marginRight: "0.4rem" }}
               />
               UWOSP

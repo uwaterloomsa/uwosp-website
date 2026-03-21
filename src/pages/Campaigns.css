@@ -1,19 +1,22 @@
 .active-campaign {
   text-align: center;
   padding: 3rem;
-  background: linear-gradient(135deg, var(--bg-secondary), var(--accent-subtle));
-  border-color: var(--accent-primary);
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
 }
 
 .campaign-badge {
-  display: inline-block;
-  background: var(--accent-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--primary);
   color: #fff;
-  padding: 0.3rem 1rem;
-  border-radius: 20px;
+  padding: 0.35rem 1.1rem;
+  border-radius: 9999px;
   font-size: 0.85rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
+  animation: pulseSubtle 3s ease-in-out infinite;
 }
 
 .active-campaign h2 {
@@ -35,17 +38,31 @@
 .progress-bar {
   width: 100%;
   height: 10px;
-  background: var(--bg-primary);
-  border-radius: 10px;
+  background: rgba(194, 65, 12, 0.08);
+  border-radius: 9999px;
   overflow: hidden;
   margin-bottom: 0.5rem;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-primary), #60a5fa);
-  border-radius: 10px;
-  transition: width 1s ease;
+  background: var(--primary);
+  border-radius: 9999px;
+  position: relative;
+  overflow: hidden;
+  transition: width 1.2s ease-out;
+}
+
+/* Shimmer sweep on progress bar */
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  animation: shimmer 2.5s ease-in-out infinite;
 }
 
 .progress-stats {
@@ -55,23 +72,26 @@
   color: var(--text-muted);
 }
 
-/* Past Campaigns */
+/* Past campaigns */
 .past-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 
-.past-card {
-  text-align: center;
-}
+.past-card { text-align: center; }
 
 .past-emoji {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  color: var(--accent-primary);
+  color: var(--primary);
+  transition: transform 0.2s ease-out;
+}
+
+.past-card:hover .past-emoji {
+  transform: scale(1.2) rotate(-5deg);
 }
 
 .past-card h3 {
@@ -80,8 +100,9 @@
 }
 
 .past-raised {
-  color: var(--accent-primary);
+  color: var(--primary);
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
   margin-bottom: 0.75rem;
 }
 
@@ -97,30 +118,27 @@
   gap: 1.5rem;
 }
 
-.event-card {
-  text-align: center;
-}
+.event-card { text-align: center; }
 
 .event-emoji {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 0.5rem;
-  color: var(--accent-primary);
+  color: var(--primary);
+  transition: transform 0.2s ease-out;
+}
+
+.event-card:hover .event-emoji {
+  transform: translateY(-4px) rotate(8deg);
 }
 
 .event-date {
-  color: var(--accent-primary);
+  color: var(--primary);
   font-weight: 600;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
 }
 
-.event-card h3 {
-  margin-bottom: 0.75rem;
-}
-
-.event-card p {
-  color: var(--text-muted);
-  font-size: 0.95rem;
-}
+.event-card h3 { margin-bottom: 0.75rem; }
+.event-card p { color: var(--text-muted); font-size: 0.95rem; }

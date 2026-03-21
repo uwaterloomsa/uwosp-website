@@ -1,14 +1,12 @@
-/* ===== Application Modal ===== */
 .apply-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
-  backdrop-filter: blur(4px);
 }
 
 .apply-modal {
@@ -16,13 +14,13 @@
   max-width: 540px;
   max-height: 85vh;
   overflow-y: auto;
-  animation: applyModalIn 0.25s ease;
+  animation: modalIn 0.25s ease-out;
 }
 
-@keyframes applyModalIn {
+@keyframes modalIn {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.97);
+    transform: translateY(24px) scale(0.96);
   }
   to {
     opacity: 1;
@@ -48,16 +46,17 @@
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  background: var(--bg);
   color: var(--text-muted);
   cursor: pointer;
-  transition: color var(--transition), border-color var(--transition);
+  transition: transform 0.15s ease-out, color 0.15s ease-out, border-color 0.15s ease-out;
 }
 
 .apply-close:hover {
   color: #ef4444;
   border-color: #ef4444;
+  transform: rotate(90deg);
 }
 
 .apply-form .form-group {
@@ -77,37 +76,34 @@
   width: 100%;
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
   outline: none;
-  transition: border-color var(--transition);
+  transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
 }
 
 .apply-form .form-group input:focus,
 .apply-form .form-group textarea:focus {
-  border-color: var(--accent-primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.08);
 }
 
 .apply-form .btn {
   width: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
 .apply-error {
-  background: rgba(239, 68, 68, 0.12);
-  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626;
   padding: 0.75rem 1rem;
   border-radius: 8px;
   font-size: 0.9rem;
   margin-bottom: 1rem;
+  border: 1px solid rgba(239, 68, 68, 0.15);
 }
 
-/* Success state */
 .apply-success {
   text-align: center;
   padding: 2rem 1rem;
@@ -115,19 +111,9 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  color: #2ed573;
+  color: #16a34a;
 }
 
-.apply-success h3 {
-  color: var(--text-heading);
-}
-
-.apply-success p {
-  color: var(--text-muted);
-  max-width: 360px;
-}
-
-.apply-success .btn {
-  margin-top: 0.5rem;
-  width: auto;
-}
+.apply-success h3 { color: var(--text-heading); }
+.apply-success p { color: var(--text-muted); max-width: 360px; }
+.apply-success .btn { margin-top: 0.5rem; width: auto; }
