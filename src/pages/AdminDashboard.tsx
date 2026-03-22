@@ -2119,12 +2119,11 @@ export default function AdminDashboard() {
                   <label htmlFor="evt-date">Date</label>
                   <input
                     id="evt-date"
-                    type="text"
+                    type="date"
                     value={eventForm.date}
                     onChange={(e) =>
                       setEventForm((f) => ({ ...f, date: e.target.value }))
                     }
-                    placeholder="e.g. March 15, 2025"
                     required
                   />
                 </div>
@@ -2132,12 +2131,11 @@ export default function AdminDashboard() {
                   <label htmlFor="evt-time">Time</label>
                   <input
                     id="evt-time"
-                    type="text"
+                    type="time"
                     value={eventForm.time}
                     onChange={(e) =>
                       setEventForm((f) => ({ ...f, time: e.target.value }))
                     }
-                    placeholder="e.g. 6:00 PM"
                   />
                 </div>
               </div>

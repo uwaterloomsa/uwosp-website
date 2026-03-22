@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ParallaxHero from "../components/ParallaxHero";
 import EditableText from "../components/EditableText";
 import EditableImage from "../components/EditableImage";
+import { useCms } from "../components/CmsProvider";
 import {
   HandHeart,
   Buildings,
@@ -13,6 +14,11 @@ import {
   UsersThree,
   Clock,
   ShieldCheck,
+  PencilSimple,
+  Plus,
+  Trash,
+  X,
+  Warning,
 } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import { Link } from "react-router-dom";
@@ -92,10 +98,183 @@ const ROLE_ICONS = [
   ShieldCheck,
 ];
 
+/* ─── Charity Partner Edit Modal ─── */
+interface CharityEditModalProps {
+  items: VolunteerCharity[];
+  onClose: () => void;
+}
+
+function CharityEditModal({ items, onClose }: CharityEditModalProps) {
+  const sorted = [...items].sort((a, b) => a.name.localeCompare(b.name));
+
+  const blank = { name: "", focus: "", location: "", website: "" };
+
+  const [editing, setEditing] = useState<VolunteerCharity | null>(null);
+  const [adding, setAdding] = useState(false);
+  const [form, setForm] = useState(blank);
+  const [busy, setBusy] = useState(false);
+
+  const openAdd = () => {
+    setForm(blank);
+    setEditing(null);
+    setAdding(true);
+  };
+
+  const openEdit = (c: VolunteerCharity) => {
+    setForm({
+      name: c.name,
+      focus: c.focus,
+      location: c.location,
+      website: c.website,
+    });
+    setEditing(c);
+    setAdding(true);
+  };
+
+  const handleSave = async () => {
+    if (!form.name.trim()) return;
+    setBusy(true);
+    const data = {
+      name: form.name.trim(),
+      focus: form.focus.trim(),
+      location: form.location.trim(),
+      website: form.website.trim(),
+    };
+    if (editing) {
+      await volunteerCharityService.updateItem(editing.id, data);
+    } else {
+      await volunteerCharityService.addItem(
+        data as Omit<VolunteerCharity, "id">,
+      );
+    }
+    setBusy(false);
+    setAdding(false);
+    setEditing(null);
+  };
+
+  const handleDelete = async (id: string) => {
+    await volunteerCharityService.deleteItem(id);
+  };
+
+  const set = (field: string, value: string) =>
+    setForm((prev) => ({ ...prev, [field]: value }));
+
+  return (
+    <div className="team-modal-overlay" onClick={onClose}>
+      <div className="team-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="team-modal-header">
+          <h2>Manage Charity Partners</h2>
+          <button className="team-modal-close" onClick={onClose}>
+            <X size={20} weight="bold" />
+          </button>
+        </div>
+
+        <div className="team-modal-warning">
+          <Warning size={14} weight="bold" />
+          Changes here are visible to all visitors immediately.
+        </div>
+
+        {adding ? (
+          <div className="team-modal-form">
+            <h3>{editing ? "Edit Charity" : "Add Charity"}</h3>
+            <label>
+              Name
+              <input
+                value={form.name}
+                onChange={(e) => set("name", e.target.value)}
+              />
+            </label>
+            <label>
+              Focus Area
+              <input
+                value={form.focus}
+                onChange={(e) => set("focus", e.target.value)}
+                placeholder="e.g. Humanitarian aid, orphan sponsorship"
+              />
+            </label>
+            <label>
+              Location
+              <input
+                value={form.location}
+                onChange={(e) => set("location", e.target.value)}
+                placeholder="e.g. Burlington, ON"
+              />
+            </label>
+            <label>
+              Website URL
+              <input
+                value={form.website}
+                onChange={(e) => set("website", e.target.value)}
+                placeholder="https://example.org"
+              />
+            </label>
+            <div className="team-modal-form-actions">
+              <button
+                className="btn"
+                onClick={handleSave}
+                disabled={busy || !form.name.trim()}
+              >
+                {busy ? "Saving…" : editing ? "Update" : "Add"}
+              </button>
+              <button
+                className="btn btn-outline"
+                onClick={() => {
+                  setAdding(false);
+                  setEditing(null);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <button className="btn team-modal-add" onClick={openAdd}>
+              <Plus size={16} weight="bold" /> Add Charity
+            </button>
+            <div className="team-modal-list">
+              {sorted.map((c) => (
+                <div className="team-modal-row" key={c.id}>
+                  <div className="team-modal-row-info">
+                    <strong>{c.name}</strong>
+                    <span>
+                      {c.location} · {c.focus}
+                    </span>
+                  </div>
+                  <div className="team-modal-row-actions">
+                    <button onClick={() => openEdit(c)} title="Edit">
+                      <PencilSimple size={16} weight="bold" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(c.id)}
+                      title="Delete"
+                      className="team-modal-row-delete"
+                    >
+                      <Trash size={16} weight="bold" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+              {sorted.length === 0 && (
+                <p className="team-modal-empty">
+                  No charities in the database yet. Using default data on the
+                  page.
+                </p>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Volunteer() {
   useScrollReveal();
+  const { isAdmin } = useCms();
   const [dbCharities, setDbCharities] = useState<VolunteerCharity[]>([]);
   const [dbRoles, setDbRoles] = useState<VolunteerRole[]>([]);
+  const [showCharityModal, setShowCharityModal] = useState(false);
 
   useEffect(() => {
     const unsub1 = volunteerCharityService.onItems(setDbCharities);
@@ -222,6 +401,14 @@ export default function Volunteer() {
             contentKey="volunteer.partners.subtitle"
             fallback="Explore volunteer opportunities with these registered charities we work with."
           />
+          {isAdmin && (
+            <button
+              className="btn orphan-manage-btn"
+              onClick={() => setShowCharityModal(true)}
+            >
+              <PencilSimple size={16} weight="bold" /> Manage Charity Partners
+            </button>
+          )}
           <div className="charity-grid">
             {charities.map((c, i) => (
               <div
@@ -323,6 +510,13 @@ export default function Volunteer() {
           </div>
         </div>
       </section>
+
+      {showCharityModal && (
+        <CharityEditModal
+          items={dbCharities}
+          onClose={() => setShowCharityModal(false)}
+        />
+      )}
     </div>
   );
 }

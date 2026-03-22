@@ -18,6 +18,28 @@ import type { PastEvent } from "../types/collections";
 import type { ReactNode } from "react";
 import "./Events.css";
 
+function fmtDate(d: string) {
+  if (!d) return "";
+  const parsed = new Date(d + "T00:00:00");
+  if (isNaN(parsed.getTime())) return d;
+  return parsed.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function fmtTime(t: string) {
+  if (!t) return "";
+  const [h, m] = t.split(":").map(Number);
+  if (isNaN(h)) return t;
+  const suffix = h >= 12 ? "PM" : "AM";
+  const hour = h % 12 || 12;
+  return m
+    ? `${hour}:${m.toString().padStart(2, "0")} ${suffix}`
+    : `${hour} ${suffix}`;
+}
+
 /* Fallback events shown when none are in the DB */
 const fallbackEvents: {
   title: string;
@@ -142,7 +164,7 @@ export default function Events() {
                 >
                   <div className="event-row-date">
                     <CalendarBlank size={24} weight="duotone" />
-                    <span>{event.date}</span>
+                    <span>{fmtDate(event.date)}</span>
                   </div>
                   <div className="event-row-body">
                     {event.imageUrl && (
@@ -162,7 +184,7 @@ export default function Events() {
                     <p>{event.description}</p>
                     <div className="event-row-meta">
                       <span>
-                        <Clock size={14} weight="bold" /> {event.time}
+                        <Clock size={14} weight="bold" /> {fmtTime(event.time)}
                       </span>
                       <span>
                         <MapPin size={14} weight="bold" /> {event.location}

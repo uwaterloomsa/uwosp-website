@@ -86,15 +86,17 @@ export default function Navbar() {
               About <CaretDown size={14} weight="bold" />
             </button>
             <div className={`nav-dropdown-menu ${dropdownOpen ? "open" : ""}`}>
-              {aboutLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className={`nav-dropdown-item ${location.pathname === link.to ? "active" : ""}`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              <div className="nav-dropdown-menu-inner">
+                {aboutLinks.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    className={`nav-dropdown-item ${location.pathname === link.to ? "active" : ""}`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
 

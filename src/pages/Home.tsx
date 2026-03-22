@@ -15,12 +15,25 @@ import {
   Confetti,
   Lightbulb,
   ForkKnife,
+  PencilSimple,
+  Plus,
+  Trash,
+  X,
+  Warning,
 } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import ParallaxHero from "../components/ParallaxHero";
 import EditableText from "../components/EditableText";
 import EditableImage from "../components/EditableImage";
-import { onActiveFundraiser, onSponsors, onAllEvents } from "../services/site";
+import { useCms } from "../components/CmsProvider";
+import {
+  onActiveFundraiser,
+  onSponsors,
+  onAllEvents,
+  createSponsor,
+  updateSponsor,
+  deleteSponsor,
+} from "../services/site";
 import type { Fundraiser, Sponsor, SiteEvent } from "../types/site";
 import type { ReactNode } from "react";
 import "./Home.css";
@@ -72,11 +85,174 @@ function AnimatedCounter({
   );
 }
 
+/* ─── Sponsor / Partner Edit Modal ─── */
+interface SponsorEditModalProps {
+  items: Sponsor[];
+  onClose: () => void;
+}
+
+function SponsorEditModal({ items, onClose }: SponsorEditModalProps) {
+  const sorted = [...items].sort((a, b) => a.name.localeCompare(b.name));
+
+  const blank = { name: "", website: "", tier: "bronze" as Sponsor["tier"] };
+
+  const [editing, setEditing] = useState<Sponsor | null>(null);
+  const [adding, setAdding] = useState(false);
+  const [form, setForm] = useState(blank);
+  const [busy, setBusy] = useState(false);
+
+  const openAdd = () => {
+    setForm(blank);
+    setEditing(null);
+    setAdding(true);
+  };
+
+  const openEdit = (s: Sponsor) => {
+    setForm({ name: s.name, website: s.website, tier: s.tier });
+    setEditing(s);
+    setAdding(true);
+  };
+
+  const handleSave = async () => {
+    if (!form.name.trim()) return;
+    setBusy(true);
+    if (editing) {
+      await updateSponsor(editing.id, {
+        name: form.name.trim(),
+        website: form.website.trim(),
+        tier: form.tier,
+      });
+    } else {
+      await createSponsor({
+        name: form.name.trim(),
+        website: form.website.trim(),
+        tier: form.tier,
+      });
+    }
+    setBusy(false);
+    setAdding(false);
+    setEditing(null);
+  };
+
+  const handleDelete = async (id: string) => {
+    await deleteSponsor(id);
+  };
+
+  const set = (field: string, value: string) =>
+    setForm((prev) => ({ ...prev, [field]: value }));
+
+  return (
+    <div className="team-modal-overlay" onClick={onClose}>
+      <div className="team-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="team-modal-header">
+          <h2>Manage Partners</h2>
+          <button className="team-modal-close" onClick={onClose}>
+            <X size={20} weight="bold" />
+          </button>
+        </div>
+
+        <div className="team-modal-warning">
+          <Warning size={14} weight="bold" />
+          Changes here are visible to all visitors immediately.
+        </div>
+
+        {adding ? (
+          <div className="team-modal-form">
+            <h3>{editing ? "Edit Partner" : "Add Partner"}</h3>
+            <label>
+              Name
+              <input
+                value={form.name}
+                onChange={(e) => set("name", e.target.value)}
+              />
+            </label>
+            <label>
+              Website URL
+              <input
+                value={form.website}
+                onChange={(e) => set("website", e.target.value)}
+                placeholder="https://example.org"
+              />
+            </label>
+            <label>
+              Tier
+              <select
+                value={form.tier}
+                onChange={(e) => set("tier", e.target.value)}
+              >
+                <option value="gold">Gold</option>
+                <option value="silver">Silver</option>
+                <option value="bronze">Bronze</option>
+              </select>
+            </label>
+            <div className="team-modal-form-actions">
+              <button
+                className="btn"
+                onClick={handleSave}
+                disabled={busy || !form.name.trim()}
+              >
+                {busy ? "Saving…" : editing ? "Update" : "Add"}
+              </button>
+              <button
+                className="btn btn-outline"
+                onClick={() => {
+                  setAdding(false);
+                  setEditing(null);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <button className="btn team-modal-add" onClick={openAdd}>
+              <Plus size={16} weight="bold" /> Add Partner
+            </button>
+            <div className="team-modal-list">
+              {sorted.map((s) => (
+                <div className="team-modal-row" key={s.id}>
+                  <div className="team-modal-row-info">
+                    <strong>{s.name}</strong>
+                    <span>
+                      {s.tier} · {s.website || "no website"}
+                    </span>
+                  </div>
+                  <div className="team-modal-row-actions">
+                    <button onClick={() => openEdit(s)} title="Edit">
+                      <PencilSimple size={16} weight="bold" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(s.id)}
+                      title="Delete"
+                      className="team-modal-row-delete"
+                    >
+                      <Trash size={16} weight="bold" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+              {sorted.length === 0 && (
+                <p className="team-modal-empty">
+                  No partners in the database yet. Using default data on the
+                  page.
+                </p>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   useScrollReveal();
+  const { isAdmin } = useCms();
   const [fundraiser, setFundraiser] = useState<Fundraiser | null>(null);
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const [events, setEvents] = useState<SiteEvent[]>([]);
+  const [showSponsorModal, setShowSponsorModal] = useState(false);
 
   useEffect(() => {
     const unsubFund = onActiveFundraiser(setFundraiser);
@@ -556,6 +732,14 @@ export default function Home() {
             contentKey="home.partners.subtitle"
             fallback="We work with registered charities to maximize our impact."
           />
+          {isAdmin && (
+            <button
+              className="btn orphan-manage-btn"
+              onClick={() => setShowSponsorModal(true)}
+            >
+              <PencilSimple size={16} weight="bold" /> Manage Partners
+            </button>
+          )}
           <div className="partners-grid">
             {sponsors.length > 0
               ? sponsors.map((s, i) => (
@@ -592,6 +776,13 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {showSponsorModal && (
+        <SponsorEditModal
+          items={sponsors}
+          onClose={() => setShowSponsorModal(false)}
+        />
+      )}
     </div>
   );
 }
