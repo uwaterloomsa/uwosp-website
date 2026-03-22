@@ -218,6 +218,7 @@ button, input, textarea, select { font-family: inherit; font-size: inherit; }
   min-height: 60vh;
   display: flex;
   align-items: center;
+  justify-content: center;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -271,6 +272,7 @@ button, input, textarea, select { font-family: inherit; font-size: inherit; }
   z-index: 1;
   max-width: 680px;
   margin: 0 auto;
+  text-align: center;
 }
 
 .hero p {
