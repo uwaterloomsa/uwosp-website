@@ -52,7 +52,8 @@ function AnimatedCounter({
   const ref = useRef<HTMLSpanElement>(null);
   const { get, isAdmin } = useCms();
 
-  const cmsTarget = Number(get(`${contentKey}.value`, String(target))) || target;
+  const cmsTarget =
+    Number(get(`${contentKey}.value`, String(target))) || target;
   const cmsPrefix = get(`${contentKey}.prefix`, prefix || "");
 
   useEffect(() => {
@@ -113,7 +114,12 @@ interface SponsorEditModalProps {
 function SponsorEditModal({ items, onClose }: SponsorEditModalProps) {
   const sorted = [...items].sort((a, b) => a.name.localeCompare(b.name));
 
-  const blank = { name: "", website: "", tier: "bronze" as Sponsor["tier"] };
+  const blank = {
+    name: "",
+    website: "",
+    registrationNumber: "",
+    tier: "bronze" as Sponsor["tier"],
+  };
 
   const [editing, setEditing] = useState<Sponsor | null>(null);
   const [adding, setAdding] = useState(false);
@@ -127,7 +133,12 @@ function SponsorEditModal({ items, onClose }: SponsorEditModalProps) {
   };
 
   const openEdit = (s: Sponsor) => {
-    setForm({ name: s.name, website: s.website, tier: s.tier });
+    setForm({
+      name: s.name,
+      website: s.website,
+      registrationNumber: s.registrationNumber || "",
+      tier: s.tier,
+    });
     setEditing(s);
     setAdding(true);
   };
@@ -139,12 +150,14 @@ function SponsorEditModal({ items, onClose }: SponsorEditModalProps) {
       await updateSponsor(editing.id, {
         name: form.name.trim(),
         website: form.website.trim(),
+        registrationNumber: form.registrationNumber.trim(),
         tier: form.tier,
       });
     } else {
       await createSponsor({
         name: form.name.trim(),
         website: form.website.trim(),
+        registrationNumber: form.registrationNumber.trim(),
         tier: form.tier,
       });
     }
@@ -194,6 +207,14 @@ function SponsorEditModal({ items, onClose }: SponsorEditModalProps) {
               />
             </label>
             <label>
+              Charity Registration #
+              <input
+                value={form.registrationNumber}
+                onChange={(e) => set("registrationNumber", e.target.value)}
+                placeholder="e.g. 12345 6789 RR0001"
+              />
+            </label>
+            <label>
               Tier
               <select
                 value={form.tier}
@@ -235,6 +256,9 @@ function SponsorEditModal({ items, onClose }: SponsorEditModalProps) {
                     <strong>{s.name}</strong>
                     <span>
                       {s.tier} · {s.website || "no website"}
+                      {s.registrationNumber
+                        ? ` · #${s.registrationNumber}`
+                        : ""}
                     </span>
                   </div>
                   <div className="team-modal-row-actions">
@@ -464,9 +488,22 @@ export default function Home() {
       <section className="section stats-section">
         <div className="container">
           <div className="stats-grid">
-            <AnimatedCounter target={22} label="Orphans Sponsored" contentKey="home.stats.orphans" />
-            <AnimatedCounter target={50000} prefix="$" label="Raised in 2024" contentKey="home.stats.raised" />
-            <AnimatedCounter target={5} label="Countries Impacted" contentKey="home.stats.countries" />
+            <AnimatedCounter
+              target={22}
+              label="Orphans Sponsored"
+              contentKey="home.stats.orphans"
+            />
+            <AnimatedCounter
+              target={50000}
+              prefix="$"
+              label="Raised in 2024"
+              contentKey="home.stats.raised"
+            />
+            <AnimatedCounter
+              target={5}
+              label="Countries Impacted"
+              contentKey="home.stats.countries"
+            />
           </div>
         </div>
       </section>
@@ -776,6 +813,11 @@ export default function Home() {
                       </a>
                     ) : (
                       s.name
+                    )}
+                    {s.registrationNumber && (
+                      <span className="partner-reg-number">
+                        Charity Reg. #{s.registrationNumber}
+                      </span>
                     )}
                   </div>
                 ))

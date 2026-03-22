@@ -27,6 +27,7 @@ export interface Sponsor {
   id: string;
   name: string;
   website: string;
+  registrationNumber: string;
   tier: "gold" | "silver" | "bronze";
   createdAt: number;
 }

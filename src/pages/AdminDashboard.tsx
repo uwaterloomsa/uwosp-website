@@ -121,6 +121,7 @@ const emptyEventForm = {
 const emptySponsorForm = {
   name: "",
   website: "",
+  registrationNumber: "",
   tier: "bronze" as Sponsor["tier"],
 };
 
@@ -983,6 +984,8 @@ export default function AdminDashboard() {
                                 setSponsorForm({
                                   name: s.name,
                                   website: s.website,
+                                  registrationNumber:
+                                    s.registrationNumber || "",
                                   tier: s.tier,
                                 });
                                 setEditSponsorId(s.id);
@@ -2264,6 +2267,21 @@ export default function AdminDashboard() {
                     setSponsorForm((f) => ({ ...f, website: e.target.value }))
                   }
                   placeholder="https://..."
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="sp-reg">Charity Registration #</label>
+                <input
+                  id="sp-reg"
+                  type="text"
+                  value={sponsorForm.registrationNumber}
+                  onChange={(e) =>
+                    setSponsorForm((f) => ({
+                      ...f,
+                      registrationNumber: e.target.value,
+                    }))
+                  }
+                  placeholder="e.g. 12345 6789 RR0001"
                 />
               </div>
               <div className="form-group">

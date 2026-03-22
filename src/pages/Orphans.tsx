@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import {
   PencilSimple,
   Plus,
@@ -6,6 +6,8 @@ import {
   X,
   Warning,
   UploadSimple,
+  CaretLeft,
+  CaretRight,
 } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import ParallaxHero from "../components/ParallaxHero";
@@ -561,6 +563,9 @@ export default function Orphans() {
     };
   }, []);
 
+  const ORPHANS_PER_PAGE = 6;
+  const [orphanPage, setOrphanPage] = useState(1);
+
   const orphans =
     dbOrphans.length > 0
       ? dbOrphans
@@ -573,6 +578,16 @@ export default function Orphans() {
             imageUrl: o.imageUrl,
           }))
       : defaultOrphans;
+
+  const orphanTotalPages = Math.ceil(orphans.length / ORPHANS_PER_PAGE);
+  const pagedOrphans = useMemo(
+    () =>
+      orphans.slice(
+        (orphanPage - 1) * ORPHANS_PER_PAGE,
+        orphanPage * ORPHANS_PER_PAGE,
+      ),
+    [orphans, orphanPage],
+  );
 
   const pastSponsorships =
     dbPast.length > 0 ? dbPast.map((p) => p.name) : defaultPastSponsorships;
@@ -607,10 +622,10 @@ export default function Orphans() {
             </button>
           )}
           <div className="orphan-grid">
-            {orphans.map((child, i) => (
+            {pagedOrphans.map((child, i) => (
               <div
                 className={`card orphan-card reveal stagger-${(i % 6) + 1}`}
-                key={i}
+                key={`${orphanPage}-${i}`}
               >
                 {child.imageUrl ? (
                   <img
@@ -637,6 +652,38 @@ export default function Orphans() {
               </div>
             ))}
           </div>
+
+          {orphanTotalPages > 1 && (
+            <div className="orphan-pagination">
+              <button
+                className="orphan-page-btn"
+                disabled={orphanPage <= 1}
+                onClick={() => setOrphanPage((p) => p - 1)}
+                aria-label="Previous page"
+              >
+                <CaretLeft size={18} weight="bold" />
+              </button>
+              {Array.from({ length: orphanTotalPages }, (_, i) => i + 1).map(
+                (num) => (
+                  <button
+                    key={num}
+                    className={`orphan-page-btn${num === orphanPage ? " active" : ""}`}
+                    onClick={() => setOrphanPage(num)}
+                  >
+                    {num}
+                  </button>
+                ),
+              )}
+              <button
+                className="orphan-page-btn"
+                disabled={orphanPage >= orphanTotalPages}
+                onClick={() => setOrphanPage((p) => p + 1)}
+                aria-label="Next page"
+              >
+                <CaretRight size={18} weight="bold" />
+              </button>
+            </div>
+          )}
         </div>
       </section>
 

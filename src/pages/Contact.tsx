@@ -26,7 +26,7 @@ const subjectOptions = [
 
 export default function Contact() {
   useScrollReveal();
-  const { get } = useCms();
+  const { get, isAdmin } = useCms();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -96,13 +96,23 @@ export default function Contact() {
                     contentKey="contact.info.email.label"
                     fallback="Email"
                   />
-                  <a href={`mailto:${get("contact.info.email.url", "uworphansp@gmail.com")}`}>
+                  <a
+                    href={`mailto:${get("contact.info.email.url", "uworphansp@gmail.com")}`}
+                  >
                     <EditableText
                       as="span"
-                      contentKey="contact.info.email.url"
+                      contentKey="contact.info.email.value"
                       fallback="uworphansp@gmail.com"
                     />
                   </a>
+                  {isAdmin && (
+                    <EditableText
+                      as="span"
+                      className="contact-url-edit"
+                      contentKey="contact.info.email.url"
+                      fallback="uworphansp@gmail.com"
+                    />
+                  )}
                 </div>
               </div>
               <div className="contact-info-card">
@@ -116,7 +126,10 @@ export default function Contact() {
                     fallback="Instagram"
                   />
                   <a
-                    href={get("contact.info.instagram.url", "https://instagram.com/uwaterlooOSP")}
+                    href={get(
+                      "contact.info.instagram.url",
+                      "https://instagram.com/uwaterlooOSP",
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -126,6 +139,14 @@ export default function Contact() {
                       fallback="@uwaterlooOSP"
                     />
                   </a>
+                  {isAdmin && (
+                    <EditableText
+                      as="span"
+                      className="contact-url-edit"
+                      contentKey="contact.info.instagram.url"
+                      fallback="https://instagram.com/uwaterlooOSP"
+                    />
+                  )}
                 </div>
               </div>
               <div className="contact-info-card">
@@ -139,7 +160,10 @@ export default function Contact() {
                     fallback="LinkedIn"
                   />
                   <a
-                    href={get("contact.info.linkedin.url", "https://www.linkedin.com/company/uw-orphan-sponsorship-program")}
+                    href={get(
+                      "contact.info.linkedin.url",
+                      "https://www.linkedin.com/company/uw-orphan-sponsorship-program",
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -149,6 +173,14 @@ export default function Contact() {
                       fallback="UW Orphan Sponsorship Program"
                     />
                   </a>
+                  {isAdmin && (
+                    <EditableText
+                      as="span"
+                      className="contact-url-edit"
+                      contentKey="contact.info.linkedin.url"
+                      fallback="https://www.linkedin.com/company/uw-orphan-sponsorship-program"
+                    />
+                  )}
                 </div>
               </div>
               <div className="contact-info-card">
@@ -162,7 +194,10 @@ export default function Contact() {
                     fallback="Linktree"
                   />
                   <a
-                    href={get("contact.info.linktree.url", "https://linktr.ee/uwaterlooOSP")}
+                    href={get(
+                      "contact.info.linktree.url",
+                      "https://linktr.ee/uwaterlooOSP",
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -172,6 +207,14 @@ export default function Contact() {
                       fallback="linktr.ee/uwaterlooOSP"
                     />
                   </a>
+                  {isAdmin && (
+                    <EditableText
+                      as="span"
+                      className="contact-url-edit"
+                      contentKey="contact.info.linktree.url"
+                      fallback="https://linktr.ee/uwaterlooOSP"
+                    />
+                  )}
                 </div>
               </div>
             </div>
