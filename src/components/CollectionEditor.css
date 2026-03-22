@@ -1,0 +1,290 @@
+/* ═══ Collection Editor – Modal ═══ */
+.ce-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  padding: 1.5rem;
+  animation: ce-fade-in 0.2s ease-out;
+}
+
+@keyframes ce-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes ce-slide-up {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+.ce-modal {
+  width: 100%;
+  max-width: 540px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 2rem !important;
+  animation: ce-slide-up 0.25s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.ce-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.ce-modal-header h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin: 0;
+}
+
+.ce-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s ease-out, border-color 0.15s ease-out, transform 0.2s ease-out;
+}
+
+.ce-close:hover {
+  color: #dc2626;
+  border-color: #dc2626;
+  transform: rotate(90deg);
+}
+
+/* Body */
+.ce-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ce-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ce-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.ce-input {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.ce-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+}
+
+textarea.ce-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+select.ce-input {
+  cursor: pointer;
+}
+
+.ce-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.ce-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+/* Footer */
+.ce-modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.ce-modal-footer .btn {
+  min-width: 100px;
+}
+
+/* ═══ Table action buttons ═══ */
+.ce-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.ce-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s ease-out, border-color 0.15s ease-out, transform 0.15s ease-out;
+}
+
+.ce-action-btn:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.ce-action-btn--danger:hover {
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+/* ═══ File upload field ═══ */
+.ce-file-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ce-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s ease-out, background 0.15s ease-out;
+}
+
+.ce-dropzone:hover {
+  border-color: var(--primary);
+  background: rgba(29, 78, 216, 0.03);
+}
+
+.ce-dropzone--active {
+  border-color: var(--primary);
+  background: rgba(29, 78, 216, 0.06);
+}
+
+.ce-dropzone--has-file {
+  border-style: solid;
+  border-color: var(--primary);
+  background: rgba(29, 78, 216, 0.04);
+  color: var(--primary);
+}
+
+.ce-dropzone-text {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.ce-dropzone-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.ce-dropzone-remove {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #dc2626;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  transition: background 0.15s ease-out;
+}
+
+.ce-dropzone-remove:hover {
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.ce-file-error {
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.ce-file-or {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ce-file-or-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.ce-file-or-text {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 600px) {
+  .ce-modal {
+    max-width: 100%;
+    padding: 1.25rem !important;
+    max-height: 90vh;
+  }
+
+  .ce-modal-footer {
+    flex-direction: column;
+  }
+
+  .ce-modal-footer .btn {
+    width: 100%;
+  }
+}

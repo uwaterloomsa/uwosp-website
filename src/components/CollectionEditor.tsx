@@ -1,32 +1,163 @@
-import { useEffect, useState } from "react";
-import { Plus, PencilSimple, Trash, X, Check } from "@phosphor-icons/react";
+import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import {
+  Plus,
+  PencilSimple,
+  Trash,
+  X,
+  Check,
+  UploadSimple,
+  File as FileIcon,
+} from "@phosphor-icons/react";
+import "./CollectionEditor.css";
 
-/**
- * Schema definition for a single field in the collection editor.
- * Drives the form rendering and table columns.
- */
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+
+function readFileAsDataUrl(file: globalThis.File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    if (file.size > MAX_FILE_SIZE) {
+      reject(new Error("File must be under 5 MB"));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error);
+    reader.onload = () => resolve(reader.result as string);
+    reader.readAsDataURL(file);
+  });
+}
+
 export interface FieldDef {
   key: string;
   label: string;
-  type: "text" | "textarea" | "number" | "select" | "checkbox";
+  type: "text" | "textarea" | "number" | "select" | "checkbox" | "file";
   options?: string[];
   required?: boolean;
   placeholder?: string;
+  /** For type "file" — the accept attribute (e.g. ".pdf") */
+  accept?: string;
 }
 
 interface Props<T extends { id: string }> {
-  /** Display name for the collection (e.g., "FAQs") */
   title: string;
-  /** The field definitions used for form + table columns */
   fields: FieldDef[];
-  /** Live items from Firebase */
   items: T[];
-  /** Which fields to show in the summary table (keys) */
   tableColumns?: string[];
-  /** CRUD callbacks */
   onAdd: (data: Record<string, unknown>) => Promise<void>;
   onUpdate: (id: string, data: Record<string, unknown>) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
+}
+
+/* ─── File / PDF upload sub-component ─── */
+function FileField({
+  value,
+  accept,
+  required,
+  onChange,
+}: {
+  value: string;
+  accept?: string;
+  required?: boolean;
+  onChange: (val: string) => void;
+}) {
+  const [dragging, setDragging] = useState(false);
+  const [error, setError] = useState("");
+  const localRef = useRef<HTMLInputElement | null>(null);
+
+  const hasFile = value.startsWith("data:");
+  const hasUrl = value.length > 0 && !hasFile;
+
+  async function handleFile(file: globalThis.File) {
+    setError("");
+    try {
+      const dataUrl = await readFileAsDataUrl(file);
+      onChange(dataUrl);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload failed");
+    }
+  }
+
+  function onDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  }
+
+  function onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) handleFile(file);
+  }
+
+  return (
+    <div className="ce-file-field">
+      {/* Drop zone */}
+      <div
+        className={`ce-dropzone ${dragging ? "ce-dropzone--active" : ""} ${hasFile ? "ce-dropzone--has-file" : ""}`}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragging(true);
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={onDrop}
+        onClick={() => localRef.current?.click()}
+      >
+        <input
+          ref={localRef}
+          type="file"
+          accept={accept}
+          onChange={onInputChange}
+          style={{ display: "none" }}
+        />
+        {hasFile ? (
+          <>
+            <FileIcon size={28} weight="duotone" />
+            <span className="ce-dropzone-text">File uploaded</span>
+            <button
+              type="button"
+              className="ce-dropzone-remove"
+              onClick={(e) => {
+                e.stopPropagation();
+                onChange("");
+              }}
+            >
+              Remove
+            </button>
+          </>
+        ) : (
+          <>
+            <UploadSimple size={28} weight="duotone" />
+            <span className="ce-dropzone-text">
+              Drop a file here or click to browse
+            </span>
+            {accept && (
+              <span className="ce-dropzone-hint">Accepted: {accept}</span>
+            )}
+          </>
+        )}
+      </div>
+
+      {error && <p className="ce-file-error">{error}</p>}
+
+      {/* Or paste a URL */}
+      {!hasFile && (
+        <div className="ce-file-or">
+          <span className="ce-file-or-line" />
+          <span className="ce-file-or-text">or paste a URL</span>
+          <span className="ce-file-or-line" />
+        </div>
+      )}
+      {!hasFile && (
+        <input
+          className="ce-input"
+          type="url"
+          value={hasUrl ? value : ""}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="https://example.com/file.pdf"
+          required={required}
+        />
+      )}
+    </div>
+  );
 }
 
 export default function CollectionEditor<T extends { id: string }>({
@@ -106,41 +237,34 @@ export default function CollectionEditor<T extends { id: string }>({
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
-  return (
-    <div className="admin-panel">
-      <div className="admin-panel-header">
-        <h2>{title}</h2>
-        <button className="btn btn-primary btn-sm" onClick={openNew}>
-          <Plus size={16} weight="bold" /> Add
-        </button>
-      </div>
-
-      {/* Modal form */}
-      {showForm && (
-        <div className="admin-modal-overlay" onClick={() => setShowForm(false)}>
+  const modal = showForm
+    ? createPortal(
+        <div className="ce-overlay" onClick={() => setShowForm(false)}>
           <form
-            className="admin-modal"
+            className="ce-modal card"
             onClick={(e) => e.stopPropagation()}
             onSubmit={handleSave}
           >
-            <div className="admin-modal-header">
+            <div className="ce-modal-header">
               <h3>
                 {editId ? "Edit" : "New"} {title.replace(/s$/, "")}
               </h3>
               <button
                 type="button"
-                className="btn-icon"
+                className="ce-close"
                 onClick={() => setShowForm(false)}
               >
                 <X size={18} weight="bold" />
               </button>
             </div>
-            <div className="admin-modal-body">
+
+            <div className="ce-modal-body">
               {fields.map((f) => (
-                <div className="form-group" key={f.key}>
-                  <label>{f.label}</label>
+                <div className="ce-field" key={f.key}>
+                  <label className="ce-label">{f.label}</label>
                   {f.type === "textarea" ? (
                     <textarea
+                      className="ce-input"
                       value={String(form[f.key] ?? "")}
                       onChange={(e) => setField(f.key, e.target.value)}
                       required={f.required}
@@ -149,11 +273,12 @@ export default function CollectionEditor<T extends { id: string }>({
                     />
                   ) : f.type === "select" ? (
                     <select
+                      className="ce-input"
                       value={String(form[f.key] ?? "")}
                       onChange={(e) => setField(f.key, e.target.value)}
                       required={f.required}
                     >
-                      <option value="">Select...</option>
+                      <option value="">Select…</option>
                       {f.options?.map((o) => (
                         <option key={o} value={o}>
                           {o}
@@ -161,24 +286,34 @@ export default function CollectionEditor<T extends { id: string }>({
                       ))}
                     </select>
                   ) : f.type === "checkbox" ? (
-                    <label className="admin-checkbox-label">
+                    <label className="ce-checkbox">
                       <input
                         type="checkbox"
                         checked={!!form[f.key]}
                         onChange={(e) => setField(f.key, e.target.checked)}
                       />
-                      {f.label}
+                      <span>{f.label}</span>
                     </label>
                   ) : f.type === "number" ? (
                     <input
+                      className="ce-input"
                       type="number"
+                      step="any"
                       value={Number(form[f.key] ?? 0)}
                       onChange={(e) => setField(f.key, Number(e.target.value))}
                       required={f.required}
                       placeholder={f.placeholder}
                     />
+                  ) : f.type === "file" ? (
+                    <FileField
+                      value={String(form[f.key] ?? "")}
+                      accept={f.accept}
+                      required={f.required && !form[f.key]}
+                      onChange={(val) => setField(f.key, val)}
+                    />
                   ) : (
                     <input
+                      className="ce-input"
                       type="text"
                       value={String(form[f.key] ?? "")}
                       onChange={(e) => setField(f.key, e.target.value)}
@@ -189,7 +324,8 @@ export default function CollectionEditor<T extends { id: string }>({
                 </div>
               ))}
             </div>
-            <div className="admin-modal-footer">
+
+            <div className="ce-modal-footer">
               <button
                 type="button"
                 className="btn btn-outline"
@@ -202,14 +338,24 @@ export default function CollectionEditor<T extends { id: string }>({
                 className="btn btn-primary"
                 disabled={saving}
               >
-                {saving ? "Saving..." : editId ? "Update" : "Create"}
+                {saving ? "Saving…" : editId ? "Update" : "Create"}
               </button>
             </div>
           </form>
-        </div>
-      )}
+        </div>,
+        document.body,
+      )
+    : null;
 
-      {/* Table */}
+  return (
+    <div className="admin-panel">
+      <div className="admin-panel-header">
+        <h2>{title}</h2>
+        <button className="btn btn-primary btn-sm" onClick={openNew}>
+          <Plus size={16} weight="bold" /> Add
+        </button>
+      </div>
+
       {items.length === 0 ? (
         <p className="admin-empty">
           No {title.toLowerCase()} yet. Click "Add" to create one.
@@ -244,16 +390,16 @@ export default function CollectionEditor<T extends { id: string }>({
                       </td>
                     );
                   })}
-                  <td>
+                  <td className="ce-actions">
                     <button
-                      className="btn-icon"
+                      className="ce-action-btn"
                       title="Edit"
                       onClick={() => openEdit(item)}
                     >
                       <PencilSimple size={16} weight="bold" />
                     </button>
                     <button
-                      className="btn-icon danger"
+                      className="ce-action-btn ce-action-btn--danger"
                       title="Delete"
                       onClick={() => handleDelete(item.id)}
                     >
@@ -266,6 +412,8 @@ export default function CollectionEditor<T extends { id: string }>({
           </table>
         </div>
       )}
+
+      {modal}
     </div>
   );
 }

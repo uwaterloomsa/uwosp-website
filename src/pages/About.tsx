@@ -197,13 +197,18 @@ function TeamEditModal({ members, onClose }: TeamEditModalProps) {
   const handleSave = async () => {
     if (!form.name.trim()) return;
     setBusy(true);
-    const data = {
+    const trimmedUrl = form.imageUrl?.trim() || "";
+    const data: Record<string, unknown> = {
       ...form,
       name: form.name.trim(),
       role: form.role.trim(),
       department: form.department.trim(),
-      imageUrl: form.imageUrl?.trim() || undefined,
     };
+    if (trimmedUrl) {
+      data.imageUrl = trimmedUrl;
+    } else {
+      delete data.imageUrl;
+    }
     if (editing) {
       await teamService.updateItem(editing.id, data);
     } else {

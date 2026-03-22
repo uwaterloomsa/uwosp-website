@@ -11,11 +11,14 @@ export interface OrphanProfile {
   country: string;
   description: string;
   years: string;
+  imageUrl?: string;
+  order?: number;
 }
 
 export interface PastSponsorship {
   id: string;
   name: string;
+  order?: number;
 }
 
 export interface TeamMember {

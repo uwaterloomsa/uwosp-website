@@ -64,9 +64,7 @@ import type {
   VolunteerRole,
   PastEvent,
 } from "../types/collections";
-import CollectionEditor, {
-  type FieldDef,
-} from "../components/CollectionEditor";
+import CollectionEditor from "../components/CollectionEditor";
 import {
   faqService,
   orphanService,
@@ -1514,9 +1512,10 @@ export default function AdminDashboard() {
                   },
                   {
                     key: "url",
-                    label: "PDF URL",
-                    type: "text",
+                    label: "PDF",
+                    type: "file",
                     required: true,
+                    accept: ".pdf,application/pdf",
                   },
                 ]}
                 items={financeReports}
@@ -1859,6 +1858,7 @@ export default function AdminDashboard() {
                   <input
                     id="fund-goal"
                     type="number"
+                    step="any"
                     min={0}
                     value={fundForm.goalAmount}
                     onChange={(e) =>
@@ -1875,6 +1875,7 @@ export default function AdminDashboard() {
                   <input
                     id="fund-raised"
                     type="number"
+                    step="any"
                     min={0}
                     value={fundForm.raisedAmount}
                     onChange={(e) =>

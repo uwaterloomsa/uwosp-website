@@ -118,6 +118,27 @@
   margin-top: 3rem;
 }
 
+/* Orphan avatar image (from DB) */
+.orphan-avatar-img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.75rem;
+  transition: transform 0.2s var(--ease-out);
+}
+.orphan-card:hover .orphan-avatar-img {
+  transform: scale(1.08);
+}
+
+/* Admin manage button */
+.orphan-manage-btn {
+  margin-bottom: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .past-sponsorships {
   max-width: 600px;
   margin: 0 auto;

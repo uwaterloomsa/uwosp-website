@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { PencilSimple, Check, X, Warning } from "@phosphor-icons/react";
 import { useCms } from "./CmsProvider";
 import "./EditableText.css";
@@ -76,68 +77,86 @@ export default function EditableText({
     return <Tag className={className}>{display}</Tag>;
   }
 
-  // Admin: editing mode
-  if (editing) {
-    return (
-      <span className={`cms-edit-wrap ${className}`}>
-        <span className="cms-edit-warning">
-          <Warning size={14} weight="bold" />
-          This change will be visible to all visitors immediately.
-        </span>
-        {multiline ? (
-          <textarea
-            ref={inputRef as React.RefObject<HTMLTextAreaElement>}
-            className="cms-edit-input cms-edit-textarea"
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={handleKeyDown}
-            disabled={saving}
-            rows={3}
-          />
-        ) : (
-          <input
-            ref={inputRef as React.RefObject<HTMLInputElement>}
-            className="cms-edit-input"
-            type="text"
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={handleKeyDown}
-            disabled={saving}
-          />
-        )}
-        <span className="cms-edit-actions">
-          <button
-            className="cms-edit-btn cms-edit-btn--save"
-            onClick={handleSave}
-            disabled={saving}
-            title="Save"
-          >
-            <Check size={14} weight="bold" />
-          </button>
-          <button
-            className="cms-edit-btn cms-edit-btn--cancel"
-            onClick={handleCancel}
-            disabled={saving}
-            title="Cancel"
-          >
-            <X size={14} weight="bold" />
-          </button>
-        </span>
-      </span>
-    );
-  }
-
-  // Admin: display mode — show edit pencil on hover
+  // Admin: always render the original Tag so page styling is preserved.
+  // When editing, open a portal modal for the edit UI.
   return (
-    <Tag
-      className={`cms-editable ${className}`}
-      onClick={() => setEditing(true)}
-      title="Click to edit"
-    >
-      {display}
-      <span className="cms-edit-pencil">
-        <PencilSimple size={14} weight="bold" />
-      </span>
-    </Tag>
+    <>
+      <Tag
+        className={`cms-editable ${className}`}
+        onClick={() => setEditing(true)}
+        title="Click to edit"
+      >
+        {display}
+        <span className="cms-edit-pencil">
+          <PencilSimple size={14} weight="bold" />
+        </span>
+      </Tag>
+
+      {editing &&
+        createPortal(
+          <div className="cms-edit-overlay" onClick={handleCancel}>
+            <div
+              className="cms-edit-modal card"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="cms-edit-modal-header">
+                <h3>Edit Content</h3>
+                <button
+                  type="button"
+                  className="cms-edit-close"
+                  onClick={handleCancel}
+                >
+                  <X size={18} weight="bold" />
+                </button>
+              </div>
+
+              <div className="cms-edit-warning">
+                <Warning size={14} weight="bold" />
+                This change will be visible to all visitors immediately.
+              </div>
+
+              {multiline ? (
+                <textarea
+                  ref={inputRef as React.RefObject<HTMLTextAreaElement>}
+                  className="cms-edit-input cms-edit-textarea"
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  disabled={saving}
+                  rows={4}
+                />
+              ) : (
+                <input
+                  ref={inputRef as React.RefObject<HTMLInputElement>}
+                  className="cms-edit-input"
+                  type="text"
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  disabled={saving}
+                />
+              )}
+
+              <div className="cms-edit-modal-footer">
+                <button
+                  className="btn btn-outline"
+                  onClick={handleCancel}
+                  disabled={saving}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleSave}
+                  disabled={saving}
+                >
+                  {saving ? "Saving…" : "Save"}
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
+    </>
   );
 }
