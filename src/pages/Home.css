@@ -72,6 +72,14 @@
   font-weight: 500;
 }
 
+.stat-edit-hint {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: -0.15rem;
+  margin-bottom: 0.15rem;
+}
+
 /* Fundraiser Featured */
 .fundraiser-section {
   padding-top: var(--space-xl);

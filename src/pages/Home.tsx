@@ -42,12 +42,18 @@ function AnimatedCounter({
   target,
   prefix,
   label,
+  contentKey,
 }: {
   target: number;
   prefix?: string;
   label: string;
+  contentKey: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
+  const { get, isAdmin } = useCms();
+
+  const cmsTarget = Number(get(`${contentKey}.value`, String(target))) || target;
+  const cmsPrefix = get(`${contentKey}.prefix`, prefix || "");
 
   useEffect(() => {
     const el = ref.current;
@@ -57,8 +63,8 @@ function AnimatedCounter({
     const step = (timestamp: number) => {
       if (!start) start = timestamp;
       const progress = Math.min((timestamp - start) / duration, 1);
-      const val = Math.floor(progress * target).toLocaleString();
-      el.textContent = (prefix || "") + val + "+";
+      const val = Math.floor(progress * cmsTarget).toLocaleString();
+      el.textContent = (cmsPrefix || "") + val + "+";
       if (progress < 1) requestAnimationFrame(step);
     };
 
@@ -73,14 +79,27 @@ function AnimatedCounter({
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [target, prefix]);
+  }, [cmsTarget, cmsPrefix]);
 
   return (
     <div className="stat-item">
       <span className="stat-number" ref={ref}>
         0
       </span>
-      <span className="stat-label">{label}</span>
+      {isAdmin && (
+        <EditableText
+          as="span"
+          className="stat-edit-hint"
+          contentKey={`${contentKey}.value`}
+          fallback={String(target)}
+        />
+      )}
+      <EditableText
+        as="span"
+        className="stat-label"
+        contentKey={`${contentKey}.label`}
+        fallback={label}
+      />
     </div>
   );
 }
@@ -445,9 +464,9 @@ export default function Home() {
       <section className="section stats-section">
         <div className="container">
           <div className="stats-grid">
-            <AnimatedCounter target={22} label="Orphans Sponsored" />
-            <AnimatedCounter target={50000} prefix="$" label="Raised in 2024" />
-            <AnimatedCounter target={5} label="Countries Impacted" />
+            <AnimatedCounter target={22} label="Orphans Sponsored" contentKey="home.stats.orphans" />
+            <AnimatedCounter target={50000} prefix="$" label="Raised in 2024" contentKey="home.stats.raised" />
+            <AnimatedCounter target={5} label="Countries Impacted" contentKey="home.stats.countries" />
           </div>
         </div>
       </section>
