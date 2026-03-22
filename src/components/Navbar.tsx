@@ -1,14 +1,22 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { SignIn, CaretDown } from "@phosphor-icons/react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
+import { SignIn, CaretDown, Gauge } from "@phosphor-icons/react";
 import ospLogo from "../images/uwosp.avif";
 import "./Navbar.css";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const location = useLocation();
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => setLoggedIn(!!u));
+    return () => unsub();
+  }, []);
 
   const mainLinks = [
     { to: "/orphans", label: "Our Orphans" },
@@ -102,10 +110,17 @@ export default function Navbar() {
           <Link to="/donate" className="btn btn-primary nav-donate">
             Donate
           </Link>
-          <Link to="/admin/login" className="nav-login">
-            <SignIn size={18} weight="bold" />
-            Login
-          </Link>
+          {loggedIn ? (
+            <Link to="/admin" className="btn btn-secondary nav-dashboard">
+              <Gauge size={18} weight="bold" />
+              Dashboard
+            </Link>
+          ) : (
+            <Link to="/admin/login" className="nav-login">
+              <SignIn size={18} weight="bold" />
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </nav>

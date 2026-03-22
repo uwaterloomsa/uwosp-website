@@ -133,3 +133,24 @@
   }
   .newsletter-form { flex-direction: column; }
 }
+
+/* Newsletter status messages */
+.newsletter-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  color: #22c55e;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.newsletter-msg {
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  color: oklch(0.60 0.015 264);
+}
+
+.newsletter-msg--error {
+  color: #ef4444;
+}

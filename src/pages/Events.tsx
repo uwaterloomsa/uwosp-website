@@ -9,8 +9,12 @@ import {
   ForkKnife,
 } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
-import { getEvents } from "../services/site";
+import EditableText from "../components/EditableText";
+import EditableImage from "../components/EditableImage";
+import { onAllEvents } from "../services/site";
+import { pastEventService } from "../services/siteCollections";
 import type { SiteEvent } from "../types/site";
+import type { PastEvent } from "../types/collections";
 import type { ReactNode } from "react";
 import "./Events.css";
 
@@ -52,43 +56,78 @@ const fallbackEvents: {
   },
 ];
 
+const defaultPastEvents = [
+  {
+    title: "Ramadan Fundraiser 2024",
+    description:
+      "Raised $12,000 during Ramadan to sponsor 15 orphans for a full year. Over 200 attendees joined us for community iftars.",
+  },
+  {
+    title: "Charity Gala 2024",
+    description:
+      "Our annual gala brought together 150+ supporters for an evening of inspiration, featuring keynote speakers from IDRF and Islamic Relief.",
+  },
+  {
+    title: "Winter Relief Drive 2023",
+    description:
+      "Collected $10,000 in donations and winter supplies for families in Syria and Palestine facing harsh conditions.",
+  },
+];
+
 export default function Events() {
   useScrollReveal();
   const [events, setEvents] = useState<SiteEvent[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [dbPastEvents, setDbPastEvents] = useState<PastEvent[]>([]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const data = await getEvents();
-        setEvents(data);
-      } catch (err) {
-        console.error("Failed to load events:", err);
-      } finally {
-        setLoaded(true);
-      }
-    })();
+    const unsub = onAllEvents((data) => {
+      setEvents(data);
+      setLoaded(true);
+    });
+    const unsub2 = pastEventService.onItems(setDbPastEvents);
+    return () => {
+      unsub();
+      unsub2();
+    };
   }, []);
 
   const hasDbEvents = events.length > 0;
 
   return (
     <div className="events-page">
-      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80">
-        <h1>Events</h1>
-        <p>
-          Join us at our next event and be part of the change. From galas to
-          community iftars, there are many ways to get involved.
-        </p>
+      <ParallaxHero
+        imgSrc="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
+        contentKey="events.hero.image"
+      >
+        <EditableText
+          as="h1"
+          contentKey="events.hero.title"
+          fallback="Events"
+        />
+        <EditableText
+          as="p"
+          contentKey="events.hero.subtitle"
+          fallback="Join us at our next event and be part of the change. From galas to community iftars, there are many ways to get involved."
+          multiline
+        />
       </ParallaxHero>
 
       {/* Events List */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title reveal">Upcoming Events</h2>
-          <p className="section-subtitle reveal">
-            Mark your calendar and join us at one of these events.
-          </p>
+          <EditableText
+            as="h2"
+            className="section-title reveal"
+            contentKey="events.upcoming.title"
+            fallback="Upcoming Events"
+          />
+          <EditableText
+            as="p"
+            className="section-subtitle reveal"
+            contentKey="events.upcoming.subtitle"
+            fallback="Mark your calendar and join us at one of these events."
+          />
 
           {!loaded ? (
             <div className="events-loading">
@@ -154,13 +193,17 @@ export default function Events() {
       <section className="section events-image-section">
         <div className="container">
           <div className="events-image-banner image-hover-zoom reveal-blur">
-            <img
-              src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&fit=crop&q=80"
+            <EditableImage
+              contentKey="events.banner.image"
+              fallback="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&fit=crop&q=80"
               alt="Friends and community members together"
-              loading="lazy"
             />
             <div className="events-image-caption">
-              <p>Community is at the heart of everything we do.</p>
+              <EditableText
+                as="p"
+                contentKey="events.image.caption"
+                fallback="Community is at the heart of everything we do."
+              />
             </div>
           </div>
         </div>
@@ -172,33 +215,33 @@ export default function Events() {
         style={{ background: "var(--bg-alt, var(--bg-secondary, #f5f0eb))" }}
       >
         <div className="container">
-          <h2 className="section-title reveal">Past Event Highlights</h2>
-          <p className="section-subtitle reveal">
-            A look back at some of our most impactful gatherings.
-          </p>
+          <EditableText
+            as="h2"
+            className="section-title reveal"
+            contentKey="events.past.title"
+            fallback="Past Event Highlights"
+          />
+          <EditableText
+            as="p"
+            className="section-subtitle reveal"
+            contentKey="events.past.subtitle"
+            fallback="A look back at some of our most impactful gatherings."
+          />
           <div className="past-events-grid">
-            <div className="card past-event-card reveal stagger-1">
-              <h3>Ramadan Fundraiser 2024</h3>
-              <p>
-                Raised $12,000 during Ramadan to sponsor 15 orphans for a full
-                year. Over 200 attendees joined us for community iftars.
-              </p>
-            </div>
-            <div className="card past-event-card reveal stagger-2">
-              <h3>Charity Gala 2024</h3>
-              <p>
-                Our annual gala brought together 150+ supporters for an evening
-                of inspiration, featuring keynote speakers from IDRF and Islamic
-                Relief.
-              </p>
-            </div>
-            <div className="card past-event-card reveal stagger-3">
-              <h3>Winter Relief Drive 2023</h3>
-              <p>
-                Collected $10,000 in donations and winter supplies for families
-                in Syria and Palestine facing harsh conditions.
-              </p>
-            </div>
+            {(dbPastEvents.length > 0
+              ? dbPastEvents
+                  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+                  .map((e) => ({ title: e.title, description: e.description }))
+              : defaultPastEvents
+            ).map((pe, i) => (
+              <div
+                className={`card past-event-card reveal stagger-${i + 1}`}
+                key={i}
+              >
+                <h3>{pe.title}</h3>
+                <p>{pe.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -1,0 +1,86 @@
+{
+  "rules": {
+    "postings": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["status", "createdAt"]
+    },
+    "applications": {
+      ".read": "auth != null",
+      ".write": true,
+      ".indexOn": ["postingId", "submittedAt"]
+    },
+    "fundraisers": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["isActive", "createdAt"]
+    },
+    "events": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["isFeatured", "createdAt"]
+    },
+    "sponsors": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["createdAt"]
+    },
+    "newsletter": {
+      ".read": "auth != null",
+      ".write": true,
+      ".indexOn": ["email", "subscribedAt"]
+    },
+    "content": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "faqs": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["order"]
+    },
+    "orphans": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["order"]
+    },
+    "pastSponsorships": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "teamMembers": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["department", "isLeadership", "order"]
+    },
+    "timelineItems": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["order"]
+    },
+    "campaignEvents": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["term", "order"]
+    },
+    "financeReports": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["year"]
+    },
+    "volunteerCharities": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "volunteerRoles": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["order"]
+    },
+    "pastEvents": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["order"]
+    }
+  }
+}

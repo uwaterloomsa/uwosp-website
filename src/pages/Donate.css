@@ -52,6 +52,42 @@
   align-self: flex-start;
 }
 
+/* Active fundraiser */
+.donate-fundraiser {
+  padding: var(--space-xl);
+  text-align: center;
+}
+
+.donate-fundraiser-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(239, 108, 0, 0.12);
+  color: #ef6c00;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: var(--space-sm);
+}
+
+.donate-fundraiser h2 {
+  margin-bottom: var(--space-xs);
+}
+
+.donate-fundraiser p {
+  max-width: 600px;
+  margin: 0 auto var(--space-md);
+  color: var(--text-muted);
+}
+
+.donate-fundraiser-progress {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
 /* CTA */
 .donate-cta-buttons {
   display: flex;

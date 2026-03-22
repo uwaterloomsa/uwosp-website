@@ -13,9 +13,10 @@ import {
   Trophy,
 } from "@phosphor-icons/react";
 import ApplicationModal from "../components/ApplicationModal";
-import { getPostings } from "../services/postings";
+import { onPostings } from "../services/postings";
 import type { Posting } from "../types/postings";
 import useScrollReveal from "../hooks/useScrollReveal";
+import EditableText from "../components/EditableText";
 import "./GetInvolved.css";
 
 export default function GetInvolved() {
@@ -28,15 +29,17 @@ export default function GetInvolved() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    (async () => {
-      try {
-        setPostings(await getPostings(true));
-      } catch (err) {
-        console.error("Failed to load postings:", err);
-      } finally {
+    const unsub = onPostings(
+      (all) => {
+        setPostings(all.filter((p) => p.status === "open"));
         setLoadingPostings(false);
-      }
-    })();
+      },
+      (err) => {
+        console.error("Failed to load postings:", err);
+        setLoadingPostings(false);
+      },
+    );
+    return unsub;
   }, []);
 
   const filteredPostings = postings.filter((p) => {
@@ -52,12 +55,21 @@ export default function GetInvolved() {
 
   return (
     <div className="careers">
-      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1400&q=80">
-        <h1>Join Our Team</h1>
-        <p>
-          Help us support orphans worldwide. We're looking for passionate UW
-          students to lead campaigns, organize events, and drive real change.
-        </p>
+      <ParallaxHero
+        imgSrc="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1400&q=80"
+        contentKey="getinvolved.hero.image"
+      >
+        <EditableText
+          as="h1"
+          contentKey="getinvolved.hero.title"
+          fallback="Join Our Team"
+        />
+        <EditableText
+          as="p"
+          contentKey="getinvolved.hero.subtitle"
+          fallback="Help us support orphans worldwide. We're looking for passionate UW students to lead campaigns, organize events, and drive real change."
+          multiline
+        />
         <a href="#open-roles" className="btn btn-primary careers-hero-cta">
           View Open Roles <ArrowRight size={18} weight="bold" />
         </a>
@@ -67,33 +79,62 @@ export default function GetInvolved() {
       <section className="section careers-why">
         <div className="container">
           <div className="careers-why-inner reveal">
-            <h2>Why UWOSP?</h2>
-            <p className="careers-why-lead">
-              We're a student-run club at the University of Waterloo dedicated
-              to orphan sponsorship. Joining our team means hands-on experience
-              in event planning, fundraising, marketing, and leadership — all
-              while making a tangible difference.
-            </p>
+            <EditableText
+              as="h2"
+              contentKey="getinvolved.why.title"
+              fallback="Why UWOSP?"
+            />
+            <EditableText
+              as="p"
+              className="careers-why-lead"
+              contentKey="getinvolved.why.lead"
+              fallback="We're a student-run club at the University of Waterloo dedicated to orphan sponsorship. Joining our team means hands-on experience in event planning, fundraising, marketing, and leadership — all while making a tangible difference."
+              multiline
+            />
             <div className="careers-perks">
               <div className="careers-perk">
                 <UsersThree size={24} weight="duotone" />
                 <div>
-                  <strong>Tight-knit community</strong>
-                  <span>Work alongside driven, like-minded students</span>
+                  <EditableText
+                    as="strong"
+                    contentKey="getinvolved.perk1.title"
+                    fallback="Tight-knit community"
+                  />
+                  <EditableText
+                    as="span"
+                    contentKey="getinvolved.perk1.desc"
+                    fallback="Work alongside driven, like-minded students"
+                  />
                 </div>
               </div>
               <div className="careers-perk">
                 <CalendarCheck size={24} weight="duotone" />
                 <div>
-                  <strong>Flexible commitment</strong>
-                  <span>We work around your class schedule</span>
+                  <EditableText
+                    as="strong"
+                    contentKey="getinvolved.perk2.title"
+                    fallback="Flexible commitment"
+                  />
+                  <EditableText
+                    as="span"
+                    contentKey="getinvolved.perk2.desc"
+                    fallback="We work around your class schedule"
+                  />
                 </div>
               </div>
               <div className="careers-perk">
                 <Trophy size={24} weight="duotone" />
                 <div>
-                  <strong>Real experience</strong>
-                  <span>Lead projects that go on your resume</span>
+                  <EditableText
+                    as="strong"
+                    contentKey="getinvolved.perk3.title"
+                    fallback="Real experience"
+                  />
+                  <EditableText
+                    as="span"
+                    contentKey="getinvolved.perk3.desc"
+                    fallback="Lead projects that go on your resume"
+                  />
                 </div>
               </div>
             </div>
@@ -201,7 +242,7 @@ export default function GetInvolved() {
                         </p>
 
                         <div className="careers-row-columns">
-                          {posting.responsibilities.length > 0 && (
+                          {posting.responsibilities?.length > 0 && (
                             <div className="careers-detail-block">
                               <h4>Responsibilities</h4>
                               <ul>
@@ -211,7 +252,7 @@ export default function GetInvolved() {
                               </ul>
                             </div>
                           )}
-                          {posting.requirements.length > 0 && (
+                          {posting.requirements?.length > 0 && (
                             <div className="careers-detail-block">
                               <h4>Requirements</h4>
                               <ul>
@@ -242,24 +283,53 @@ export default function GetInvolved() {
       {/* How It Works */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title reveal">How It Works</h2>
+          <EditableText
+            as="h2"
+            className="section-title reveal"
+            contentKey="getinvolved.howto.title"
+            fallback="How It Works"
+          />
           <div className="careers-process reveal">
             <div className="careers-step">
               <span className="careers-step-num">1</span>
-              <strong>Browse</strong>
-              <p>Find a role that fits your skills and interests</p>
+              <EditableText
+                as="strong"
+                contentKey="getinvolved.step1.title"
+                fallback="Browse"
+              />
+              <EditableText
+                as="p"
+                contentKey="getinvolved.step1.desc"
+                fallback="Find a role that fits your skills and interests"
+              />
             </div>
             <div className="careers-step-divider" />
             <div className="careers-step">
               <span className="careers-step-num">2</span>
-              <strong>Apply</strong>
-              <p>Submit a quick application — no cover letter needed</p>
+              <EditableText
+                as="strong"
+                contentKey="getinvolved.step2.title"
+                fallback="Apply"
+              />
+              <EditableText
+                as="p"
+                contentKey="getinvolved.step2.desc"
+                fallback="Submit a quick application — no cover letter needed"
+              />
             </div>
             <div className="careers-step-divider" />
             <div className="careers-step">
               <span className="careers-step-num">3</span>
-              <strong>Join</strong>
-              <p>Meet the team and start making an impact</p>
+              <EditableText
+                as="strong"
+                contentKey="getinvolved.step3.title"
+                fallback="Join"
+              />
+              <EditableText
+                as="p"
+                contentKey="getinvolved.step3.desc"
+                fallback="Meet the team and start making an impact"
+              />
             </div>
           </div>
         </div>

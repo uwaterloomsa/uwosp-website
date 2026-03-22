@@ -180,6 +180,16 @@
   border-color: var(--border-hover);
 }
 
+.nav-dashboard {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 0.35rem;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.85rem;
+  text-decoration: none;
+}
+
 /* Hamburger */
 .hamburger {
   display: none;
@@ -290,6 +300,13 @@
   }
 
   .nav-login {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .nav-dashboard {
     margin-left: 0;
     margin-top: 0.5rem;
     justify-content: center;

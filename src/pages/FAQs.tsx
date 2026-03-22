@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CaretDown } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import ParallaxHero from "../components/ParallaxHero";
+import EditableText from "../components/EditableText";
+import { faqService } from "../services/siteCollections";
+import type { FAQ } from "../types/collections";
 import "./FAQs.css";
 
-const faqs = [
+const defaultFaqs = [
   {
     q: "What is OSP?",
     a: "The Orphan Sponsorship Program (OSP) is a student-run club at the University of Waterloo that aims to provide for the needs and well-being of orphans around the world through financial support via registered charities.",
@@ -38,12 +41,32 @@ const faqs = [
 export default function FAQs() {
   useScrollReveal();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [dbFaqs, setDbFaqs] = useState<FAQ[]>([]);
+
+  useEffect(() => {
+    const unsub = faqService.onItems(setDbFaqs);
+    return unsub;
+  }, []);
+
+  const faqs =
+    dbFaqs.length > 0
+      ? dbFaqs
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+          .map((f) => ({ q: f.question, a: f.answer }))
+      : defaultFaqs;
 
   return (
     <div className="faqs-page">
-      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1400&q=80">
-        <h1>FAQs</h1>
-        <p>Frequently asked questions about UWOSP.</p>
+      <ParallaxHero
+        imgSrc="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1400&q=80"
+        contentKey="faqs.hero.image"
+      >
+        <EditableText as="h1" contentKey="faqs.hero.title" fallback="FAQs" />
+        <EditableText
+          as="p"
+          contentKey="faqs.hero.subtitle"
+          fallback="Frequently asked questions about UWOSP."
+        />
       </ParallaxHero>
 
       <section className="section">

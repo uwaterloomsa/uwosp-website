@@ -1,8 +1,22 @@
-import { useState } from "react";
-import { X, PaperPlaneTilt, CheckCircle } from "@phosphor-icons/react";
-import { submitApplication } from "../services/postings";
+import { useState, useRef } from "react";
+import {
+  X,
+  PaperPlaneTilt,
+  CheckCircle,
+  FileArrowUp,
+} from "@phosphor-icons/react";
+import { submitApplication, uploadResume } from "../services/postings";
+import { ref, update } from "firebase/database";
+import { db } from "../firebase";
 import type { Posting } from "../types/postings";
 import "./ApplicationModal.css";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const ALLOWED_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
 
 interface Props {
   posting: Posting;
@@ -15,16 +29,35 @@ export default function ApplicationModal({ posting, onClose }: Props) {
   const [program, setProgram] = useState("");
   const [whyInterested, setWhyInterested] = useState("");
   const [experience, setExperience] = useState("");
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setError("Please upload a PDF or Word document.");
+      e.target.value = "";
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      setError("File must be under 5 MB.");
+      e.target.value = "";
+      return;
+    }
+    setError("");
+    setResumeFile(file);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setError("");
     try {
-      await submitApplication({
+      const appId = await submitApplication({
         postingId: posting.id,
         postingTitle: posting.title,
         name,
@@ -33,6 +66,12 @@ export default function ApplicationModal({ posting, onClose }: Props) {
         whyInterested,
         experience,
       });
+
+      if (resumeFile) {
+        const resumeUrl = await uploadResume(resumeFile, appId);
+        await update(ref(db, `applications/${appId}`), { resumeUrl });
+      }
+
       setSubmitted(true);
     } catch {
       setError("Something went wrong. Please try again.");
@@ -120,6 +159,28 @@ export default function ApplicationModal({ posting, onClose }: Props) {
                 placeholder="Describe any relevant skills or experience..."
                 required
               />
+            </div>
+            <div className="form-group">
+              <label htmlFor="apply-resume">Resume (optional)</label>
+              <div
+                className={`apply-file-drop ${resumeFile ? "has-file" : ""}`}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <FileArrowUp size={24} weight="duotone" />
+                <span>
+                  {resumeFile
+                    ? resumeFile.name
+                    : "Click to upload PDF or Word document (max 5 MB)"}
+                </span>
+                <input
+                  ref={fileInputRef}
+                  id="apply-resume"
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleFileChange}
+                  className="apply-file-input"
+                />
+              </div>
             </div>
             <button
               type="submit"

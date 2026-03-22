@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FileText } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import ParallaxHero from "../components/ParallaxHero";
+import EditableText from "../components/EditableText";
+import { financeReportService } from "../services/siteCollections";
+import type { FinanceReport } from "../types/collections";
 import "./Finances.css";
 
-const reports: { name: string; year: number; url: string }[] = [
+const defaultReports: { name: string; year: number; url: string }[] = [
   {
     name: "Spring 2024",
     year: 2024,
@@ -32,11 +35,27 @@ const reports: { name: string; year: number; url: string }[] = [
   },
 ];
 
-const years = ["ALL", "2024", "2023"];
-
 export default function Finances() {
   useScrollReveal();
   const [filter, setFilter] = useState("ALL");
+  const [dbReports, setDbReports] = useState<FinanceReport[]>([]);
+
+  useEffect(() => {
+    const unsub = financeReportService.onItems(setDbReports);
+    return unsub;
+  }, []);
+
+  const reports =
+    dbReports.length > 0
+      ? dbReports.map((r) => ({ name: r.name, year: r.year, url: r.url }))
+      : defaultReports;
+
+  const years = [
+    "ALL",
+    ...Array.from(new Set(reports.map((r) => String(r.year))))
+      .sort()
+      .reverse(),
+  ];
 
   const filtered =
     filter === "ALL"
@@ -45,9 +64,20 @@ export default function Finances() {
 
   return (
     <div className="finances">
-      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1400&q=80">
-        <h1>Financial Reports</h1>
-        <p>View our financial statements for previous terms.</p>
+      <ParallaxHero
+        imgSrc="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1400&q=80"
+        contentKey="finances.hero.image"
+      >
+        <EditableText
+          as="h1"
+          contentKey="finances.hero.title"
+          fallback="Financial Reports"
+        />
+        <EditableText
+          as="p"
+          contentKey="finances.hero.subtitle"
+          fallback="View our financial statements for previous terms."
+        />
       </ParallaxHero>
 
       <section className="section">

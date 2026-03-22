@@ -1,13 +1,58 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   HeartStraight,
   InstagramLogo,
   FacebookLogo,
   LinkedinLogo,
+  CheckCircle,
 } from "@phosphor-icons/react";
+import {
+  ref,
+  push,
+  set,
+  query,
+  orderByChild,
+  equalTo,
+  get,
+} from "firebase/database";
+import { db } from "../firebase";
 import "./Footer.css";
 
 export default function Footer() {
+  const [nlEmail, setNlEmail] = useState("");
+  const [nlStatus, setNlStatus] = useState<
+    "idle" | "sending" | "done" | "duplicate" | "error"
+  >("idle");
+
+  const handleNewsletter = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!nlEmail) return;
+    setNlStatus("sending");
+    try {
+      // Check for duplicate
+      const q = query(
+        ref(db, "newsletter"),
+        orderByChild("email"),
+        equalTo(nlEmail.toLowerCase()),
+      );
+      const snap = await get(q);
+      if (snap.exists()) {
+        setNlStatus("duplicate");
+        return;
+      }
+      const newRef = push(ref(db, "newsletter"));
+      await set(newRef, {
+        email: nlEmail.toLowerCase(),
+        subscribedAt: Date.now(),
+      });
+      setNlStatus("done");
+      setNlEmail("");
+    } catch {
+      setNlStatus("error");
+    }
+  };
+
   return (
     <footer className="footer">
       <div className="container">
@@ -18,19 +63,37 @@ export default function Footer() {
             Subscribe to our newsletter to receive updates on upcoming events
             and fundraisers!
           </p>
-          <form
-            className="newsletter-form"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <input
-              type="email"
-              placeholder="Sign up to our mailing list"
-              aria-label="Email for newsletter"
-            />
-            <button type="submit" className="btn btn-primary">
-              Subscribe
-            </button>
-          </form>
+          {nlStatus === "done" ? (
+            <p className="newsletter-success">
+              <CheckCircle size={20} weight="bold" /> You're subscribed!
+            </p>
+          ) : (
+            <form className="newsletter-form" onSubmit={handleNewsletter}>
+              <input
+                type="email"
+                placeholder="Sign up to our mailing list"
+                aria-label="Email for newsletter"
+                value={nlEmail}
+                onChange={(e) => setNlEmail(e.target.value)}
+                required
+              />
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={nlStatus === "sending"}
+              >
+                {nlStatus === "sending" ? "..." : "Subscribe"}
+              </button>
+            </form>
+          )}
+          {nlStatus === "duplicate" && (
+            <p className="newsletter-msg">You're already subscribed!</p>
+          )}
+          {nlStatus === "error" && (
+            <p className="newsletter-msg newsletter-msg--error">
+              Something went wrong. Please try again.
+            </p>
+          )}
           <div className="footer-social">
             <span>Follow us on:</span>
             <a

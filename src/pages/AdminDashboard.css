@@ -4,6 +4,27 @@
   background: var(--bg);
 }
 
+.admin-error-toast {
+  position: fixed;
+  top: 90px;
+  right: 1.5rem;
+  z-index: 1000;
+  background: #dc3545;
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  animation: toast-in 0.3s ease-out;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .admin-loading {
   display: flex;
   align-items: center;
@@ -414,9 +435,16 @@
 
 @media (max-width: 768px) {
   .admin-header h1 { font-size: 1.2rem; }
+  .admin-header-inner { flex-wrap: wrap; gap: 0.75rem; }
   .admin-table { font-size: 0.8rem; }
+  .admin-table th, .admin-table td { padding: 0.6rem 0.65rem; }
   .admin-tabs { gap: 0.25rem; }
   .admin-tab { padding: 0.6rem 0.75rem; font-size: 0.8rem; white-space: nowrap; }
+  .admin-panel-header { flex-direction: column; align-items: stretch; }
+  .admin-panel-header .btn { text-align: center; justify-content: center; }
+  .admin-form-modal, .admin-modal { max-width: 100%; }
+  .admin-form-btns { flex-direction: column; }
+  .admin-filter-select { width: 100%; }
 }
 
 /* ─── Modal overlay (used by all modals) ─── */
@@ -620,4 +648,27 @@
   margin-top: 0.25rem;
   line-height: 1.6;
   color: var(--text);
+}
+
+/* ═══════ Collection sub-tabs ═══════ */
+.admin-collection-subtabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem 0;
+  font-size: 0.95rem;
+}
+
+.admin-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
 }

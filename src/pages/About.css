@@ -163,3 +163,300 @@
   .leadership-grid { grid-template-columns: 1fr; }
   .team-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── Team card photo (image) ─── */
+.team-card-photo-img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.2s var(--ease-out);
+}
+.team-card-photo-img--lg {
+  width: 72px;
+  height: 72px;
+}
+.team-card:hover .team-card-photo-img {
+  transform: scale(1.08);
+}
+
+/* ─── Manage Team button bar ─── */
+.team-edit-bar {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0 0;
+}
+
+/* ─── Team Edit Modal ─── */
+.team-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: teamFadeIn 0.15s ease-out;
+}
+@keyframes teamFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.team-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 1.75rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.team-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.team-modal-header h2 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+.team-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+}
+.team-modal-close:hover {
+  color: var(--text);
+  background: var(--bg-alt);
+}
+
+.team-modal-warning {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  background: oklch(0.90 0.12 85);
+  color: oklch(0.35 0.10 70);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.team-modal-add {
+  margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* List */
+.team-modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.team-modal-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  transition: border-color 0.15s;
+}
+.team-modal-row:hover {
+  border-color: var(--primary);
+}
+
+.team-modal-row-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.team-modal-row-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.team-modal-row-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.team-modal-row-info strong {
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.team-modal-row-info span {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.team-modal-row-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.team-modal-row-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  color: var(--text-muted);
+  transition: color 0.15s, background 0.15s;
+}
+.team-modal-row-actions button:hover {
+  color: var(--primary);
+  background: var(--bg-alt);
+}
+.team-modal-row-delete:hover {
+  color: oklch(0.55 0.22 25) !important;
+  background: oklch(0.95 0.05 25) !important;
+}
+
+.team-modal-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem 0;
+  font-size: 0.9rem;
+}
+
+/* Form */
+.team-modal-form h3 {
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+}
+.team-modal-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
+}
+.team-modal-form input[type="text"],
+.team-modal-form input[type="number"] {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  transition: border-color 0.15s;
+}
+.team-modal-form input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.08);
+}
+
+.team-modal-checkbox {
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+.team-modal-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+}
+
+.team-modal-preview {
+  margin-bottom: 0.75rem;
+  position: relative;
+  display: inline-block;
+}
+.team-modal-preview img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+.team-modal-preview-remove {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background: oklch(0.55 0.22 25);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ─── Dropzone ─── */
+.team-modal-dropzone {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  margin-bottom: 0.85rem;
+}
+.team-modal-dropzone:hover {
+  border-color: var(--primary);
+  background: oklch(0.97 0.01 264);
+}
+.team-modal-dropzone--active {
+  border-color: var(--primary);
+  background: oklch(0.95 0.03 264);
+  border-style: solid;
+}
+.team-modal-dropzone--has-image {
+  cursor: default;
+  padding: 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+.team-modal-dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+.team-modal-dropzone-content svg {
+  color: var(--primary);
+}
+
+.team-modal-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}

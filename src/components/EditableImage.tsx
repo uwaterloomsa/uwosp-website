@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   PencilSimple,
   Check,
@@ -7,29 +8,35 @@ import {
   UploadSimple,
   ImageSquare,
 } from "@phosphor-icons/react";
-import { createPortal } from "react-dom";
 import { useCms } from "./CmsProvider";
 import { fileToDataUrl } from "../services/imageUpload";
 import "./EditableImage.css";
 
-interface ParallaxHeroProps {
-  imgSrc: string;
-  children: React.ReactNode;
+interface Props {
+  /** CMS content key, e.g. "home.hero.image" */
+  contentKey: string;
+  /** Default image URL when nothing is stored in the DB */
+  fallback: string;
+  /** Extra className forwarded to the wrapper */
   className?: string;
-  /** When provided, the hero image is CMS-editable by admins */
-  contentKey?: string;
+  /** Alt text */
+  alt?: string;
+  /** Allow file upload (converts to base64). Best for small images like avatars. */
+  allowUpload?: boolean;
+  /** Extra props forwarded to the <img> (data-* attrs, loading, etc.) */
+  imgProps?: React.ImgHTMLAttributes<HTMLImageElement>;
 }
 
-export default function ParallaxHero({
-  imgSrc,
-  children,
-  className = "",
+export default function EditableImage({
   contentKey,
-}: ParallaxHeroProps) {
-  const heroRef = useRef<HTMLElement>(null);
+  fallback,
+  className = "",
+  alt = "",
+  allowUpload = true,
+  imgProps = {},
+}: Props) {
   const { get, save, isAdmin } = useCms();
-
-  const src = contentKey ? get(contentKey, imgSrc) : imgSrc;
+  const src = get(contentKey, fallback);
 
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(src);
@@ -44,11 +51,13 @@ export default function ParallaxHero({
 
   useEffect(() => {
     if (open) {
+      // small delay so the modal renders first
       const t = setTimeout(() => inputRef.current?.focus(), 50);
       return () => clearTimeout(t);
     }
   }, [open]);
 
+  // close on Escape
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -59,7 +68,7 @@ export default function ParallaxHero({
   }, [open]);
 
   const handleSave = async () => {
-    if (!contentKey || !draft.trim() || draft.trim() === src) {
+    if (!draft.trim() || draft.trim() === src) {
       setOpen(false);
       return;
     }
@@ -80,7 +89,7 @@ export default function ParallaxHero({
       const dataUrl = await fileToDataUrl(file);
       setDraft(dataUrl);
     } catch {
-      /* ignore */
+      /* ignore bad file */
     }
   };
 
@@ -91,41 +100,20 @@ export default function ParallaxHero({
     if (file) handleFile(file);
   };
 
-  useEffect(() => {
-    const hero = heroRef.current;
-    if (!hero) return;
-
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mq.matches) return;
-
-    const layers = hero.querySelectorAll<HTMLElement>("[data-parallax]");
-    let ticking = false;
-
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const y = window.scrollY;
-        layers.forEach((el) => {
-          const speed = parseFloat(el.dataset.parallax || "0");
-          el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
-        });
-        ticking = false;
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  // Non-admin — plain image
+  if (!isAdmin) {
+    return <img className={className} src={src} alt={alt} {...imgProps} />;
+  }
 
   const modal = open
     ? createPortal(
         <div className="img-modal-overlay" onClick={() => setOpen(false)}>
           <div className="img-modal" onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
             <div className="img-modal-header">
               <h2>
                 <ImageSquare size={20} weight="duotone" />
-                Change Hero Image
+                Change Image
               </h2>
               <button
                 className="img-modal-close"
@@ -135,11 +123,13 @@ export default function ParallaxHero({
               </button>
             </div>
 
+            {/* Warning */}
             <div className="img-modal-warning">
               <Warning size={14} weight="bold" />
               This change will be visible to all visitors immediately.
             </div>
 
+            {/* Preview */}
             <div className="img-modal-preview">
               {draft ? (
                 <img src={draft} alt="Preview" />
@@ -151,6 +141,7 @@ export default function ParallaxHero({
               )}
             </div>
 
+            {/* URL input */}
             <label className="img-modal-label">Image URL</label>
             <input
               ref={inputRef}
@@ -165,31 +156,35 @@ export default function ParallaxHero({
               disabled={saving}
             />
 
-            <div
-              className={`img-modal-dropzone${dragging ? " img-modal-dropzone--active" : ""}`}
-              onClick={() => fileRef.current?.click()}
-              onDrop={handleDrop}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragging(true);
-              }}
-              onDragLeave={() => setDragging(false)}
-            >
-              <UploadSimple size={20} weight="bold" />
-              <span>Drop an image here or click to browse</span>
-              <input
-                ref={fileRef}
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) handleFile(f);
-                  if (fileRef.current) fileRef.current.value = "";
+            {/* Drag-and-drop zone */}
+            {allowUpload && (
+              <div
+                className={`img-modal-dropzone${dragging ? " img-modal-dropzone--active" : ""}`}
+                onClick={() => fileRef.current?.click()}
+                onDrop={handleDrop}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragging(true);
                 }}
-                hidden
-              />
-            </div>
+                onDragLeave={() => setDragging(false)}
+              >
+                <UploadSimple size={20} weight="bold" />
+                <span>Drop an image here or click to browse</span>
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) handleFile(f);
+                    if (fileRef.current) fileRef.current.value = "";
+                  }}
+                  hidden
+                />
+              </div>
+            )}
 
+            {/* Actions */}
             <div className="img-modal-actions">
               <button
                 className="img-modal-btn img-modal-btn--cancel"
@@ -213,38 +208,20 @@ export default function ParallaxHero({
       )
     : null;
 
+  // Admin display mode — image with hover pencil
   return (
-    <section
-      className={`hero hero--image parallax-hero ${className}`.trim()}
-      ref={heroRef}
-    >
-      <img
-        className="hero-bg-img parallax-layer"
-        data-parallax="0.35"
-        src={src}
-        alt=""
-        loading="eager"
-      />
-
-      {contentKey && isAdmin && (
-        <button className="cms-img-hero-btn" onClick={() => setOpen(true)}>
-          <PencilSimple size={14} weight="bold" />
-          Edit Image
-        </button>
-      )}
-
-      <div className="parallax-mid parallax-layer" data-parallax="0.2" />
-      <div className="parallax-particles parallax-layer" data-parallax="0.12">
-        <div className="particle particle-1" />
-        <div className="particle particle-2" />
-        <div className="particle particle-3" />
-        <div className="particle particle-4" />
-        <div className="particle particle-5" />
-      </div>
-      <div className="hero-content parallax-layer" data-parallax="-0.08">
-        {children}
+    <>
+      <div
+        className={`cms-img-editable ${className}`}
+        onClick={() => setOpen(true)}
+        title="Click to change image"
+      >
+        <img src={src} alt={alt} {...imgProps} />
+        <span className="cms-img-pencil">
+          <PencilSimple size={16} weight="bold" />
+        </span>
       </div>
       {modal}
-    </section>
+    </>
   );
 }

@@ -1,5 +1,12 @@
+import { useEffect, useState } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import ParallaxHero from "../components/ParallaxHero";
+import EditableText from "../components/EditableText";
+import {
+  orphanService,
+  pastSponsorshipService,
+} from "../services/siteCollections";
+import type { OrphanProfile, PastSponsorship } from "../types/collections";
 import "./Orphans.css";
 
 const COUNTRY_FLAGS: Record<string, string> = {
@@ -28,7 +35,7 @@ function getColor(name: string) {
   return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
 }
 
-const orphans = [
+const defaultOrphans = [
   {
     name: "Stina",
     country: "Kosovo",
@@ -91,7 +98,7 @@ const orphans = [
   },
 ];
 
-const pastSponsorships = [
+const defaultPastSponsorships = [
   "Yasin Hassoun",
   "Abdul Karim Jaber",
   "AbdulRahman Brijwee",
@@ -109,12 +116,47 @@ const pastSponsorships = [
 
 export default function Orphans() {
   useScrollReveal();
+  const [dbOrphans, setDbOrphans] = useState<OrphanProfile[]>([]);
+  const [dbPast, setDbPast] = useState<PastSponsorship[]>([]);
+
+  useEffect(() => {
+    const unsub1 = orphanService.onItems(setDbOrphans);
+    const unsub2 = pastSponsorshipService.onItems(setDbPast);
+    return () => {
+      unsub1();
+      unsub2();
+    };
+  }, []);
+
+  const orphans =
+    dbOrphans.length > 0
+      ? dbOrphans.map((o) => ({
+          name: o.name,
+          country: o.country,
+          description: o.description,
+          years: o.years,
+        }))
+      : defaultOrphans;
+
+  const pastSponsorships =
+    dbPast.length > 0 ? dbPast.map((p) => p.name) : defaultPastSponsorships;
 
   return (
     <div className="orphans">
-      <ParallaxHero imgSrc="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=1400&q=80">
-        <h1>Our Orphans</h1>
-        <p>Get to know more about the orphans we're currently sponsoring. 🧸</p>
+      <ParallaxHero
+        imgSrc="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=1400&q=80"
+        contentKey="orphans.hero.image"
+      >
+        <EditableText
+          as="h1"
+          contentKey="orphans.hero.title"
+          fallback="Our Orphans"
+        />
+        <EditableText
+          as="p"
+          contentKey="orphans.hero.subtitle"
+          fallback="Get to know more about the orphans we're currently sponsoring. 🧸"
+        />
       </ParallaxHero>
 
       {/* Orphan Profiles */}
@@ -149,7 +191,12 @@ export default function Orphans() {
       {/* Past Sponsorships */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title reveal">Past Sponsorships</h2>
+          <EditableText
+            as="h2"
+            className="section-title reveal"
+            contentKey="orphans.past.title"
+            fallback="Past Sponsorships"
+          />
           <div className="past-sponsorships reveal">
             <ul className="past-list">
               {pastSponsorships.map((name, i) => (

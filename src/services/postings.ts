@@ -5,11 +5,13 @@ import {
   set,
   update,
   remove,
+  onValue,
   query,
   orderByChild,
   equalTo,
 } from "firebase/database";
-import { db } from "../firebase";
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db, storage } from "../firebase";
 import type { Posting, Application } from "../types/postings";
 
 const POSTINGS = "postings";
@@ -95,4 +97,47 @@ export async function submitApplication(
 
 export async function deleteApplication(id: string): Promise<void> {
   await remove(ref(db, `${APPLICATIONS}/${id}`));
+}
+
+/* ───── Resume upload ───── */
+
+export async function uploadResume(file: File, applicationId: string): Promise<string> {
+  const ext = file.name.split(".").pop() ?? "pdf";
+  const fileRef = storageRef(storage, `resumes/${applicationId}.${ext}`);
+  await uploadBytes(fileRef, file);
+  return getDownloadURL(fileRef);
+}
+
+/* ───── Real-time listeners ───── */
+
+export function onPostings(
+  callback: (postings: Posting[]) => void,
+  onError?: (err: Error) => void,
+): () => void {
+  return onValue(
+    ref(db, POSTINGS),
+    (snap) => {
+      const items = snapshotToArray<Posting>(snap);
+      callback(items.sort((a, b) => b.createdAt - a.createdAt));
+    },
+    (err) => onError?.(err),
+  );
+}
+
+export function onApplications(
+  callback: (apps: Application[]) => void,
+  postingId?: string,
+  onError?: (err: Error) => void,
+): () => void {
+  const dbQuery = postingId
+    ? query(ref(db, APPLICATIONS), orderByChild("postingId"), equalTo(postingId))
+    : ref(db, APPLICATIONS);
+  return onValue(
+    dbQuery,
+    (snap) => {
+      const items = snapshotToArray<Application>(snap);
+      callback(items.sort((a, b) => b.submittedAt - a.submittedAt));
+    },
+    (err) => onError?.(err),
+  );
 }

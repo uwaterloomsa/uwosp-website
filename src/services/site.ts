@@ -168,3 +168,40 @@ export async function updateSponsor(
 export async function deleteSponsor(id: string): Promise<void> {
   await remove(ref(db, `${SPONSORS}/${id}`));
 }
+
+/* ═══════════════════════════════════════════
+   Real-time listeners
+   ═══════════════════════════════════════════ */
+
+export function onFundraisers(
+  callback: (items: Fundraiser[]) => void,
+  onError?: (err: Error) => void,
+): () => void {
+  return onValue(
+    ref(db, FUNDRAISERS),
+    (snap) => callback(snapshotToArray<Fundraiser>(snap).sort((a, b) => b.createdAt - a.createdAt)),
+    (err) => onError?.(err),
+  );
+}
+
+export function onAllEvents(
+  callback: (items: SiteEvent[]) => void,
+  onError?: (err: Error) => void,
+): () => void {
+  return onValue(
+    ref(db, EVENTS),
+    (snap) => callback(snapshotToArray<SiteEvent>(snap).sort((a, b) => b.createdAt - a.createdAt)),
+    (err) => onError?.(err),
+  );
+}
+
+export function onSponsors(
+  callback: (items: Sponsor[]) => void,
+  onError?: (err: Error) => void,
+): () => void {
+  return onValue(
+    ref(db, SPONSORS),
+    (snap) => callback(snapshotToArray<Sponsor>(snap).sort((a, b) => b.createdAt - a.createdAt)),
+    (err) => onError?.(err),
+  );
+}

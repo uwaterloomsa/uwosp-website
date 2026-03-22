@@ -77,9 +77,51 @@
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px oklch(0.49 0.19 264 / 0.08);
+}
+
+.form-group select {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  font-size: 0.9rem;
+  transition: border-color 0.15s var(--ease-standard);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.2rem;
+}
+
+.contact-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-xl);
+  gap: var(--space-sm);
+}
+
+.contact-success svg {
+  color: var(--primary);
+}
+
+.contact-success h3 {
+  font-size: 1.5rem;
+}
+
+.contact-success p {
+  color: var(--text-muted);
+  max-width: 420px;
+  line-height: 1.7;
 }
 
 .contact-form .btn { width: 100%; }

@@ -19,5 +19,6 @@ export interface Application {
   program: string;
   whyInterested: string;
   experience: string;
+  resumeUrl?: string;
   submittedAt: number;
 }

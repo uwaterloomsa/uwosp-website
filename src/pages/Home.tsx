@@ -18,7 +18,9 @@ import {
 } from "@phosphor-icons/react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import ParallaxHero from "../components/ParallaxHero";
-import { onActiveFundraiser, getSponsors, getEvents } from "../services/site";
+import EditableText from "../components/EditableText";
+import EditableImage from "../components/EditableImage";
+import { onActiveFundraiser, onSponsors, onAllEvents } from "../services/site";
 import type { Fundraiser, Sponsor, SiteEvent } from "../types/site";
 import type { ReactNode } from "react";
 import "./Home.css";
@@ -77,14 +79,14 @@ export default function Home() {
   const [events, setEvents] = useState<SiteEvent[]>([]);
 
   useEffect(() => {
-    const unsub = onActiveFundraiser(setFundraiser);
-    getSponsors()
-      .then(setSponsors)
-      .catch(() => {});
-    getEvents()
-      .then((all) => setEvents(all.slice(0, 3)))
-      .catch(() => {});
-    return unsub;
+    const unsubFund = onActiveFundraiser(setFundraiser);
+    const unsubSponsors = onSponsors((all) => setSponsors(all));
+    const unsubEvents = onAllEvents((all) => setEvents(all.slice(0, 3)));
+    return () => {
+      unsubFund();
+      unsubSponsors();
+      unsubEvents();
+    };
   }, []);
 
   const pct = fundraiser
@@ -141,18 +143,34 @@ export default function Home() {
       <ParallaxHero
         imgSrc="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1400&q=80"
         className="home-hero"
+        contentKey="home.hero.image"
       >
-        <span className="hero-badge">University of Waterloo</span>
+        <EditableText
+          as="span"
+          className="hero-badge"
+          contentKey="home.hero.badge"
+          fallback="University of Waterloo"
+        />
         <h1>
-          Orphan Sponsorship
+          <EditableText
+            as="span"
+            contentKey="home.hero.title1"
+            fallback="Orphan Sponsorship"
+          />
           <br />
-          <span className="text-accent">Program</span>
+          <EditableText
+            as="span"
+            className="text-accent"
+            contentKey="home.hero.title2"
+            fallback="Program"
+          />
         </h1>
-        <p>
-          At the University of Waterloo, the Orphan Sponsorship Program aims to
-          provide for the needs and well-being of orphans around the world
-          through financial support.
-        </p>
+        <EditableText
+          as="p"
+          contentKey="home.hero.description"
+          fallback="At the University of Waterloo, the Orphan Sponsorship Program aims to provide for the needs and well-being of orphans around the world through financial support."
+          multiline
+        />
         <div className="hero-buttons">
           <Link to="/campaigns" className="btn btn-primary">
             Learn More
@@ -207,13 +225,17 @@ export default function Home() {
                 <div className="campaign-badge">
                   <Fire size={18} weight="fill" /> Current Campaign
                 </div>
-                <h2>UWOSP x NZF | Ramadan Fundraiser</h2>
-                <p>
-                  Gaza families arriving in Canada may have found safety, but
-                  their struggles are far from over. They carry the weight of
-                  loss — homes destroyed, loved ones gone, and families still in
-                  danger. Together, we can ease their burden.
-                </p>
+                <EditableText
+                  as="h2"
+                  contentKey="home.fallback.title"
+                  fallback="UWOSP x NZF | Ramadan Fundraiser"
+                />
+                <EditableText
+                  as="p"
+                  contentKey="home.fallback.description"
+                  fallback="Gaza families arriving in Canada may have found safety, but their struggles are far from over. They carry the weight of loss — homes destroyed, loved ones gone, and families still in danger. Together, we can ease their burden."
+                  multiline
+                />
                 <a
                   href="https://uow-ansaar.raiselysite.com/"
                   target="_blank"
@@ -244,31 +266,35 @@ export default function Home() {
         <div className="container">
           <div className="split reveal">
             <div className="split-image image-hover-zoom">
-              <img
-                src="https://images.unsplash.com/photo-1497375638960-ca368c7231e4?w=800&q=80"
+              <EditableImage
+                contentKey="home.mission.image"
+                fallback="https://images.unsplash.com/photo-1497375638960-ca368c7231e4?w=800&q=80"
                 alt="Children smiling and playing together"
-                loading="lazy"
               />
             </div>
             <div>
-              <h2 className="section-title">Our Mission</h2>
+              <EditableText
+                as="h2"
+                className="section-title"
+                contentKey="home.mission.title"
+                fallback="Our Mission"
+              />
               <div
                 className="mission-text"
                 style={{ maxWidth: "none", textAlign: "left", margin: 0 }}
               >
-                <p>
-                  At the University of Waterloo, the Orphan Sponsorship Program
-                  aims to provide for the needs and well-being of orphans around
-                  the world through financial support. We believe that our
-                  support can help provide them with the security and tools to
-                  thrive.
-                </p>
-                <p>
-                  Through registered charities such as Human Concern
-                  International and Islamic Relief, we aim to sponsor children
-                  that have been orphaned as a result of war, extreme poverty,
-                  or disease.
-                </p>
+                <EditableText
+                  as="p"
+                  contentKey="home.mission.p1"
+                  fallback="At the University of Waterloo, the Orphan Sponsorship Program aims to provide for the needs and well-being of orphans around the world through financial support. We believe that our support can help provide them with the security and tools to thrive."
+                  multiline
+                />
+                <EditableText
+                  as="p"
+                  contentKey="home.mission.p2"
+                  fallback="Through registered charities such as Human Concern International and Islamic Relief, we aim to sponsor children that have been orphaned as a result of war, extreme poverty, or disease."
+                  multiline
+                />
               </div>
             </div>
           </div>
@@ -280,29 +306,35 @@ export default function Home() {
         <div className="container">
           <div className="split split--reverse reveal">
             <div>
-              <h2 className="section-title">Beyond Sponsorship</h2>
+              <EditableText
+                as="h2"
+                className="section-title"
+                contentKey="home.beyond.title"
+                fallback="Beyond Sponsorship"
+              />
               <div
                 className="mission-text"
                 style={{ maxWidth: "none", textAlign: "left", margin: 0 }}
               >
-                <p>
-                  We not only sponsor and support orphans globally, but we also
-                  collaborate with registered charities to assist countries
-                  abroad dealing with extreme poverty, natural disasters,
-                  conflict, and other crises.
-                </p>
-                <p>
-                  We strive to empower orphaned youth to break out of the cycle
-                  of poverty, through ensuring their access to nutrition,
-                  healthcare, and quality education.
-                </p>
+                <EditableText
+                  as="p"
+                  contentKey="home.beyond.p1"
+                  fallback="We not only sponsor and support orphans globally, but we also collaborate with registered charities to assist countries abroad dealing with extreme poverty, natural disasters, conflict, and other crises."
+                  multiline
+                />
+                <EditableText
+                  as="p"
+                  contentKey="home.beyond.p2"
+                  fallback="We strive to empower orphaned youth to break out of the cycle of poverty, through ensuring their access to nutrition, healthcare, and quality education."
+                  multiline
+                />
               </div>
             </div>
             <div className="split-image image-hover-zoom">
-              <img
-                src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=800&q=80"
+              <EditableImage
+                contentKey="home.beyond.image"
+                fallback="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=800&q=80"
                 alt="Child writing at a school desk"
-                loading="lazy"
               />
             </div>
           </div>
@@ -314,10 +346,18 @@ export default function Home() {
         <div className="container">
           <div className="section-header-row reveal">
             <div>
-              <h2 className="section-title">Upcoming Events</h2>
-              <p className="section-subtitle">
-                Join us at our next event and be part of the change.
-              </p>
+              <EditableText
+                as="h2"
+                className="section-title"
+                contentKey="home.events.title"
+                fallback="Upcoming Events"
+              />
+              <EditableText
+                as="p"
+                className="section-subtitle"
+                contentKey="home.events.subtitle"
+                fallback="Join us at our next event and be part of the change."
+              />
             </div>
             <Link to="/events" className="btn btn-outline">
               View All Events <ArrowRight size={16} weight="bold" />
@@ -351,12 +391,18 @@ export default function Home() {
       {/* Newsletter */}
       <section className="section" style={{ background: "var(--bg-alt)" }}>
         <div className="container" style={{ textAlign: "center" }}>
-          <h2 className="section-title section-title--center reveal">
-            Monthly Newsletter
-          </h2>
-          <p className="section-subtitle section-subtitle--center reveal">
-            Stay up to date with our latest initiatives and impact stories.
-          </p>
+          <EditableText
+            as="h2"
+            className="section-title section-title--center reveal"
+            contentKey="home.newsletter.title"
+            fallback="Monthly Newsletter"
+          />
+          <EditableText
+            as="p"
+            className="section-subtitle section-subtitle--center reveal"
+            contentKey="home.newsletter.subtitle"
+            fallback="Stay up to date with our latest initiatives and impact stories."
+          />
           <a
             href="https://cdn.shopify.com/s/files/1/0251/8210/9742/files/February_2025_OSP_Monthly_Newsletter.pdf?v=1742059567"
             target="_blank"
@@ -376,8 +422,16 @@ export default function Home() {
               <span className="icon-block">
                 <HeartStraight size={28} weight="duotone" />
               </span>
-              <h3>Our Orphans</h3>
-              <p>Learn more about the orphans we're currently sponsoring.</p>
+              <EditableText
+                as="h3"
+                contentKey="home.links.orphans.title"
+                fallback="Our Orphans"
+              />
+              <EditableText
+                as="p"
+                contentKey="home.links.orphans.desc"
+                fallback="Learn more about the orphans we're currently sponsoring."
+              />
               <Link to="/orphans" className="btn btn-outline">
                 Learn More <ArrowRight size={16} weight="bold" />
               </Link>
@@ -386,8 +440,16 @@ export default function Home() {
               <span className="icon-block">
                 <Handshake size={28} weight="duotone" />
               </span>
-              <h3>Other Projects</h3>
-              <p>Learn about other campaigns we've run.</p>
+              <EditableText
+                as="h3"
+                contentKey="home.links.campaigns.title"
+                fallback="Other Projects"
+              />
+              <EditableText
+                as="p"
+                contentKey="home.links.campaigns.desc"
+                fallback="Learn about other campaigns we've run."
+              />
               <Link to="/campaigns" className="btn btn-outline">
                 View Projects <ArrowRight size={16} weight="bold" />
               </Link>
@@ -396,8 +458,16 @@ export default function Home() {
               <span className="icon-block">
                 <ChartBar size={28} weight="duotone" />
               </span>
-              <h3>Financial Reports</h3>
-              <p>View all our triannual financial reports.</p>
+              <EditableText
+                as="h3"
+                contentKey="home.links.finances.title"
+                fallback="Financial Reports"
+              />
+              <EditableText
+                as="p"
+                contentKey="home.links.finances.desc"
+                fallback="View all our triannual financial reports."
+              />
               <Link to="/finances" className="btn btn-outline">
                 View Reports <ArrowRight size={16} weight="bold" />
               </Link>
@@ -414,11 +484,17 @@ export default function Home() {
               <span className="icon-block">
                 <CurrencyDollar size={28} weight="duotone" />
               </span>
-              <h3>Donate to Us</h3>
-              <p>
-                Donate to support our club events and booth, helping us raise
-                funds and attract more people to our fundraisers.
-              </p>
+              <EditableText
+                as="h3"
+                contentKey="home.links.donate.title"
+                fallback="Donate to Us"
+              />
+              <EditableText
+                as="p"
+                contentKey="home.links.donate.desc"
+                fallback="Donate to support our club events and booth, helping us raise funds and attract more people to our fundraisers."
+                multiline
+              />
               <a
                 href="https://wusa.ca/product/uw-orphan-sponsorship-program/"
                 target="_blank"
@@ -432,8 +508,16 @@ export default function Home() {
               <span className="icon-block">
                 <Megaphone size={28} weight="duotone" />
               </span>
-              <h3>Get Involved</h3>
-              <p>Interested in helping out? Let us know!</p>
+              <EditableText
+                as="h3"
+                contentKey="home.links.involved.title"
+                fallback="Get Involved"
+              />
+              <EditableText
+                as="p"
+                contentKey="home.links.involved.desc"
+                fallback="Interested in helping out? Let us know!"
+              />
               <Link to="/contact" className="btn btn-outline">
                 Contact Us
               </Link>
@@ -445,10 +529,18 @@ export default function Home() {
       {/* Partners */}
       <section className="section partners-section">
         <div className="container">
-          <h2 className="section-title reveal">Our Partners</h2>
-          <p className="section-subtitle reveal">
-            We work with registered charities to maximize our impact.
-          </p>
+          <EditableText
+            as="h2"
+            className="section-title reveal"
+            contentKey="home.partners.title"
+            fallback="Our Partners"
+          />
+          <EditableText
+            as="p"
+            className="section-subtitle reveal"
+            contentKey="home.partners.subtitle"
+            fallback="We work with registered charities to maximize our impact."
+          />
           <div className="partners-grid">
             {sponsors.length > 0
               ? sponsors.map((s, i) => (

@@ -96,6 +96,43 @@
 @media (max-width: 768px) {
   .events-list { grid-template-columns: 1fr; }
   .active-campaign { padding: var(--space-lg); }
+  .past-campaigns-grid { grid-template-columns: 1fr; }
+}
+
+/* Past campaigns */
+.past-campaigns-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-md);
+}
+
+.past-campaign-card {
+  padding: var(--space-lg);
+}
+
+.past-campaign-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+
+.past-campaign-header h3 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: var(--text-heading);
+}
+
+.past-campaign-card p {
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.past-campaign-card .campaign-progress {
+  max-width: none;
+  margin-bottom: 0;
 }
 
 .past-raised {
