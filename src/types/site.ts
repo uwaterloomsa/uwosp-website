@@ -5,6 +5,7 @@ export interface Fundraiser {
   goalAmount: number;
   raisedAmount: number;
   isActive: boolean;
+  imageUrl?: string;
   createdAt: number;
   updatedAt: number;
 }
@@ -17,6 +18,7 @@ export interface SiteEvent {
   time: string;
   location: string;
   isFeatured: boolean;
+  imageUrl?: string;
   createdAt: number;
   updatedAt: number;
 }

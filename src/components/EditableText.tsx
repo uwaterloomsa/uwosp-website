@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { PencilSimple, Check, X, Warning } from "@phosphor-icons/react";
+import { PencilSimple, X, Warning } from "@phosphor-icons/react";
 import { useCms } from "./CmsProvider";
 import "./EditableText.css";
 

@@ -145,6 +145,19 @@ export default function Events() {
                     <span>{event.date}</span>
                   </div>
                   <div className="event-row-body">
+                    {event.imageUrl && (
+                      <img
+                        src={event.imageUrl}
+                        alt={event.title}
+                        style={{
+                          width: "100%",
+                          maxHeight: 180,
+                          objectFit: "cover",
+                          borderRadius: 8,
+                          marginBottom: "0.75rem",
+                        }}
+                      />
+                    )}
                     <h3>{event.title}</h3>
                     <p>{event.description}</p>
                     <div className="event-row-meta">

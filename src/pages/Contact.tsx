@@ -89,8 +89,18 @@ export default function Contact() {
                   <EnvelopeSimple size={24} weight="duotone" />
                 </span>
                 <div>
-                  <h4>Email</h4>
-                  <a href="mailto:uworphansp@gmail.com">uworphansp@gmail.com</a>
+                  <EditableText
+                    as="h4"
+                    contentKey="contact.info.email.label"
+                    fallback="Email"
+                  />
+                  <a href="mailto:uworphansp@gmail.com">
+                    <EditableText
+                      as="span"
+                      contentKey="contact.info.email.value"
+                      fallback="uworphansp@gmail.com"
+                    />
+                  </a>
                 </div>
               </div>
               <div className="contact-info-card">
@@ -98,13 +108,21 @@ export default function Contact() {
                   <InstagramLogo size={24} weight="duotone" />
                 </span>
                 <div>
-                  <h4>Instagram</h4>
+                  <EditableText
+                    as="h4"
+                    contentKey="contact.info.instagram.label"
+                    fallback="Instagram"
+                  />
                   <a
                     href="https://instagram.com/uwaterlooOSP"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    @uwaterlooOSP
+                    <EditableText
+                      as="span"
+                      contentKey="contact.info.instagram.value"
+                      fallback="@uwaterlooOSP"
+                    />
                   </a>
                 </div>
               </div>
@@ -113,13 +131,21 @@ export default function Contact() {
                   <LinkedinLogo size={24} weight="duotone" />
                 </span>
                 <div>
-                  <h4>LinkedIn</h4>
+                  <EditableText
+                    as="h4"
+                    contentKey="contact.info.linkedin.label"
+                    fallback="LinkedIn"
+                  />
                   <a
                     href="https://www.linkedin.com/company/uw-orphan-sponsorship-program"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    UW Orphan Sponsorship Program
+                    <EditableText
+                      as="span"
+                      contentKey="contact.info.linkedin.value"
+                      fallback="UW Orphan Sponsorship Program"
+                    />
                   </a>
                 </div>
               </div>
@@ -128,13 +154,21 @@ export default function Contact() {
                   <LinkSimple size={24} weight="duotone" />
                 </span>
                 <div>
-                  <h4>Linktree</h4>
+                  <EditableText
+                    as="h4"
+                    contentKey="contact.info.linktree.label"
+                    fallback="Linktree"
+                  />
                   <a
                     href="https://linktr.ee/uwaterlooOSP"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    linktr.ee/uwaterlooOSP
+                    <EditableText
+                      as="span"
+                      contentKey="contact.info.linktree.value"
+                      fallback="linktr.ee/uwaterlooOSP"
+                    />
                   </a>
                 </div>
               </div>
@@ -144,13 +178,17 @@ export default function Contact() {
             {sent ? (
               <div className="contact-success card reveal stagger-2">
                 <CheckCircle size={56} weight="duotone" />
-                <h3>Message Ready!</h3>
-                <p>
-                  Your email client should have opened with the message
-                  pre-filled. If it didn't, please email us directly at{" "}
-                  <a href="mailto:uworphansp@gmail.com">uworphansp@gmail.com</a>
-                  .
-                </p>
+                <EditableText
+                  as="h3"
+                  contentKey="contact.success.title"
+                  fallback="Message Ready!"
+                />
+                <EditableText
+                  as="p"
+                  contentKey="contact.success.body"
+                  fallback="Your email client should have opened with the message pre-filled. If it didn't, please email us directly at uworphansp@gmail.com."
+                  multiline
+                />
                 <button
                   className="btn btn-primary"
                   onClick={() => {

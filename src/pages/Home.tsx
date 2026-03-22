@@ -211,12 +211,27 @@ export default function Home() {
                 </Link>
               </div>
               <div className="fundraiser-featured-visual">
-                <div className="fundraiser-amount-display">
-                  <span className="fundraiser-amount">
-                    ${fundraiser.raisedAmount.toLocaleString()}
-                  </span>
-                  <span className="fundraiser-amount-label">raised so far</span>
-                </div>
+                {fundraiser.imageUrl ? (
+                  <img
+                    src={fundraiser.imageUrl}
+                    alt={fundraiser.title}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      borderRadius: 12,
+                    }}
+                  />
+                ) : (
+                  <div className="fundraiser-amount-display">
+                    <span className="fundraiser-amount">
+                      ${fundraiser.raisedAmount.toLocaleString()}
+                    </span>
+                    <span className="fundraiser-amount-label">
+                      raised so far
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           ) : (

@@ -212,7 +212,7 @@ function TeamEditModal({ members, onClose }: TeamEditModalProps) {
     if (editing) {
       await teamService.updateItem(editing.id, data);
     } else {
-      await teamService.addItem(data);
+      await teamService.addItem(data as Omit<TeamMember, "id">);
     }
     setBusy(false);
     setAdding(false);

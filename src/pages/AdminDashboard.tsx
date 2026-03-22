@@ -65,6 +65,7 @@ import type {
   PastEvent,
 } from "../types/collections";
 import CollectionEditor from "../components/CollectionEditor";
+import { fileToBannerDataUrl } from "../services/imageUpload";
 import {
   faqService,
   orphanService,
@@ -104,6 +105,7 @@ const emptyFundraiserForm = {
   goalAmount: 0,
   raisedAmount: 0,
   isActive: true,
+  imageUrl: "",
 };
 
 const emptyEventForm = {
@@ -113,6 +115,7 @@ const emptyEventForm = {
   time: "",
   location: "",
   isFeatured: false,
+  imageUrl: "",
 };
 
 const emptySponsorForm = {
@@ -816,6 +819,7 @@ export default function AdminDashboard() {
                                   goalAmount: f.goalAmount,
                                   raisedAmount: f.raisedAmount,
                                   isActive: f.isActive,
+                                  imageUrl: f.imageUrl ?? "",
                                 });
                                 setEditFundId(f.id);
                                 setShowFundForm(true);
@@ -900,6 +904,7 @@ export default function AdminDashboard() {
                                   time: ev.time,
                                   location: ev.location,
                                   isFeatured: ev.isFeatured,
+                                  imageUrl: ev.imageUrl ?? "",
                                 });
                                 setEditEventId(ev.id);
                                 setShowEventForm(true);
@@ -1325,41 +1330,150 @@ export default function AdminDashboard() {
             )}
 
             {activeCollection === "orphans" && (
-              <CollectionEditor<OrphanProfile>
-                title="Orphans"
-                fields={[
-                  { key: "name", label: "Name", type: "text", required: true },
-                  {
-                    key: "country",
-                    label: "Country",
-                    type: "text",
-                    required: true,
-                  },
-                  {
-                    key: "description",
-                    label: "Description",
-                    type: "textarea",
-                    required: true,
-                  },
-                  {
-                    key: "years",
-                    label: "Years (e.g. 2017-2027)",
-                    type: "text",
-                    required: true,
-                  },
-                ]}
-                items={orphans}
-                tableColumns={["name", "country", "years"]}
-                onAdd={(d) =>
-                  orphanService
-                    .addItem(d as Omit<OrphanProfile, "id">)
-                    .then(() => {})
-                }
-                onUpdate={(id, d) =>
-                  orphanService.updateItem(id, d as Partial<OrphanProfile>)
-                }
-                onDelete={(id) => orphanService.deleteItem(id)}
-              />
+              <>
+                {orphans.length === 0 && (
+                  <button
+                    className="btn btn-primary"
+                    style={{ marginBottom: "1rem" }}
+                    onClick={async () => {
+                      const defaults = [
+                        {
+                          name: "Stina",
+                          country: "Kosovo",
+                          description:
+                            "Stina lives in Kosovo. She likes to collect cuddly bears and her dream is to become a police officer! She lives with her mother and older brother.",
+                          years: "2017-2027",
+                        },
+                        {
+                          name: "Kalilou",
+                          country: "Mali",
+                          description:
+                            "Kalilou lives with his mother in Mali and is a student in fourth grade. Kalilou loves playing football with his friends after school and he is a creative artist.",
+                          years: "2017-2030",
+                        },
+                        {
+                          name: "Muhammed",
+                          country: "Palestine",
+                          description:
+                            "Muhammed lives in Palestine with his mother. He loves collecting sea shells and swimming in his free time. Muhammed's dream is to become a teacher!",
+                          years: "2017-2023",
+                        },
+                        {
+                          name: "Marah",
+                          country: "Palestine",
+                          description:
+                            "Marah lives with her mother and three siblings in Palestine. She is currently eight years old.",
+                          years: "2021-2029",
+                        },
+                        {
+                          name: "Ali",
+                          country: "Palestine",
+                          description:
+                            "Ali lives in Palestine and is currently 5 years old.",
+                          years: "2025-2026",
+                        },
+                        {
+                          name: "Hayat",
+                          country: "Palestine",
+                          description:
+                            "Hayat lives with her mother in Palestine. She is currently four years old.",
+                          years: "2025-2026",
+                        },
+                        {
+                          name: "Malek",
+                          country: "Palestine",
+                          description:
+                            "Malek lives in Palestine and is currently three years old.",
+                          years: "2025-2026",
+                        },
+                        {
+                          name: "Mariam",
+                          country: "Palestine",
+                          description:
+                            "Mariam lives with her mother in Palestine. She is currently zero years old.",
+                          years: "2025-2026",
+                        },
+                        {
+                          name: "Sela",
+                          country: "Palestine",
+                          description:
+                            "Sela lives in Palestine and is currently three years old.",
+                          years: "2025-2026",
+                        },
+                      ];
+                      for (let i = 0; i < defaults.length; i++) {
+                        await orphanService.addItem({
+                          ...defaults[i],
+                          order: i,
+                        } as Omit<OrphanProfile, "id">);
+                      }
+                      const pastNames = [
+                        "Yasin Hassoun",
+                        "Abdul Karim Jaber",
+                        "AbdulRahman Brijwee",
+                        "Hashim Mushtaq",
+                        "Seemab Sadiq",
+                        "Marwa Mohammad",
+                        "Mena Rahmat Gul",
+                        "Abdur Rahman",
+                        "Toyaffa Alam Shad",
+                        "Sughra Akhter",
+                        "Tariq Shah",
+                        "Syeda Umama Sherazi",
+                        "Muhammed Abu Hendy",
+                      ];
+                      for (let i = 0; i < pastNames.length; i++) {
+                        await pastSponsorshipService.addItem({
+                          name: pastNames[i],
+                          order: i,
+                        } as Omit<PastSponsorship, "id">);
+                      }
+                    }}
+                  >
+                    Seed Default Orphans &amp; Past Sponsorships
+                  </button>
+                )}
+                <CollectionEditor<OrphanProfile>
+                  title="Orphans"
+                  fields={[
+                    {
+                      key: "name",
+                      label: "Name",
+                      type: "text",
+                      required: true,
+                    },
+                    {
+                      key: "country",
+                      label: "Country",
+                      type: "text",
+                      required: true,
+                    },
+                    {
+                      key: "description",
+                      label: "Description",
+                      type: "textarea",
+                      required: true,
+                    },
+                    {
+                      key: "years",
+                      label: "Years (e.g. 2017-2027)",
+                      type: "text",
+                      required: true,
+                    },
+                  ]}
+                  items={orphans}
+                  tableColumns={["name", "country", "years"]}
+                  onAdd={(d) =>
+                    orphanService
+                      .addItem(d as Omit<OrphanProfile, "id">)
+                      .then(() => {})
+                  }
+                  onUpdate={(id, d) =>
+                    orphanService.updateItem(id, d as Partial<OrphanProfile>)
+                  }
+                  onDelete={(id) => orphanService.deleteItem(id)}
+                />
+              </>
             )}
 
             {activeCollection === "pastSponsorships" && (
@@ -1899,6 +2013,45 @@ export default function AdminDashboard() {
                   Active (shown on landing page)
                 </label>
               </div>
+              <div className="form-group">
+                <label>Image (optional)</label>
+                {fundForm.imageUrl && (
+                  <img
+                    src={fundForm.imageUrl}
+                    alt="Preview"
+                    style={{
+                      width: "100%",
+                      maxHeight: 200,
+                      objectFit: "cover",
+                      borderRadius: 8,
+                      marginBottom: 8,
+                    }}
+                  />
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const dataUrl = await fileToBannerDataUrl(file);
+                    setFundForm((f) => ({ ...f, imageUrl: dataUrl }));
+                  }}
+                />
+                <input
+                  type="text"
+                  placeholder="Or paste an image URL"
+                  value={
+                    fundForm.imageUrl.startsWith("data:")
+                      ? ""
+                      : fundForm.imageUrl
+                  }
+                  onChange={(e) =>
+                    setFundForm((f) => ({ ...f, imageUrl: e.target.value }))
+                  }
+                  style={{ marginTop: 6 }}
+                />
+              </div>
               <button
                 type="submit"
                 className="btn btn-primary"
@@ -2014,6 +2167,45 @@ export default function AdminDashboard() {
                   />
                   Featured (shown on landing page)
                 </label>
+              </div>
+              <div className="form-group">
+                <label>Image (optional)</label>
+                {eventForm.imageUrl && (
+                  <img
+                    src={eventForm.imageUrl}
+                    alt="Preview"
+                    style={{
+                      width: "100%",
+                      maxHeight: 200,
+                      objectFit: "cover",
+                      borderRadius: 8,
+                      marginBottom: 8,
+                    }}
+                  />
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const dataUrl = await fileToBannerDataUrl(file);
+                    setEventForm((f) => ({ ...f, imageUrl: dataUrl }));
+                  }}
+                />
+                <input
+                  type="text"
+                  placeholder="Or paste an image URL"
+                  value={
+                    eventForm.imageUrl.startsWith("data:")
+                      ? ""
+                      : eventForm.imageUrl
+                  }
+                  onChange={(e) =>
+                    setEventForm((f) => ({ ...f, imageUrl: e.target.value }))
+                  }
+                  style={{ marginTop: 6 }}
+                />
               </div>
               <button
                 type="submit"

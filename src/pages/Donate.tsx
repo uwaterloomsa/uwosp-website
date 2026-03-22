@@ -13,9 +13,11 @@ import EditableText from "../components/EditableText";
 import EditableImage from "../components/EditableImage";
 import { onActiveFundraiser } from "../services/site";
 import type { Fundraiser } from "../types/site";
+import useScrollReveal from "../hooks/useScrollReveal";
 import "./Donate.css";
 
 export default function Donate() {
+  useScrollReveal();
   const [fundraiser, setFundraiser] = useState<Fundraiser | null>(null);
 
   useEffect(() => {
@@ -122,6 +124,19 @@ export default function Donate() {
         <section className="section" style={{ background: "var(--bg-alt)" }}>
           <div className="container">
             <div className="donate-fundraiser card">
+              {fundraiser.imageUrl && (
+                <img
+                  src={fundraiser.imageUrl}
+                  alt={fundraiser.title}
+                  style={{
+                    width: "100%",
+                    maxHeight: 240,
+                    objectFit: "cover",
+                    borderRadius: "8px 8px 0 0",
+                    marginBottom: "1rem",
+                  }}
+                />
+              )}
               <div className="donate-fundraiser-badge">
                 <Fire size={18} weight="fill" /> Active Fundraiser
               </div>

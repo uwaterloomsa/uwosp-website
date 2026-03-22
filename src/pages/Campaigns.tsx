@@ -98,6 +98,19 @@ export default function Campaigns() {
                   : 0;
               return (
                 <div className="active-campaign card reveal-scale" key={f.id}>
+                  {f.imageUrl && (
+                    <img
+                      src={f.imageUrl}
+                      alt={f.title}
+                      style={{
+                        width: "100%",
+                        maxHeight: 240,
+                        objectFit: "cover",
+                        borderRadius: "8px 8px 0 0",
+                        marginBottom: "1rem",
+                      }}
+                    />
+                  )}
                   <div className="campaign-badge">
                     <Fire size={18} weight="fill" /> Active Campaign
                   </div>

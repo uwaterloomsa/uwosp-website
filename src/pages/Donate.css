@@ -1,3 +1,9 @@
+/* Tighter vertical rhythm for this page */
+.donate .section {
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-2xl);
+}
+
 /* Impact stats */
 .donate-impact-section {
   background: var(--bg-alt);
@@ -33,7 +39,8 @@
 .donate-general {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  justify-content: center;
+  gap: var(--space-sm);
 }
 
 .donate-general h2 {
@@ -54,7 +61,7 @@
 
 /* Active fundraiser */
 .donate-fundraiser {
-  padding: var(--space-xl);
+  padding: var(--space-lg) var(--space-xl);
   text-align: center;
 }
 
@@ -88,6 +95,39 @@
   margin: 0 auto;
 }
 
+/* Progress bar (local copy — also used on Campaigns & Home) */
+.donate .progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-alt);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.donate .progress-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 9999px;
+  transition: width 1s var(--ease-standard);
+  background-image: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: progressShimmer 2.5s ease-in-out infinite;
+}
+
+.donate .progress-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.donate .progress-stats span:first-child {
+  font-weight: 600;
+  color: var(--primary);
+}
+
 /* CTA */
 .donate-cta-buttons {
   display: flex;
@@ -99,7 +139,6 @@
 /* Responsive */
 @media (max-width: 768px) {
   .donate-impact-grid { grid-template-columns: repeat(2, 1fr); }
-  .donate-general { padding: var(--space-lg); }
   .donate-cta-buttons { flex-direction: column; align-items: center; }
 }
 
