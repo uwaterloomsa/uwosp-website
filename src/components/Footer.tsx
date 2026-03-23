@@ -168,7 +168,7 @@ export default function Footer() {
               color="#1d4ed8"
               style={{ verticalAlign: "middle" }}
             />{" "}
-            by the <Link to="/about">Saif and Erick</Link>
+            by the <Link to="/about">OSP Team</Link>
           </p>
         </div>
       </div>
